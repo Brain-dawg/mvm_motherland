@@ -18,11 +18,8 @@ WaveSchedule {
 			FirstSpawnOutput {
 
 				Target logic_script_lizardmvm
-				Action RunScriptCode
-				Param "
-					FindAndConvertTrainTank( null )
-					printl(`output1`)
-				"
+				Action CallScriptFunction
+				Param "FindAndConvertTrainTank"
 			}
 
 			TFBot { Template T_TFBot_Motherland_Train }
