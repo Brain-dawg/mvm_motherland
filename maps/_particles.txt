@@ -1,0 +1,6 @@
+"particles_manifest"
+{
+  "file"  "!particles/motherland.pcf"
+  "file"  "!particles/motherland_oz.pcf"
+  "file"  "!particles/cold_breath.pcf"
+}

@@ -1,0 +1,720 @@
+#base robot_giant.pop
+#base robot_standard.pop
+
+WaveSchedule
+{
+    StartingCurrency 800
+    RespawnWaveTime  6
+    CanBotsAttackWhileInSpawnRoom No
+    Advanced 1
+
+    Templates
+    {
+        Motherland_GateBot_Heavy_Gloves
+        {
+            Class Heavyweapons
+            ClassIcon heavy_champ
+
+            EventChangeAttributes
+            {
+                Default
+                {
+                    BehaviorModifiers Push
+                    Attributes IgnoreFlag
+
+                    Item "the killing gloves of boxing"
+                    
+                    WeaponRestrictions MeleeOnly
+                    Skill Normal
+
+                }
+                RevertGateBotsBehavior
+                {
+                    Item "the killing gloves of boxing"
+                    Item "MvM GateBot Light Heavy"                    
+                    ItemAttributes
+                    {
+                        ItemName "MvM GateBot Light Heavy"
+                        "item style override" 1
+                    }
+                    WeaponRestrictions MeleeOnly
+                    Skill Normal
+                }
+            }
+        }
+
+        Moterland_BombBot_DirectHit
+        {
+            Class Soldier
+            Item "The Direct Hit"
+            Skill Hard
+            ClassIcon soldier_directhit
+        }
+
+        Moterland_BombBot_PhlogGiant
+        {
+            Template T_TFBot_Giant_Pyro
+            Item "The Phlogistinator"
+            Tag bot_phlog_pyro
+            Skill Hard
+
+            CharacterAttributes
+            {
+                "gesture speed increase"	0.75
+            }
+        }
+
+        Moterland_TrainBot_Heavy_HighNoon
+        {
+            Class Heavyweapons
+            Name "Heavy Mittens"
+            Skill Normal
+            ClassIcon heavy_mittens
+            WeaponRestrictions MeleeOnly
+            Attributes AlwaysCrit
+            BehaviorModifiers Push
+            Tag bot_high_noon
+            Item "The Holiday Punch"
+            ItemAttributes
+            {
+                ItemName "The Holiday Punch"
+                "damage bonus" 0.2
+            }
+            CharacterAttributes
+            {
+                "move speed bonus"	1.3
+            }
+        }
+        T_TFBot_Motherland_Train 
+        {
+            Name "Carrier Train"
+            Class Scout
+            Health 20000
+            ClassIcon crossguard_lite
+            Attributes IgnoreFlag
+            Attributes IgnoreEnemies
+            Attributes UseBossHealthBar
+            Attributes MiniBoss
+            MaxVisionRange 1
+            Tag bot_tanktrain_hackbot
+
+            CharacterAttributes
+            {
+                "move speed penalty" 0.0001 
+                "no_jump" 1
+                "no_duck" 1
+                "cancel falling damage" 1
+            }
+        }
+    }
+    
+    Mission
+    {
+		Objective Engineer
+
+        BeginAtWave 2
+        RunForThisManyWaves 1
+
+        InitialCooldown 1
+        CooldownTime 10
+        DesiredCount 5
+
+        Where spawnbot_base_main_b
+        Where spawnbot_gate1_main_b
+        Where spawnbot_gate2_main_b
+
+        TFBot
+        {
+            Template T_TFBot_Pyro_Flaregun
+            Tag nav_flank
+            Skill Normal
+            BehaviorModifiers Push
+        }
+    }
+    
+    Mission
+    {
+		Objective Spy
+
+        BeginAtWave 2
+        RunForThisManyWaves 1
+
+        InitialCooldown 1
+        CooldownTime 10
+        DesiredCount 4
+
+        Where spawnbot_base_main_b
+        Where spawnbot_gate1_main_b
+        Where spawnbot_gate2_main_b
+
+        TFBot
+        {
+            Template T_TFBot_Pyro
+            Tag nav_main
+            Skill Normal
+        }
+    }
+
+    Mission
+    {
+        Objective Sniper
+
+        InitialCooldown 20
+        Where spawnbot_base_upper
+        Where spawnbot_base_battlements
+        Where spawnbot_gate1_upper
+        Where spawnbot_gate1_flank
+        Where spawnbot_gate2_upper
+        Where spawnbot_gate2_flank
+        BeginAtWave 2
+        RunForThisManyWaves 4
+        CooldownTime 25
+        DesiredCount 2
+
+        TFBot
+        {
+            Class Sniper
+            Skill Hard
+            Name Sniper
+            MaxVisionRange 4000
+        }
+    }
+
+	Mission
+	{
+		Objective DestroySentries
+
+		Where spawnbot_base_battlements
+		Where spawnbot_base_main
+		Where spawnbot_base_upper
+		Where spawnbot_base_closet
+		Where spawnbot_gate1_main
+		Where spawnbot_gate1_upper
+		Where spawnbot_gate1_flank
+		Where spawnbot_gate2_main
+		Where spawnbot_gate2_upper
+		Where spawnbot_gate2_flank	
+
+		CooldownTime 30
+
+		TFBot
+		{
+			Template T_TFBot_SentryBuster
+			Tag bot_sentrybuster
+		}
+	}
+
+    Wave //Wave 1
+    {
+        WaitWhenDone 65
+        Checkpoint Yes
+
+        InitWaveOutput
+        {
+            Target logic_script_lizardmvm
+            Action RunScriptCode
+            Param "
+                EntFire(`holograms_bomb_battlements_only`, `Enable`);
+                EntFire(`holograms_gate1_flank`, `Enable`);
+                EntFire(`holograms_gate2_shortflank`, `Enable`);
+                DisableSecondBomb();
+            "
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 30
+
+            TotalCount 3
+            MaxActive  3
+            SpawnCount 3
+
+            WaitBeforeStarting 0
+            WaitBetweenSpawns  10
+
+            Where spawnbot_base_battlements
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate2_upper
+            
+            TFBot
+            {
+                Class Scout
+                Skill Normal
+                Tag nav_main
+
+                CharacterAttributes
+                {
+                    "move speed bonus"    1.5
+                }
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 75
+
+            TotalCount 15
+            MaxActive  5
+            SpawnCount 5
+
+            WaitBeforeStarting 10
+            WaitBetweenSpawns  10
+
+            Where spawnbot_base_battlements
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate2_upper
+
+            TFBot
+            {
+                Class Scout
+                Skill Normal
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 75
+
+            TotalCount 15
+            MaxActive  5
+            SpawnCount 5
+
+            WaitBeforeStarting 10
+            WaitBetweenSpawns  10
+
+            Where spawnbot_base_battlements
+            Where spawnbot_gate1_main
+            Where spawnbot_gate2_main
+
+            TFBot
+            {
+                Template Motherland_GateBot_Heavy_Gloves
+                Tag nav_flank
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "Wave1_Giant_Heavies_And_Sentry_Hunters"
+            TotalCurrency 45
+
+            TotalCount 10
+            MaxActive  4
+            SpawnCount 4
+
+            WaitBeforeStarting 15
+            WaitBetweenSpawns  10
+
+            Where spawnbot_base_closet
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate2_main
+
+            TFBot
+            {
+                Class Soldier
+                Tag bot_sentry_hunter
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "Wave1_Giant_Heavies_And_Sentry_Hunters"
+            TotalCurrency 45
+
+            TotalCount 10
+            MaxActive  4
+            SpawnCount 4
+
+            WaitBeforeStarting 15
+            WaitBetweenSpawns  10
+
+            RandomSpawn 1
+            Where spawnbot_base_battlements
+            Where spawnbot_gate1_flank
+            Where spawnbot_gate2_upper
+            Where spawnbot_gate2_flank
+
+            TFBot
+            {
+                Template Moterland_BombBot_DirectHit
+                BehaviorModifiers Push
+                Attributes IgnoreFlag
+                Tag bot_sentry_hunter
+                Tag nav_flank
+                Tag nav_gate2_shortflank
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "Wave1_Giant_Heavies_And_Sentry_Hunters"
+            TotalCurrency 25
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            WaitBeforeStarting 30
+            WaitBetweenSpawns  10
+
+            Where spawnbot_base_jetpack1
+            Where spawnbot_gate1_jetpack1
+            Where spawnbot_gate2_jetpack1
+            
+            TFBot
+            {
+                Template T_TFBot_Giant_Heavyweapons
+                Health 2500
+                BehaviorModifiers Push
+                Attributes IgnoreFlag
+                Tag nav_gate1_tunnel
+                Tag nav_gate2_main
+                Tag jetpack_spawn
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "Wave1_Giant_Heavies_And_Sentry_Hunters"
+            TotalCurrency 25
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            WaitBeforeStarting 35
+            WaitBetweenSpawns  10
+
+            Where spawnbot_base_jetpack2
+            Where spawnbot_gate1_jetpack2
+            Where spawnbot_gate2_jetpack2
+            
+            TFBot
+            {
+                Template T_TFBot_Giant_Heavyweapons
+                Health 2500
+                BehaviorModifiers Push
+                Attributes IgnoreFlag
+                Tag nav_main
+                Tag jetpack_spawn
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 8
+            MaxActive  8
+            SpawnCount 8
+
+            WaitForAllDead "Wave1_Giant_Heavies_And_Sentry_Hunters"
+            WaitBeforeStarting 0
+            WaitBetweenSpawns  5
+
+            Where spawnbot_base_battlements
+            Where spawnbot_base_main
+            Where spawnbot_gate1_main
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate2_main
+            
+            Squad
+            {
+                TFBot
+                {
+                    Template T_TFBot_Giant_Soldier_Extended_Buff_Banner
+                    Tag nav_main
+                }
+                TFBot { Class Soldier Tag nav_main }
+                TFBot { Class Soldier Tag nav_main }
+                TFBot { Class Soldier Tag nav_main }
+                TFBot { Class Soldier Tag nav_main }
+                TFBot { Class Soldier Tag nav_main }
+                TFBot { Class Soldier Tag nav_main }
+                TFBot { Class Soldier Tag nav_main }
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 30
+
+            TotalCount 10
+            MaxActive  5
+            SpawnCount 5
+
+            WaitForAllDead "Wave1_Giant_Heavies_And_Sentry_Hunters"
+            WaitBeforeStarting 10
+            WaitBetweenSpawns  10
+
+            RandomSpawn 1
+            Where spawnbot_base_closet
+            Where spawnbot_base_upper
+            Where spawnbot_base_battle
+            Where spawnbot_gate1_flank
+            Where spawnbot_gate2_upper
+
+            TFBot
+            {
+                Class Scout
+                Skill Normal
+                BehaviorModifiers Push
+                Tag nav_gate2_shortflank
+            }
+        }
+    }    
+
+    Wave //Wave 2
+    {
+        WaitWhenDone 65
+        Checkpoint Yes
+
+        InitWaveOutput
+        {
+            Target logic_script_lizardmvm
+            Action RunScriptCode
+            Param "
+                EntFire(`holograms_bomb_main_only`, `Enable`);
+                EntFire(`holograms_gate1_flank`, `Enable`);
+                EntFire(`holograms_gate2_flank`, `Enable`);
+                EntFire(`holograms_hatch_flank`, `Enable`);
+                EntFire(`holograms_tank_shortcut`, `Enable`);
+            "
+        }
+
+        WaveSpawn
+        {
+            Name "Wave2_Tank"
+
+            TotalCurrency 200
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            WaitBeforeStarting 0
+            
+            FirstSpawnOutput                                                                                                                                                            
+            {
+                Target logic_script_lizardmvm
+                Action RunScriptCode
+                Param "
+                    EntFire(`switch_tank_path_short`, `Trigger`);
+                    SetBSpawns(true);
+                "                        
+            }
+
+            Tank
+            {
+                Name Tank
+                Health 5000
+                StartingPathTrackNode "tank_path_0"
+
+                OnKilledOutput
+                {
+                    Target logic_script_lizardmvm
+                    Action RunScriptCode
+                    Param "SetBSpawns(false)"    
+                }
+                OnBombDroppedOutput
+                {
+                    Target boss_deploy_relay
+                    Action Trigger
+                }
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 75
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            WaitBeforeStarting 0
+            WaitBetweenSpawns  0
+
+            WaitForAllDead "Wave2_Tank"
+            Where spawnbot_base_jetpack1
+            Where spawnbot_gate1_jetpack1
+            Where spawnbot_gate2_jetpack1
+
+            TFBot
+            {
+                Template Moterland_BombBot_PhlogGiant
+                Tag nav_main
+                Tag jetpack_spawn
+            }
+        }
+    }
+
+    Wave //Wave 3
+    {
+        WaitWhenDone 65
+        Checkpoint Yes
+
+        InitWaveOutput
+        {
+            Target logic_script_lizardmvm
+            Action RunScriptCode
+            Param "
+                EntFire(`hologramrelay_mainbomb`, `Trigger`);
+            "
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 400
+
+            TotalCount 25
+            MaxActive  8
+            SpawnCount 5
+
+            WaitBeforeStarting 0
+            WaitBetweenSpawns  10
+
+            Where spawnbot_base_battlements
+            Where spawnbot_base_main
+            Where spawnbot_base_upper
+            Where spawnbot_base_closet
+            Where spawnbot_gate1_main
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate1_flank
+            Where spawnbot_gate2_main
+            Where spawnbot_gate2_upper
+            Where spawnbot_gate2_flank    
+            
+            Squad
+            {
+                TFBot
+                {
+                    Template T_TFBot_Pyro
+                    Tag nav_main
+                }
+                TFBot
+                {
+                    Template T_TFBot_Pyro
+                    Tag nav_flank
+                }
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 0
+
+            Support 1
+            TotalCount 9999
+            MaxActive  4
+            SpawnCount 4
+
+            WaitBeforeStarting 0
+            WaitBetweenSpawns  10
+
+            Where spawnbot_base_battlements
+            Where spawnbot_base_main
+            Where spawnbot_base_upper
+            Where spawnbot_base_closet
+            Where spawnbot_gate1_main
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate1_flank
+            Where spawnbot_gate2_main
+            Where spawnbot_gate2_upper
+            Where spawnbot_gate2_flank    
+            
+            Squad
+            {
+                TFBot
+                {
+                    Template Moterland_TrainBot_Heavy_HighNoon
+                    Tag nav_flank
+                }
+                TFBot
+                {
+                    Template Moterland_TrainBot_Heavy_HighNoon
+                    Tag nav_main
+                }
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "Wave3_TrainTank"
+
+            TotalCurrency 300
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            WaitBeforeStarting 0
+
+            FirstSpawnWarningSound "ambient/alarms/train_horn2.wav"
+
+            Where spawnbot_base_battlements
+            Where spawnbot_base_main
+            Where spawnbot_base_upper
+            Where spawnbot_base_closet
+            Where spawnbot_gate1_main
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate1_flank
+            Where spawnbot_gate2_main
+            Where spawnbot_gate2_upper
+            Where spawnbot_gate2_flank
+            
+            FirstSpawnOutput
+            {
+                Target logic_script_lizardmvm
+                Action RunScriptCode
+                Param "FindAndConvertTrainTank( null );"
+            }
+
+            TFBot
+            {
+                Template T_TFBot_Motherland_Train
+                Health 20000
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "Wave3_TrainTank_Support"
+
+            Support 1
+            TotalCount 9999
+            MaxActive 3
+            SpawnCount 1
+
+            WaitForAllSpawned "Wave3_TrainTank"
+            WaitBetweenSpawns  3
+            WaitBeforeStarting 0
+
+            Where spawnbot_traintank
+            
+            Squad
+            {
+                TFBot
+                {
+                    Template Moterland_TrainBot_Heavy_HighNoon
+                    Tag nav_main
+                    Tag traintank_spawn
+                }
+                TFBot
+                {
+                    Template Moterland_TrainBot_Heavy_HighNoon
+                    Tag nav_main
+                    Tag traintank_spawn
+                }
+                TFBot
+                {
+                    Template T_TFBot_Pyro
+                    Tag nav_main
+                    Tag traintank_spawn
+                }
+            }
+        }
+    }
+}
