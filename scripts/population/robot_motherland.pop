@@ -1,0 +1,312 @@
+#base robot_standard.pop
+WaveSchedule {
+
+	Templates {
+
+		T_WaveSpawn_Motherland_Train {
+
+			Name "TrainTank"
+			TotalCurrency	200
+			TotalCount	1
+			MaxActive	1
+			SpawnCount	1
+			WaitBeforeStarting	0
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+
+			FirstSpawnOutput {
+
+				Target logic_script_lizardmvm
+				Action RunScriptCode
+				Param "
+					FindAndConvertTrainTank( null )
+					printl(`output1`)
+				"
+			}
+
+			TFBot { Template T_TFBot_Motherland_Train }
+		}
+
+		T_TFBot_Motherland_Train {
+
+			Name "Carrier Train"
+			Class Scout
+			Health 20000
+			ClassIcon crossguard_lite
+			Attributes IgnoreFlag
+			Attributes IgnoreEnemies
+			Attributes UseBossHealthBar
+			Attributes MiniBoss
+			MaxVisionRange 1
+			Tag bot_tanktrain_hackbot
+
+			CharacterAttributes {
+
+				"move speed penalty" 0.0001 
+				"no_jump" 1
+				"no_duck" 1
+				"cancel falling damage" 1
+			}
+		}
+
+		T_TFBot_Sniper_Sydney_Jarate {
+
+			Template T_TFBot_Sniper_Sydney_Sleeper
+			Name "Jarate Sniper"
+			Item "Jarate"
+			Item "The Bushwacka"
+			Item "Down Tundra Coat"
+			Item "The Cammy Jammies"
+			Tag motherland_usebestweapon
+
+			ItemAttributes {
+
+				ItemName "Jarate"
+				"effect bar recharge rate increased" 0.4
+			}
+		}
+
+		T_TFBot_Medic_Kritz {
+
+			Class Medic
+			Name "Kritzkrieg Medic"
+			ClassIcon medic_kritz
+			Item "The Kritzkrieg"
+			Attributes SpawnWithFullCharge
+			Attributes IgnoreEnemies
+			WeaponRestrictions SecondaryOnly
+
+			ItemAttributes {
+
+				ItemName "The Kritzkrieg"
+				"ubercharge rate bonus" 999
+				"uber duration bonus" 999
+				"bot medic uber health threshold" 999
+				"heal rate bonus" 2
+			}
+		}
+
+		T_TFBot_Medic_Vacc_Cycle {
+
+			Class Medic
+			ClassIcon medic_vac_trio_nys
+			Name "Vaccinator Medic"
+			Skill Expert
+			Item "Coldfront Carapace"
+			Item "The Vaccinator"
+			Tag "motherland_fireweapon{
+				button = IN_RELOAD
+				delay = 3
+				duration = 0.1
+			}"
+			Attributes IgnoreEnemies
+			Attributes SpawnWithFullCharge
+			WeaponRestrictions SecondaryOnly
+
+			ItemAttributes {
+
+				ItemName "The Vaccinator"
+				"ubercharge rate bonus" 		  9999
+				"bot medic uber health threshold" 9999
+			}
+		}
+
+		T_TFBot_Medic_Vacc_Cycle_Slow {
+
+			Class Medic
+			ClassIcon medic_vac_trio_nys
+			Name "Vaccinator Medic"
+			Skill Expert
+			Item "Coldfront Carapace"
+			Item "The Vaccinator"
+			Tag "motherland_fireweapon{
+				button = IN_RELOAD
+				delay = 6
+				duration = 0.1
+			}"
+			Attributes IgnoreEnemies
+			Attributes SpawnWithFullCharge
+			WeaponRestrictions SecondaryOnly
+
+			ItemAttributes {
+
+				ItemName "The Vaccinator"
+				"ubercharge rate bonus"           9999
+				"bot medic uber health threshold" 9999
+			}
+		}
+
+		T_TFBot_Medic_Vacc_Bullet {
+
+			Class Medic
+			Name "Vaccinator Medic"
+			ClassIcon medic_bullet
+			Skill Expert
+			Attributes IgnoreEnemies
+			Attributes SpawnWithFullCharge
+			WeaponRestrictions SecondaryOnly
+            Item "The Vascular Vestment"
+            Item "Berlin Brain Bowl"
+			Item "The Vaccinator"
+
+			ItemAttributes {
+
+				ItemName "The Vaccinator"
+				"ubercharge rate bonus"           9999
+				"medigun charge is resists"		  3
+				"bot medic uber health threshold" 9999
+			}
+		}
+
+		T_TFBot_Medic_Vacc_Blast {
+
+			Class Medic
+			Name "Vaccinator Medic"
+			ClassIcon medic_blast
+			Skill Expert
+			Attributes IgnoreEnemies
+			Attributes SpawnWithFullCharge
+			WeaponRestrictions SecondaryOnly
+            Item "Das Metalmeatencasen"
+            Item "Berlin Brain Bowl"
+			Item "The Vaccinator"
+
+			ItemAttributes {
+
+				ItemName "The Vaccinator"
+				"ubercharge rate bonus"           9999
+				"medigun charge is resists"		  4
+				"bot medic uber health threshold" 9999
+			}
+		}
+
+		T_TFBot_Medic_Vacc_Fire {
+
+			Class Medic
+			Name "Vaccinator Medic"
+			ClassIcon medic_fire
+			Skill Expert
+			Attributes IgnoreEnemies
+			Attributes SpawnWithFullCharge
+			WeaponRestrictions SecondaryOnly
+            Item "KF Pyro Mask"
+			Item "Coldfront Carapace"
+			Item "The Vaccinator"
+
+			ItemAttributes {
+
+				ItemName "The Vaccinator"
+				"ubercharge rate bonus"           9999
+				"medigun charge is resists"		  5
+				"bot medic uber health threshold" 9999
+			}
+		}
+
+		T_TFBot_Medic_Vacc_Bullet_Full {
+
+			Class Medic
+			Name "Vaccinator Medic"
+			ClassIcon medic_bullet
+			Skill Expert
+			Attributes IgnoreEnemies
+			Attributes SpawnWithFullCharge
+			WeaponRestrictions SecondaryOnly
+            Item "The Vascular Vestment"
+            Item "Berlin Brain Bowl"
+			Item "The Vaccinator"
+			Health 300
+			Scale 1.2
+
+			ItemAttributes {
+
+				ItemName "The Vaccinator"
+				"ubercharge rate bonus"           9999
+				"medigun charge is resists"		  3
+				"medigun bullet resist passive"	  1.0
+				"medigun bullet resist deployed"  1.0
+				"bot medic uber health threshold" 9999
+			}
+		}
+
+		T_TFBot_Medic_Vacc_Blast_Full {
+
+			Class Medic
+			Name "Vaccinator Medic"
+			ClassIcon medic_blast
+			Skill Expert
+			Attributes IgnoreEnemies
+			Attributes SpawnWithFullCharge
+			WeaponRestrictions SecondaryOnly
+            Item "Das Metalmeatencasen"
+            Item "Berlin Brain Bowl"
+			Item "The Vaccinator"
+			Health 300
+			Scale 1.2
+
+			ItemAttributes {
+
+				ItemName "The Vaccinator"
+				"ubercharge rate bonus"           9999
+				"medigun charge is resists"		  4
+				"medigun bullet resist passive"	  1.0
+				"medigun bullet resist deployed"  1.0
+				"bot medic uber health threshold" 9999
+			}
+		}
+
+		T_TFBot_Medic_Vacc_Fire_Full {
+
+			Class Medic
+			Name "Vaccinator Medic"
+			ClassIcon medic_bullet
+			Skill Expert
+			Attributes IgnoreEnemies
+			Attributes SpawnWithFullCharge
+			WeaponRestrictions SecondaryOnly
+            Item "KF Pyro Mask"
+			Item "Coldfront Carapace"
+			Item "The Vaccinator"
+			Health 300
+			Scale 1.2
+
+			ItemAttributes {
+
+				ItemName "The Vaccinator"
+				"ubercharge rate bonus"           9999
+				"medigun charge is resists"		  5
+				"medigun bullet resist passive"	  1.0
+				"medigun bullet resist deployed"  1.0
+				"bot medic uber health threshold" 9999
+			}
+		}
+
+        T_TFBot_Demo_Sticky {
+
+            Class Demoman
+            Skill Normal
+            Health 200
+            ClassIcon demo_sticky_daan
+            WeaponRestrictions SecondaryOnly
+            Item "Upgradeable TF_WEAPON_PIPEBOMBLAUNCHER"
+
+            ItemAttributes {
+
+                ItemName "TF_WEAPON_GRENADELAUNCHER"
+                "is_passive_weapon" 1 // force grenade launcher anims
+                "override projectile type" 27
+				"fire rate penalty" 9999
+                "faster reload rate" 0.01
+            }
+
+            ItemAttributes {
+
+                ItemName "Upgradeable TF_WEAPON_PIPEBOMBLAUNCHER"
+                "Projectile range increased" 0.35 //bots fire fullcharge stickies
+                "faster reload rate" 0.5
+                "stickybomb charge rate" 0.01 //instant charge
+                "max pipebombs decreased" -7
+            }
+        }
+	}
+}
