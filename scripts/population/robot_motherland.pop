@@ -18,8 +18,11 @@ WaveSchedule {
 			FirstSpawnOutput {
 
 				Target logic_script_lizardmvm
-				Action CallScriptFunction
-				Param "FindAndConvertTrainTank"
+				Action RunScriptCode
+				Param "
+					FindAndConvertTrainTank()
+					SetPropInt( FindByName( null, `traintank_base_boss` ), `m_bloodColor`, 3 )
+				"
 			}
 
 			TFBot { Template T_TFBot_Motherland_Train }

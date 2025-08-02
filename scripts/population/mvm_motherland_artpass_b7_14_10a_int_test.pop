@@ -33,6 +33,7 @@ WaveSchedule
     Wave {
 
         InitWaveOutput {
+
             Target logic_script_lizardmvm
             Action RunScriptCode
             Param "

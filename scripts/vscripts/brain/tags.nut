@@ -17,7 +17,7 @@
 
         local cooldowntime = 0.0
 
-        bot.GetScriptScope().BotThinkTable.SuicideCounterThink <- function() {
+        function SuicideCounterThink() {
 
             if ( cooldowntime > Time() ) return
 
@@ -25,13 +25,19 @@
 
             cooldowntime = Time() + interval
         }
+        bot.GetScriptScope().BotThinkTable.SuicideCounterThink <- SuicideCounterThink
+
         if ( duration )
-            Utils.ScriptEntFireSafe( bot, "delete self.GetScriptScope().BotThinkTable.SuicideCounterThink", duration )
+            Utils.ScriptEntFireSafe( bot, "delete BotThinkTable.SuicideCounterThink", duration )
     }
 
     function motherland_revertgatebot( bot, args ) {
 
-        if ( GetPropBool( _Motherland_Expert.gateB, "m_bLocked" ) && bot.HasBotAttribute( AGGRESSIVE|IGNORE_FLAG ) && !bot.HasBotTag( "tag_alwayspush" ) )
+        if ( 
+            GetPropBool( _Motherland_Expert.gateB, "m_bLocked" ) 
+            && bot.HasBotAttribute( AGGRESSIVE|IGNORE_FLAG ) 
+            && !bot.HasBotTag( "tag_alwayspush" ) 
+        )
             bot.RemoveBotAttribute( AGGRESSIVE|IGNORE_FLAG )
     }
 
@@ -47,14 +53,14 @@
 
     function motherland_limitedsupport( bot, args ) {
 
-        local icon  = "icon" in args ? args.icon : null
+        local icon  = "icon" in args  ? args.icon : null
         local count = "count" in args ? args.count : 1
         local flags = "flags" in args ? args.flags : MVM_CLASS_FLAG_SUPPORT|MVM_CLASS_FLAG_SUPPORT_LIMITED
 
         if ( icon && !_Motherland_Expert.Wavebar.GetWaveIcon( icon, flags ) )
             _Motherland_Expert.Wavebar.SetWaveIcon( icon, flags, count, false )
         
-        _Motherland_Events.AddRemoveEventHook( "player_death", format( "LimitedSupport_%d", bot.entindex() ), function( params ) {
+        _Motherland_Expert.Events.AddRemoveEventHook( "player_death", format( "LimitedSupport_%d", bot.entindex() ), function( params ) {
 
             local _bot = GetPlayerFromUserID( params.userid )
 
@@ -81,11 +87,11 @@
         local scope = bot.GetScriptScope()
         scope.PressButton <- _Motherland_Expert.Utils.PressButton
 
-        bot.GetScriptScope().BotThinkTable.FireWeaponThink <- function() {
+        function FireWeaponThink() {
 
             if ( ( maxrepeats ) >= repeats ) {
-
-                delete bot.GetScriptScope().BotThinkTable.FireWeaponThink
+                
+                delete BotThinkTable.FireWeaponThink
                 return
             }
 
@@ -102,11 +108,15 @@
             Utils.ScriptEntFireSafe( bot, format( "PressButton( self, %d, %d )", button, duration ), delay )
             cooldowntime = Time() + cooldown
         }
+        bot.GetScriptScope().BotThinkTable.FireWeaponThink <- FireWeaponThink
+
+        if ( duration )
+            Utils.ScriptEntFireSafe( bot, "delete BotThinkTable.FireWeaponThink", duration )
     }
 
     function motherland_minisentry( bot, args ) {
 
-        _Motherland_Events.AddRemoveEventHook( "player_builtobject", format( "MiniSentry_%d", bot.entindex() ), function( params ) {
+        _Motherland_Expert.Events.AddRemoveEventHook( "player_builtobject", format( "MiniSentry_%d", bot.entindex() ), function( params ) {
 
             local _bot = GetPlayerFromUserID( params.userid )
 
@@ -122,7 +132,7 @@
 
                 sentry.ValidateScriptScope()
 
-                sentry.GetScriptScope().CheckBuiltThink <- function() {
+                function CheckBuiltThink() {
 
                     if ( GetPropBool( self, "m_bBuilding" ) ) return -1
 
@@ -144,6 +154,8 @@
                     self.Kill()
                 }
 
+                sentry.GetScriptScope().CheckBuiltThink <- CheckBuiltThink
+
                 AddThinkToEnt( sentry, "CheckBuiltThink" )
             }
         }, EVENT_WRAPPER_TAGS )
@@ -158,14 +170,15 @@
         //force deploy dispenser when leaving spawn and kill it immediately
         if ( !alwaysfire && args.type == OBJ_SENTRYGUN ) bot.PressFireButton( INT_MAX )
 
-        bot.GetScriptScope().BotThinkTable.DispenserOverride <- function() {
+        function DispenserOverrideThink() {
 
             //start forcing primary attack when near hint
             local hint = FindByClassnameWithin( null, "bot_hint*", bot.GetOrigin(), 16 )
             if ( hint && !alwaysfire ) bot.PressFireButton( 0.0 )
         }
+        bot.GetScriptScope().BotThinkTable.DispenserOverrideThink <- DispenserOverrideThink
 
-        _Motherland_Events.AddRemoveEventHook( "player_builtobject", format( "DispenserOverride_%d", bot.entindex() ), function( params ) {
+        _Motherland_Expert.Events.AddRemoveEventHook( "player_builtobject", format( "DispenserOverride_%d", bot.entindex() ), function( params ) {
 
             local _bot = GetPlayerFromUserID( params.userid )
 
@@ -264,20 +277,23 @@
 
         local scope = bot.GetScriptScope()
 
-        scope.BotThinkTable.MeleeHeavyThink <- function() {
+        function MeleeHeavyThink() {
 
             if ( self.GetActiveWeapon().IsMeleeWeapon() ) 
-                return
+                return 0.2
 
             for (local player; player = FindByClassnameWithin( player, "player", bot.GetOrigin(), 256 ); ) {
 
                 if ( !player.IsBotOfType( TF_BOT_TYPE ) ) {
 
-                    Utils.InstantHolster( player )
-                    return
+                    Utils.InstantHolster( self )
+                    self.GetActiveWeapon().AddAttribute( "disable weapon switch", 1, 2 )
+					_Motherland_Expert.Utils.ScriptEntFireSafe( self.GetActiveWeapon(), "self.RemoveAttribute( `disable weapon switch` )", 2.0 )
+                    return 0.2
                 }
             }
         }
+        scope.BotThinkTable.MeleeHeavyThink <- MeleeHeavyThink
     }
 
     function motherland_setmission( bot, args ) {
@@ -320,7 +336,7 @@
 
     function motherland_usebestweapon( bot, args ) {
 
-		bot.GetScriptScope().BotThinkTable.BestWeaponThink <- function() {
+		function BestWeaponThink() {
 
 			switch( bot.GetPlayerClass() ) {
 
@@ -394,10 +410,12 @@
 			break
 			}
 		}
+
+		bot.GetScriptScope().BotThinkTable.BestWeaponThink <- BestWeaponThink
     }
 }
 
-_Motherland_Events.AddRemoveEventHook( "player_spawn", "TagsPlayerSpawn", function( params ) {
+_Motherland_Expert.Events.AddRemoveEventHook( "player_spawn", "TagsPlayerSpawn", function( params ) {
 
     local player = GetPlayerFromUserID( params.userid )
 
@@ -418,12 +436,14 @@ _Motherland_Events.AddRemoveEventHook( "player_spawn", "TagsPlayerSpawn", functi
     if ( !( "BotThinkTable" in scope ) )
         scope.BotThinkTable <- {}
 
-    scope.BotThinks <- function() {
+    function BotThinks() {
 
         foreach ( name, func in scope.BotThinkTable )
             func.call( scope )
         return -1
     }
+
+    scope.BotThinks <- BotThinks
 
     AddThinkToEnt( bot, "BotThinks" )
 

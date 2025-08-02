@@ -19,8 +19,6 @@
             foreach ( k in scope_keys )
                 if ( !( k in ignore_table ) )
                     delete scope[ k ]
-
-        _Motherland_Events.AddRemoveEventHook( "*", "*", null)
     }
 
     function FakeBomb( kill_only = false, switch_bomb_team = false, bomb_name = _Motherland_Expert.AltBomb.GetName() ) {
@@ -161,7 +159,6 @@
         }
         return item
     }
-
     function ParseTagArguments( bot, tag ) {
 
         local newtags = {}

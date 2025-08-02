@@ -4,14 +4,14 @@
 // - Configurable call ordering of events regardless of file include order
 
 // __CollectEventCallbacks internally does something similar, appending functions to an array and then calling them in order.
-// This effectively stuffs an array of popextension hook functions into the first available cell for a given event hook array.
-// Call order for popext events is handled by this script instead of vscript_server.nut.
+// This effectively stuffs an array of functions into the first available cell for a given event hook array.
+// Call order for events is handled by this script instead of vscript_server.nut.
 
 // TODO: Performance benchmarks.
 // We use this to dynamically add/remove events at potentially critical times (large piles of bot spawns mostly)
 // So far I haven't seen any PERF WARNINGS in console using this, some bot tags/custom attributes may yell on bot/player spawn.
 
-::_Motherland_Events <- class {
+::_Motherland_Expert.Events <- {
 
     EventsPreCollect = {}
     CollectedEvents  = {}
@@ -160,24 +160,36 @@
         // collect new events
         __CollectGameEventCallbacks( CollectedEvents[ new_table_name ] )
     }
+
+    function ClearEvents( index = "unordered" ) {
+
+        if (index == null || index == "*" ) {
+
+            EventsPreCollect.clear()
+            CollectedEvents.clear()
+            return
+        }
+
+        AddRemoveEventHook( "*", "*", null, index )
+    }
 }
 
 //examples
-// _Motherland_Events.AddRemoveEventHook( "player_death", "FuncNameHereA", function( params ) {
+// _Motherland_Expert.Events.AddRemoveEventHook( "player_death", "FuncNameHereA", function( params ) {
 //     printl( params.userid + " died first" )
 // }, 0 )
-// _Motherland_Events.AddRemoveEventHook( "player_death", "FuncNameHereB", function( params ) {
+// _Motherland_Expert.Events.AddRemoveEventHook( "player_death", "FuncNameHereB", function( params ) {
 //     printl( params.userid + " died first" )
 // }, 0 )
-// _Motherland_Events.AddRemoveEventHook( "player_death", "FuncNameHere1", function( params ) {
+// _Motherland_Expert.Events.AddRemoveEventHook( "player_death", "FuncNameHere1", function( params ) {
 //     printl( params.userid + " died1" )
 // }, 1 )
-// _Motherland_Events.AddRemoveEventHook( "player_death", "FuncNameHere2", function( params ) {
+// _Motherland_Expert.Events.AddRemoveEventHook( "player_death", "FuncNameHere2", function( params ) {
 //     printl( params.userid + " died2" )
 // }, 2 )
-// _Motherland_Events.AddRemoveEventHook( "player_death", "FuncNameHere3", function( params ) {
+// _Motherland_Expert.Events.AddRemoveEventHook( "player_death", "FuncNameHere3", function( params ) {
 //     printl( params.userid + " died3" )
 // }, 3 )
-// _Motherland_Events.AddRemoveEventHook( "player_death", "FuncNameHere4", function( params ) {
+// _Motherland_Expert.Events.AddRemoveEventHook( "player_death", "FuncNameHere4", function( params ) {
 //     printl( params.userid + " died last" )
 // } )

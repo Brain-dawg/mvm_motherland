@@ -23,10 +23,7 @@ IncludeScript( "brain/wavebar.nut" )
 IncludeScript( "brain/tags.nut" )
 IncludeScript( "brain/maplogic.nut" )
 
-_Motherland_Events.AddRemoveEventHook("recalculate_holidays", "MainRecalculateHolidays", function( params ) {
-
-    if ( GetRoundState() != GR_STATE_PREROUND )
-        return
+_Motherland_Expert.Events.AddRemoveEventHook("teamplay_round_start", "MainCleanup", function( params ) {
 
     for ( local i = 0; i <= MAX_CLIENTS; i++ ) {
 
@@ -40,24 +37,24 @@ _Motherland_Events.AddRemoveEventHook("recalculate_holidays", "MainRecalculateHo
 
     if ( GetPropString( _Motherland_Expert.ObjRes, "m_iszMvMPopfileName" ) != _Motherland_Expert.popname ) {
 
-        delete _Motherland_Events
-        _Motherland_Expert.self.Kill()
+        EntFire( "__motherland_exp*", "Kill" )
+        delete _Motherland_Expert
         return
     }
 
     // clean up old tag hooks
-    _Motherland_Events.AddRemoveEventHook( "*", "*", null, EVENT_WRAPPER_TAGS )
+    _Motherland_Expert.Events.ClearEvents( EVENT_WRAPPER_TAGS )
 
 }, EVENT_WRAPPER_MAIN)
 
-_Motherland_Events.AddRemoveEventHook("mvm_wave_complete", "MainWaveComplete", function( params ) {
+_Motherland_Expert.Events.AddRemoveEventHook("mvm_wave_complete", "MainWaveComplete", function( params ) {
 
     // clean up old tag hooks
-    _Motherland_Events.AddRemoveEventHook( "*", "*", null, EVENT_WRAPPER_TAGS )
+    _Motherland_Expert.Events.ClearEvents( EVENT_WRAPPER_TAGS )
 
 }, EVENT_WRAPPER_MAIN)
 
-_Motherland_Events.AddRemoveEventHook("post_inventory_application", "MainPostInventoryApplication", function( params ) {
+_Motherland_Expert.Events.AddRemoveEventHook("post_inventory_application", "MainPostInventoryApplication", function( params ) {
 
     local player = GetPlayerFromUserID( params.userid )
     
@@ -81,12 +78,17 @@ _Motherland_Events.AddRemoveEventHook("post_inventory_application", "MainPostInv
 
 }, EVENT_WRAPPER_MAIN)
 
-_Motherland_Events.AddRemoveEventHook("OnTakeDamage", "MainOnTakeDamage", function( params ) {
+_Motherland_Expert.Events.AddRemoveEventHook("OnTakeDamage", "MainOnTakeDamage", function( params ) {
 
-    printl( params.const_entity + " : " + params.inflictor + " : " + params.attacker + " : " + params.damage )
+    if ( params.const_entity.GetClassname() == "base_boss" && params.attacker && params.attacker.GetName() == "traintank_hurt" ) {
+        
+        params.early_out = true
+        return false
+    }
+
 }, EVENT_WRAPPER_MAIN)
 
-_Motherland_Events.AddRemoveEventHook("player_death", "MainPlayerDeath", function( params ) {
+_Motherland_Expert.Events.AddRemoveEventHook("player_death", "MainPlayerDeath", function( params ) {
 
     local bot = GetPlayerFromUserID( params.userid )
 
