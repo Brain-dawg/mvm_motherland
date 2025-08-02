@@ -21,7 +21,7 @@ WaveSchedule {
 				Action RunScriptCode
 				Param "
 					FindAndConvertTrainTank()
-					SetPropInt( FindByName( null, `traintank_base_boss` ), `m_bloodColor`, 3 )
+					EntFire( `traintank_base_boss`, `RunScriptCode`, `SetPropInt( self, \`m_bloodColor\`, 3 )`, 1 )
 				"
 			}
 

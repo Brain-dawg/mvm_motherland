@@ -322,6 +322,7 @@ WaveSchedule
             Where spawnbot_gate1_upper
             Where spawnbot_gate2_main
             Where spawnbot_gate2_upper
+            WaitForAllDead "wave3a"
             TotalCount 4
             MaxActive 2
             SpawnCount 2

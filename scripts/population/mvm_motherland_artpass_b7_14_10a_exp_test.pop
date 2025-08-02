@@ -204,7 +204,7 @@ WaveSchedule {
 		Where spawnbot_gate2_upper
 		BeginAtWave 4
 		RunForThisManyWaves 1
-		CooldownTime 40
+		CooldownTime 30
 		DesiredCount 10
 
 		TFBot { Template T_TFBot_Spy }
@@ -374,80 +374,19 @@ WaveSchedule {
 			RandomSpawn 1
 			TotalCurrency 50
 
-			Squad {
+			TFBot {
 
-				TFBot {
+				Template T_TFBot_Scout_Melee
+				Item "Batsaber"
+				ClassIcon scout_bat
+				BehaviorModifiers Push
+				Tag nav_flank
+				Tag motherland_revertgatebot
+				ItemAttributes {
 
-					Template T_TFBot_Scout_Melee
-					Item "Batsaber"
-					ClassIcon scout_bat
-					BehaviorModifiers Push
-					Tag nav_flank
-					ItemAttributes {
-
-						ItemName "Batsaber"
-						"set item tint rgb" 3329330
-						"crit vs non burning players" 1
-					}
-				}
-				TFBot {
-
-					Template T_TFBot_Scout_Melee
-					Item "Batsaber"
-					ClassIcon scout_bat
-					BehaviorModifiers Push
-					Tag nav_flank
-					Tag motherland_revertgatebot
-					ItemAttributes {
-
-						ItemName "Batsaber"
-						"set item tint rgb" 16738740
-						"crit vs non burning players" 1
-					}
-				}
-				TFBot {
-
-					Template T_TFBot_Scout_Melee
-					Item "Batsaber"
-					ClassIcon scout_bat
-					BehaviorModifiers Push
-					Tag nav_flank
-					Tag motherland_revertgatebot
-					ItemAttributes {
-
-						ItemName "Batsaber"
-						"set item tint rgb" 15335168
-						"crit vs non burning players" 1
-					}
-				}
-				TFBot {
-
-					Template T_TFBot_Scout_Melee
-					Item "Batsaber"
-					ClassIcon scout_bat
-					BehaviorModifiers Push
-					Tag nav_flank
-					Tag motherland_revertgatebot
-					ItemAttributes {
-
-						ItemName "Batsaber"
-						"set item tint rgb" 6030
-						"crit vs non burning players" 1
-					}
-				}
-				TFBot {
-
-					Template T_TFBot_Scout_Melee
-					Item "Batsaber"
-					ClassIcon scout_bat
-					BehaviorModifiers Push
-					Tag nav_flank
-					Tag motherland_revertgatebot
-					ItemAttributes {
-
-						ItemName "Batsaber"
-						"crit vs non burning players" 1
-					}
+					ItemName "Batsaber"
+					"set item tint rgb" 15335168
+					"crit vs non burning players" 1
 				}
 			}
 		}
@@ -1487,9 +1426,9 @@ WaveSchedule {
 		WaveSpawn {
 
 			Name "wave5b"
-			Where spawnbot_base_upper
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate2_upper
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
 			TotalCount 6
 			MaxActive 3
 			SpawnCount 3
