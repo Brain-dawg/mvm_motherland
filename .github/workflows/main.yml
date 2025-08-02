@@ -40,5 +40,5 @@ jobs:
         run: |
           rsync -a --mkpath -e "ssh -o StrictHostKeyChecking=no" ./scripts/vscripts/* pterodactyl@storage.potato.tf:/mnt/archival/testing_uploads_current/scripts/vscripts/
           rsync -a --mkpath -e "ssh -o StrictHostKeyChecking=no" ./scripts/population/* pterodactyl@storage.potato.tf:/mnt/archival/testing_uploads_current/scripts/population/
-          ssh pterodactyl@fr.potato.tf "touch /var/www/html/updatetimestamp"
+          curl https://testing.potato.tf/forceupdate.php?serverkey=23049785
 
