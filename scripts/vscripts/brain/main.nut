@@ -38,7 +38,9 @@ _Motherland_Expert.Events.AddRemoveEventHook("teamplay_round_start", "MainCleanu
     if ( GetPropString( _Motherland_Expert.ObjRes, "m_iszMvMPopfileName" ) != _Motherland_Expert.popname ) {
 
         EntFire( "__motherland_exp*", "Kill" )
-        delete _Motherland_Expert
+
+        if ( "_Motherland_Expert" in ROOT )
+            delete _Motherland_Expert
         return
     }
 

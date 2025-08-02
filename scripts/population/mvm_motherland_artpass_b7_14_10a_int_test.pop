@@ -432,6 +432,7 @@ WaveSchedule
                 Param "Wavebar.SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS )"
             }
             DoneOutput {
+
                 Target __motherland_exp
                 Action RunScriptCode
                 Param "Wavebar.SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS|ICON_ALWAYSCRIT )"
