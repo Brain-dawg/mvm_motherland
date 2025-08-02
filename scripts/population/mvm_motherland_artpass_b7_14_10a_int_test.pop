@@ -70,7 +70,14 @@ WaveSchedule
             WaitBeforeStarting 0 // The amount of time to wait before spawning in these bots.
             WaitBetweenSpawnsAfterDeath 3
             TotalCurrency 300
-            TFBot { Template T_TFBot_Giant_Pyro_Flare_Spammer Skill Easy Tag nav_main Tag bot_giant }
+            TFBot { 
+
+                Template T_TFBot_Giant_Pyro_Flare_Spammer 
+                ClassIcon pyro_detonator_lite
+                Skill Easy 
+                Tag nav_main 
+                Tag bot_giant 
+            }
         }
     }
 
@@ -186,7 +193,6 @@ WaveSchedule
             MaxActive 1
             SpawnCount 1
             WaitForAllDead "wave2b"
-            WaitBetweenSpawns 2
             TotalCurrency 100
 
             TFBot { Template T_TFBot_Giant_Soldier_Crit Tag bot_giant Tag nav_main }
@@ -199,7 +205,7 @@ WaveSchedule
             SpawnCount 1
             WaitBeforeStarting 5
             TotalCurrency 200
-            WaitForAllDead "wave2c"
+            WaitForAllSpawned "wave2c"
 
             Tank {
 
@@ -217,6 +223,16 @@ WaveSchedule
     }
 
     Wave {
+
+        InitWaveOutput {
+
+            Target logic_script_lizardmvm
+            Action RunScriptCode
+            Param "
+                SetRobotOwnedGate( `gate1` )
+                DisableSecondBomb()
+            "
+        }
 
         WaveSpawn {
 
@@ -285,56 +301,48 @@ WaveSchedule
         
 		WaveSpawn {
 
+            Template T_WaveSpawn_Motherland_Train
 			Name "wave3traintank"
-			TotalCurrency	200
-			TotalCount	1
-			MaxActive	1
-			SpawnCount	1
-			WaitBeforeStarting	0
-			WaitBetweenSpawns	1
-			Where spawnbot_base_battlements
-			Where spawnbot_base_main
-			Where spawnbot_base_upper
-			Where spawnbot_base_closet
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_upper
-			// Where spawnbot_gate1_upper
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_upper
-			Where spawnbot_gate2_flank
 			WaitForAllDead "wave3b"
 			// FirstSpawnWarningSound "ambient/alarms/train_horn2.wav"
-
-			FirstSpawnOutput {
-
-				Target logic_script_lizardmvm
-				Action RunScriptCode
-				Param "
-					FindAndConvertTrainTank( null )
-					_Motherland_Expert.Wavebar.SetWaveIcon( `heavy_shotgun`, MVM_CLASS_FLAG_SUPPORT|MVM_CLASS_FLAG_SUPPORT_LIMITED, 1, false )
-				"
-			}
-
-			DoneOutput {
-
-				Target BigNet
-				Action RunScriptCode
-				Param "_Motherland_Expert.Wavebar.RemoveWaveIcon( `heavy_shotgun`, MVM_CLASS_FLAG_SUPPORT|MVM_CLASS_FLAG_SUPPORT_LIMITED )"
-			}
-			TFBot {
-
-				ClassIcon crossguard_lite
-				Template T_TFBot_Chief_Pyro
-				Attributes IgnoreFlag
-				Tag "bot_tanktrain_hackbot"
-				Health 20000
-				Name "Carrier Train"
-				CharacterAttributes { 
-                    "move speed penalty" 0.0001
-                    "no_jump" 1
-                }
-			}
 		}
+
+        // Subwave description here
+        WaveSpawn {
+
+            Name "wave3traintank"
+            Where spawnbot_traintank
+            TotalCount 9999
+            MaxActive 6
+            SpawnCount 2
+            WaitForAllDead "wave3b"
+            WaitBetweenSpawns 3
+            TotalCurrency 120
+            Support Limited
+
+            Squad {
+
+                TFBot {
+
+                    Template T_TFBot_Pyro_Flaregun
+                    Tag traintank_spawn
+                    Item "The Detonator"
+                    Tag "motherland_limitedsupport{ icon = `pyro_detonator_lite` count = 9999 }"
+                }
+
+                TFBot {
+
+                    Class Scout
+                    Skill Normal
+                    WeaponRestrictions MeleeOnly
+                    Attributes DisableDodge
+                    Tag traintank_spawn
+                    Item "Sun-on-a-Stick"
+                    Tag "motherland_limitedsupport{ icon = `scout_sunstick_swordstone` count = 9999 }"
+                }
+            }
+                
+        }
     }
 
     // Wave 4 - X Currency
@@ -345,7 +353,13 @@ WaveSchedule
         WaveSpawn
         {
             Name "wave4a"
-            Where spawnbot
+            Where spawnbot_base_main
+            Where spawnbot_base_upper
+            Where spawnbot_base_battlements
+            Where spawnbot_gate1_main
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate2_main
+            Where spawnbot_gate2_upper
             TotalCount 12
             MaxActive 6
             SpawnCount 3
@@ -367,7 +381,13 @@ WaveSchedule
         WaveSpawn
         {
             Name "wave5a"
-            Where spawnbot
+            Where spawnbot_base_main
+            Where spawnbot_base_upper
+            Where spawnbot_base_battlements
+            Where spawnbot_gate1_main
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate2_main
+            Where spawnbot_gate2_upper
             TotalCount 12
             MaxActive 6
             SpawnCount 3

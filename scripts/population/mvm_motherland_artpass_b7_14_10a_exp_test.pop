@@ -1242,11 +1242,12 @@ WaveSchedule {
 			WaitBetweenSpawns 15
 			TotalCurrency 600
 			RandomSpawn 1
+
 			DoneOutput {
 
 				Target BigNet
 				Action RunScriptCode
-				Param "EntFire( `tank_boss`, `RunScriptCode`, `self.TakeDamage( INT_MAX, DMG_GENERIC, Entities.First() )`, 1)"
+				Param "EntFire( `tank_boss`, `RunScriptCode`, `self.TakeDamage( INT_MAX, DMG_GENERIC, Entities.First() )` )"
 			}
 
 			RandomChoice {
@@ -1255,7 +1256,7 @@ WaveSchedule {
 				TFBot { Template T_TFBot_Giant_Heavyweapons_Natascha Tag motherland_altfire Tag bot_giant }
 				TFBot { Template T_TFBot_Giant_Heavyweapons_BrassBeast Tag motherland_altfire Tag bot_giant }
 				TFBot { Template T_TFBot_Giant_Heavyweapons_Deflector Tag motherland_altfire Tag bot_giant }
-				TFBot { Template T_TFBot_Heavyweapons_Heater Tag motherland_altfire Tag bot_giant Item "The Bunsen Brave"}
+				TFBot { Template T_TFBot_Heavyweapons_Heater Tag motherland_altfire Tag bot_giant Item "The Bunsen Brave" }
 			}
 		}
 
@@ -1337,7 +1338,7 @@ WaveSchedule {
 				"
 			}
 
-			TFBot { Template T_TFBot_Motherland_Train Health 27000 }
+			TFBot { Template T_TFBot_Motherland_Train Health 30000 }
 		}
 
 		WaveSpawn {
@@ -1533,7 +1534,7 @@ WaveSchedule {
 
 				Class Heavy
 				Skill Expert
-				Health 60000
+				Health 70000
 				ClassIcon heavy_brass_beast_steak
 				Attributes MiniBoss
 				Attributes UseBossHealthBar
@@ -1569,9 +1570,9 @@ WaveSchedule {
 
 					ItemName "the buffalo steak sandvich"
 
-					"force weapon switch" 	1
+					"force weapon switch" 	 1
 					"item_meter_charge_rate" 60
-					"deploy time increased" 	 0.01
+					"deploy time increased"  0.01
 				}
 
 				ItemAttributes {
@@ -1662,7 +1663,7 @@ WaveSchedule {
 			SpawnCount 4
 			WaitBetweenSpawns 10
 			TotalCurrency 50
-			WaitBeforeStarting 10
+			WaitBeforeStarting 5
 			WaitForAllDead "wave6a"
 			RandomSpawn 1
 			Squad {
@@ -1692,7 +1693,7 @@ WaveSchedule {
 						"airblast vulnerability multiplier" 0.2
 						"override footstep sound set" 7
 						"is_festivized" 1
-						"hand scale" 1.25
+						"hand scale" 1.15
 					}
 				}
 				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag bot_giant ClassIcon soldier_banner_trio }
