@@ -29,7 +29,43 @@ WaveSchedule
         TFBot { Template T_TFBot_SentryBuster }
     }
 
-    // Wave 1 - X Currency
+    Mission {
+
+        Objective Spy
+
+        Where spawnbot_base_main
+        Where spawnbot_gate1_main
+        Where spawnbot_gate2_main
+        BeginAtWave 4
+        RunForThisManyWaves 1
+        DesiredCount 1
+        CooldownTime 30
+
+        TFBot { Template T_TFBot_Spy }
+    }
+
+    Mission {
+
+        Objective Sniper
+
+        Where spawnbot_base_battlements
+        Where spawnbot_base_upper
+        Where spawnbot_gate1_upper
+        Where spawnbot_gate1_flank
+        Where spawnbot_gate1_battlements
+        Where spawnbot_gate2_upper
+        Where spawnbot_gate2_flank
+        Where spawnbot_gate2_battlementsr
+        BeginAtWave 4
+        RunForThisManyWaves 1
+        DesiredCount 2
+        CooldownTime 30
+        InitialCooldown 20
+
+        TFBot { Template T_TFBot_Sniper }
+    }
+
+    // Wave 1
     Wave {
 
         InitWaveOutput {
@@ -69,7 +105,7 @@ WaveSchedule
             SpawnCount 1 // The amount to spawn each time the game spawns in the bots.
             WaitBeforeStarting 0 // The amount of time to wait before spawning in these bots.
             WaitBetweenSpawnsAfterDeath 3
-            TotalCurrency 300
+            TotalCurrency 500
             TFBot { 
 
                 Template T_TFBot_Giant_Pyro_Flare_Spammer 
@@ -81,7 +117,7 @@ WaveSchedule
         }
     }
 
-    // Wave 2 - X Currency
+    // Wave 2
     Wave {
 
         InitWaveOutput {
@@ -222,6 +258,7 @@ WaveSchedule
         }
     }
 
+    // Wave 3
     Wave {
 
         InitWaveOutput {
@@ -270,7 +307,7 @@ WaveSchedule
             SpawnCount 2
             WaitBeforeStarting 5
             WaitBetweenSpawns 2
-            TotalCurrency 50
+            TotalCurrency 100
 
             TFBot { Template T_TFBot_Scout_Scattergun_SlowFire Tag nav_main }
         }
@@ -290,7 +327,7 @@ WaveSchedule
             SpawnCount 2
             WaitBeforeStarting 5
             WaitBetweenSpawnsAfterDeath 2
-            TotalCurrency 50
+            TotalCurrency 200
 
             Squad {
 
@@ -302,6 +339,7 @@ WaveSchedule
 		WaveSpawn {
 
             Template T_WaveSpawn_Motherland_Train
+            TotalCurrency 300
 			Name "wave3traintank"
 			WaitForAllDead "wave3b"
 			// FirstSpawnWarningSound "ambient/alarms/train_horn2.wav"
@@ -317,7 +355,6 @@ WaveSchedule
             SpawnCount 2
             WaitForAllDead "wave3b"
             WaitBetweenSpawns 3
-            TotalCurrency 120
             Support Limited
 
             Squad {
@@ -325,6 +362,7 @@ WaveSchedule
                 TFBot {
 
                     Template T_TFBot_Pyro_Flaregun
+                    ClassIcon pyro_detonator_lite
                     Tag traintank_spawn
                     Item "The Detonator"
                     Tag "motherland_limitedsupport{ icon = `pyro_detonator_lite` count = 9999 }"
@@ -333,6 +371,7 @@ WaveSchedule
                 TFBot {
 
                     Class Scout
+                    ClassIcon scout_sunstick_swordstone
                     Skill Normal
                     WeaponRestrictions MeleeOnly
                     Attributes DisableDodge
@@ -345,14 +384,13 @@ WaveSchedule
         }
     }
 
-    // Wave 4 - X Currency
-    Wave
-    {
+    // Wave 4
+    Wave {
 
-        // Subwave description here
-        WaveSpawn
-        {
+        WaveSpawn {
+
             Name "wave4a"
+            Where spawnbot_base_closet
             Where spawnbot_base_main
             Where spawnbot_base_upper
             Where spawnbot_base_battlements
@@ -360,21 +398,139 @@ WaveSchedule
             Where spawnbot_gate1_upper
             Where spawnbot_gate2_main
             Where spawnbot_gate2_upper
-            TotalCount 12
-            MaxActive 6
+            TotalCount 50
+            MaxActive 8
+            SpawnCount 2
+            WaitBetweenSpawns 2
+            WaitBeforeStarting 10
+            TotalCurrency 100
+
+            TFBot { Template T_TFBot_Heavyweapons_Shotgun Tag nav_main }
+        }
+
+        WaveSpawn {
+
+            Name "wave4a1"
+            Where spawnbot_base_jetpack1
+            Where spawnbot_base_jetpack2
+            Where spawnbot_base_jetpack3
+            Where spawnbot_gate1_jetpack1
+            Where spawnbot_gate1_jetpack2
+            Where spawnbot_gate1_jetpack3
+            Where spawnbot_gate2_jetpack1
+            Where spawnbot_gate2_jetpack2
+            Where spawnbot_gate2_jetpack3
+            TotalCount 1
+            MaxActive 1
+            SpawnCount 1
+            TotalCurrency 100
+
+            StartWaveOutput {
+
+                Target __motherland_exp
+                Action RunScriptCode
+                Param "Wavebar.SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS )"
+            }
+            DoneOutput {
+                Target __motherland_exp
+                Action RunScriptCode
+                Param "Wavebar.SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS|ICON_ALWAYSCRIT )"
+            }
+
+            TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag jetpack_spawn Tag nav_main Tag bot_giant }
+        }
+
+        WaveSpawn {
+
+            Name "wave4b"
+            Where spawnbot_base_jetpack1
+            Where spawnbot_base_jetpack2
+            Where spawnbot_base_jetpack3
+            Where spawnbot_gate1_jetpack1
+            Where spawnbot_gate1_jetpack2
+            Where spawnbot_gate1_jetpack3
+            Where spawnbot_gate2_jetpack1
+            Where spawnbot_gate2_jetpack2
+            Where spawnbot_gate2_jetpack3
+            TotalCount 8
+            MaxActive 4
+            SpawnCount 4
+            TotalCurrency 100
+            WaitForAllDead "wave4a1"
+
+            Squad {
+
+                ShouldPreserveSquad 1
+
+                TFBot { Template T_TFBot_Giant_Soldier_Spammer_Reload Skill Normal Tag jetpack_spawn Tag nav_main }
+                TFBot { Template T_TFBot_Medic_Kritz Tag jetpack_spawn Tag nav_main }
+                TFBot { Template T_TFBot_Pyro Tag jetpack_spawn Tag nav_main }
+                TFBot { Template T_TFBot_Pyro Tag jetpack_spawn Tag nav_main }
+            }
+        }
+
+        WaveSpawn {
+
+            Name "wave4c"
+            Where spawnbot_base_jetpack1
+            Where spawnbot_base_jetpack2
+            Where spawnbot_base_jetpack3
+            Where spawnbot_gate1_jetpack1
+            Where spawnbot_gate1_jetpack2
+            Where spawnbot_gate1_jetpack3
+            Where spawnbot_gate2_jetpack1
+            Where spawnbot_gate2_jetpack2
+            Where spawnbot_gate2_jetpack3
+            WaitForAllDead "wave4b"
+            WaitBetweenSpawnsAfterDeath 5
+            TotalCount 6
+            MaxActive 3
             SpawnCount 3
-            WaitBeforeStarting 0
-            WaitBetweenSpawns 10
-            TotalCurrency 60
-            TFBot
-            {
-                Class Scout
-                Skill Hard
+            TotalCurrency 200
+
+            Squad { 
+
+                ShouldPreserveSquad 1
+
+                TFBot { Template T_TFBot_Giant_Heavyweapons_Deflector Skill Easy Tag nav_main Tag bot_giant Tag jetpack_spawn }
+                TFBot { Template T_TFBot_Pyro Tag nav_main Tag jetpack_spawn }
+                TFBot { Template T_TFBot_Pyro Tag nav_main Tag jetpack_spawn }
+            }
+        }
+
+        WaveSpawn {
+
+            Name "wave4d"
+            Where spawnbot_base_jetpack1
+            Where spawnbot_base_jetpack2
+            Where spawnbot_base_jetpack3
+            Where spawnbot_gate1_jetpack1
+            Where spawnbot_gate1_jetpack2
+            Where spawnbot_gate1_jetpack3
+            Where spawnbot_gate2_jetpack1
+            Where spawnbot_gate2_jetpack2
+            Where spawnbot_gate2_jetpack3
+            TotalCount 5
+            MaxActive 5
+            SpawnCount 5
+            TotalCurrency 100
+            WaitForAllDead "wave4c"
+            WaitBeforeStarting 5
+
+            Squad {
+
+                ShouldPreserveSquad 1
+
+                TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Attributes AlwaysCrit Tag jetpack_spawn Tag nav_main Tag bot_giant }
+                TFBot { Template T_TFBot_Medic_SlowRecharge Tag jetpack_spawn Tag nav_main }
+                TFBot { Template T_TFBot_Medic_SlowRecharge Tag jetpack_spawn Tag nav_main }
+                TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag jetpack_spawn Tag nav_main }
+                TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag jetpack_spawn Tag nav_main }
             }
         }
     }
 
-    // Wave 5 - X Currency
+    // Wave 5
     Wave
     {
         // Subwave description here
