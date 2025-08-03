@@ -340,8 +340,8 @@ WaveSchedule
 		WaveSpawn {
 
             Template T_WaveSpawn_Motherland_Train
-            TotalCurrency 300
 			Name "wave3traintank"
+            TotalCurrency 300
 			WaitForAllDead "wave3b"
 			// FirstSpawnWarningSound "ambient/alarms/train_horn2.wav"
 		}

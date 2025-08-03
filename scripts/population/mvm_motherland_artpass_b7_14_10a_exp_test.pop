@@ -1262,8 +1262,9 @@ WaveSchedule {
 		}
 
 		WaveSpawn {
+
 			Template T_WaveSpawn_Motherland_Train
-			Name "wave5tanktrain"
+			Name "wave5traintank"
 			TotalCurrency	400
 
 			DoneOutput {
@@ -1282,14 +1283,14 @@ WaveSchedule {
 
 		WaveSpawn {
 
-			Name "w5tanktrain_support"
+			Name "wave5traintank_support"
 			Where spawnbot_traintank
 			TotalCount 9999
 			MaxActive 6
 			SpawnCount 2
 			WaitBetweenSpawns 1
 			WaitBeforeStarting 1
-			WaitForAllSpawned "wave5tanktrain"
+			WaitForAllSpawned "wave5traintank"
 			Support Limited
 			TFBot { Template T_TFBot_Sniper_Huntsman Attributes AlwaysCrit Tag nav_main Tag traintank_spawn }
 		}
@@ -1303,7 +1304,7 @@ WaveSchedule {
 			SpawnCount 4
 			WaitBeforeStarting 1
 			WaitBetweenSpawns 5
-			WaitForAllSpawned "wave5tanktrain"
+			WaitForAllSpawned "wave5traintank"
 			Support Limited
 			RandomSpawn 1
 			// DoneOutput {
@@ -1361,7 +1362,7 @@ WaveSchedule {
 			SpawnCount 2
 			TotalCurrency 200
 			WaitBeforeStarting 5
-			WaitForAllSpawned "wave5tanktrain"
+			WaitForAllSpawned "wave5traintank"
 			Squad {
 
 				TFBot { Template T_TFBot_Giant_Scout_Fast Tag bot_giant Tag nav_main }
@@ -1379,7 +1380,7 @@ WaveSchedule {
 			TotalCount 24
 			MaxActive 6
 			SpawnCount 3
-			WaitForAllSpawned "wave5tanktrain"
+			WaitForAllSpawned "wave5traintank"
 			WaitBeforeStarting 6
 			Support Limited
 			RandomSpawn 1
