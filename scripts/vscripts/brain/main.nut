@@ -6,66 +6,79 @@ if ( !("__active_scopes" in ROOT) )
 function __CREATE_SCOPE( name, scope_ref = null, entity_ref = null, think_func = null, preserved = true ) {
 
 	// empty vscripts kv will do ValidateScriptScope automatically
-	local ent = FindByName( null, name ) || SpawnEntityFromTable( preserved ? "move_rope" : "info_teleport_destination", { targetname = name, vscripts = " " } )
-	local scope = ent.GetScriptScope()
-	SetPropBool( ent, STRING_NETPROP_PURGESTRINGS, true )
+	local ent = FindByName( null, name ) || CreateByClassname( preserved ? "entity_saucer" : "logic_autosave" )
 
+	if ( ent.GetName() != name ) {
+		SetPropString( ent, "m_iName", name )
+		ent.ValidateScriptScope()
+	}
+
+	ent.DisableDraw()
+	ent.SetCollisionGroup( COLLISION_GROUP_IN_VEHICLE )
+	SetPropBool( ent, STRING_NETPROP_PURGESTRINGS, true )
 	__active_scopes[ ent ] <- scope_ref
+
+	local ent_scope = ent.GetScriptScope()
 
 	scope_ref  =  scope_ref  || format( "%sScope", name )
 	entity_ref =  entity_ref || format( "%sEntity", name )
-	ROOT[ scope_ref ]  <- scope
+	ROOT[ scope_ref ]  <- ent_scope
 	ROOT[ entity_ref ] <- ent
 
 	if ( think_func ) {
 
-		local addthink = "_AddThinkToEnt" in ROOT ? _AddThinkToEnt : AddThinkToEnt
-
-		// This should allow adding native functions too, if for some reason you want to
+		// Add the think function directly to the entity
 		if ( endswith( typeof think_func, "function" ) ) {
 
 			local think_name = think_func.getinfos().name || format( "%s_Think", name )
 
-			scope[ think_name ] <- think_func
-			addthink( ent, think_name )
+			ent_scope[ think_name ] <- think_func
+			try { _AddThinkToEnt( ent, think_name ) } catch (_) { AddThinkToEnt( ent, think_name ) }
 			return
 		}
 
-		scope.ThinkTable <- {}
+		ent_scope.ThinkTable <- {}
 
+		// Allows us to use any arbitrary string for the think function name
+		// scope.MyFunc <- function() { ... } creates an anonymous function
+		// won't show up in the performance counter
 		compilestring( format( @"
 
-			local ent = FindByName( null, %s )
+			local ent = EntIndexToHScript( %d )
 			local func_name = %s
 			local scope = ent.GetScriptScope()
 
 			function %s() {
 
-				foreach ( func in ThinkTable || {} ) 
-					func.call( scope )
+				foreach ( func in ent_scope.ThinkTable || {} ) 
+					func.call( ent_scope )
 				return -1
 			}
 
-			scope[ func_name ] <- %s
+			ent_scope[ func_name ] <- %s
 
-		", format( "\"%s\"", name ), format( "\"%s\"", think_func ), think_func, think_func ) )()
+		", ent.entindex(), format( "\"%s\"", think_func ), think_func, think_func ) )()
 
-		addthink( ent, think_func )
+		try { _AddThinkToEnt( ent, think_func ) } catch (_) { AddThinkToEnt( ent, think_func ) }
 		delete ROOT[ think_func ]
 	}
 
-	scope.setdelegate({
+	ent_scope.setdelegate({
 
 		function _newslot( k, v ) {
 
 			if ( k == "_OnDestroy" && _OnDestroy == null ) 
 				_OnDestroy = v
-			scope.rawset( k, v )
+			else if ( k == "_OnCreate" )
+				_OnCreate.call( ent_scope )
+
+			ent_scope.rawset( k, v )
+
 		}
 
 	}.setdelegate({
 
-			parent     = scope.getdelegate()
+			parent     = ent_scope.getdelegate()
 			id         = ent.GetScriptId()
 			index      = ent.entindex()
 			_OnDestroy = null
@@ -84,8 +97,6 @@ function __CREATE_SCOPE( name, scope_ref = null, entity_ref = null, think_func =
 						_OnDestroy.call( scope )
 					}
 
-                    printl(format( "[%s] _OnDestroy: %s", scope_ref, k ))
-
 					if ( scope_ref in ROOT )
 						delete ROOT[ scope_ref ]
 
@@ -99,7 +110,12 @@ function __CREATE_SCOPE( name, scope_ref = null, entity_ref = null, think_func =
 		})
 	)
 
-	return { Entity = ent, Scope = scope }
+	// function InputRunScriptCode() {
+	// 	printl(self)
+	// 	return true
+	// }
+
+	return { Entity = ent, Scope = ent_scope }
 }
 
 __CREATE_SCOPE( "__motherland_main", "_MotherlandMain" )
@@ -108,9 +124,6 @@ _MotherlandMain.TriggerHurt  <- CreateByClassname( "trigger_hurt" )
 _MotherlandMain.ClientCmd    <- CreateByClassname( "point_clientcommand" )
 _MotherlandMain.ObjRes       <- FindByClassname( null, "tf_objective_resource" )
 _MotherlandMain.PopInterface <- FindByClassname( null, "point_populator_interface" )
-_MotherlandMain.gateA        <- FindByName( null, "gate1_door_trigger" )
-_MotherlandMain.gateB        <- FindByName( null, "gate2_door_trigger" )
-_MotherlandMain.AltBomb      <- FindByName( null, "gate2_bomb2" )
 _MotherlandMain.popname      <- GetPropString( _MotherlandMain.ObjRes, "m_iszMvMPopfileName" )
 
 IncludeScript( "brain/event_wrapper.nut" )
@@ -151,9 +164,7 @@ _EventWrapper("recalculate_holidays", "MainCleanup", function( params ) {
     if ( GetRoundState() != GR_STATE_PREROUND )
         return
 
-    for ( local i = 0; i <= MAX_CLIENTS; i++ ) {
-
-        local player = PlayerInstanceFromIndex( i )
+    for ( local i = 0, player; i <= MAX_CLIENTS; player = PlayerInstanceFromIndex( i ), i++ ) {
 
         if ( !player || !player.IsBotOfType( TF_BOT_TYPE ) )
             continue
@@ -161,13 +172,13 @@ _EventWrapper("recalculate_holidays", "MainCleanup", function( params ) {
         _MotherlandMain.PlayerCleanup( player )
     }
 
-    // foreach ( str in _MotherlandUtils.GameStrings.keys() )
-        // _MotherlandUtils.PurgeGameString( str )
+    foreach ( str in _MotherlandUtils.GameStrings.keys() )
+        _MotherlandUtils.PurgeGameString( str )
 
     if ( GetPropString( _MotherlandMain.ObjRes, "m_iszMvMPopfileName" ) != _MotherlandMain.popname ) {
 
         _MotherlandEvents.ClearEvents( "*" )
-        foreach ( ent, _ in __active_scopes )
+        foreach ( ent in __active_scopes.keys() )
             if ( ent && ent.IsValid() )
                 ent.Kill()
 

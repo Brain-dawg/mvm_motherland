@@ -675,6 +675,7 @@ WaveSchedule {
 			TotalCurrency 50
 
 			FirstSpawnOutput {
+
 				Target logic_script_lizardmvm
 				Action RunScriptCode
 				Param "SetBSpawns( true )"
@@ -812,7 +813,7 @@ WaveSchedule {
 				Target __motherland_wavebar
 				Action RunScriptCode
 				Param "
-					Utils.ScriptEntFireSafe( `logic_script_lizardmvm`, `SetBSpawns( false )` )
+					_MotherlandUtils.ScriptEntFireSafe( `logic_script_lizardmvm`, `SetBSpawns( false )` )
 					RemoveWaveIcon( `pyro`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
 					RemoveWaveIcon( `pyro_flare`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
 				"
@@ -1155,9 +1156,9 @@ WaveSchedule {
 
 			DoneOutput {
 
-				Target BigNet
+				Target __motherland_utils
 				Action RunScriptCode
-				Param "EntFire( `tank_boss`, `RunScriptCode`, `self.TakeDamage( INT_MAX, DMG_GENERIC, Entities.First() )` )"
+				Param "ScriptEntFireSafe( `tank_boss`, `self.TakeDamage( INT_MAX, DMG_GENERIC, First() )` )"
 			}
 
 			RandomChoice {

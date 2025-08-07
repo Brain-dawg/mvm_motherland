@@ -82,7 +82,7 @@ WaveSchedule
 
         StartWaveOutput {
             
-            Target BigNet
+            Target __motherland_utils
             Action RunScriptCode
             Param "EntFire( `gate2_spawn_door`, `Open` )"
         }
@@ -144,6 +144,8 @@ WaveSchedule
                    lifetime = -1
                    play_sound = `misc/null.wav`
                 })
+                EntFire( `flank_door`, `Close` )
+                EntFire( `tank_shortcut_door`, `Close` )
             "
             Delay 1
         }
@@ -276,6 +278,17 @@ WaveSchedule
             Param "
                 SetRobotOwnedGate( `gate1` )
                 DisableSecondBomb()
+                EntFire( `flank_door`, `Close` )
+                EntFire( `tank_shortcut_door`, `Close` )
+                SendGlobalGameEvent( `show_annotation`, {
+                   worldposX = -8359
+                   worldposY = 239
+                   worldposZ = 436
+                   id = 2543
+                   text = `Bots will spawn from Gate A!`
+                   lifetime = -1
+                   play_sound = `misc/null.wav`
+                })
             "
         }
 

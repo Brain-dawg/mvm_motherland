@@ -158,9 +158,8 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
                     if ( spawnflags & 256 ) {
 
                         ent.AddEFlags( EFL_IS_BEING_LIFTED_BY_BARNACLE )
-                        for ( local i = 1; i <= MAX_CLIENTS; i++ ) {
+                        for ( local i = 1, player; i <= MAX_CLIENTS; player = PlayerInstanceFromIndex( i ), i++ ) {
 
-                            local player = PlayerInstanceFromIndex( i )
                             if ( player && player.IsValid() ) {
 
                                 ent.AcceptInput( "Enable", "", player, player )
@@ -189,9 +188,8 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
                     if ( spawnflags & 256 ) {
 
                         ent.AddEFlags( EFL_IS_BEING_LIFTED_BY_BARNACLE )
-                        for ( local i = 1; i <= MAX_CLIENTS; i++ ) {
+                        for ( local i = 1, player; i <= MAX_CLIENTS; player = PlayerInstanceFromIndex( i ), i++ ) {
 
-                            local player = PlayerInstanceFromIndex( i )
                             if ( player && player.IsValid() ) {
 
                                 SetPropEntity( ent, "m_hPlayer", player )

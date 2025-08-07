@@ -1,54 +1,14 @@
 __CREATE_SCOPE( "__motherland_utils", "_MotherlandUtils" )
 
-_MotherlandUtils.GameStrings <- {}
+if ( !("GameStrings" in _MotherlandUtils) )
+    _MotherlandUtils.GameStrings <- {}
 
 function _MotherlandUtils::GetEntScope( ent ) { return ent.GetScriptScope() || ( ent.ValidateScriptScope(), ent.GetScriptScope() ) }
-
-function _MotherlandUtils::FakeBomb( kill_only = false, switch_bomb_team = false, bomb_name = _MotherlandMain.AltBomb.GetName() ) {
-
-    local real_bomb = FindByName( null, bomb_name )
-
-    if ( !real_bomb ) {
-
-        Assert( false, "FakeBomb: real bomb not found" )
-        return
-    }
-
-    for ( local child = real_bomb.FirstMoveChild(); child != null; child = child.NextMovePeer() )
-        if ( child.GetClassname() == "item_teamflag" )
-            EntFireByHandle( child, "Kill", "", -1, null, null )
-
-    if ( switch_bomb_team )
-        real_bomb.SetTeam( TF_TEAM_PVE_DEFENDERS )
-
-    if ( kill_only ) return
-
-    local fakebomb = CreateByClassname( "item_teamflag" )
-
-    fakebomb.SetTeam( TF_TEAM_PVE_DEFENDERS )
-
-    fakebomb.KeyValueFromInt( "trail_effect", 0 )
-    fakebomb.KeyValueFromInt( "ReturnTime", 0 )
-    fakebomb.KeyValueFromInt( "GameType", 1 )
-
-    fakebomb.AcceptInput( "ShowTimer", "0", null, null )
-
-    fakebomb.SetAbsOrigin( real_bomb.GetOrigin() )
-    fakebomb.AcceptInput( "SetParent", bomb_name, null, null )
-    fakebomb.KeyValueFromString( "targetname", format( "%s_fake", bomb_name ) )
-    fakebomb.DisableDraw()
-
-    if ( switch_bomb_team )
-        real_bomb.SetTeam( TF_TEAM_PVE_INVADERS )
-}
 
 function _MotherlandUtils::InstantHolster( player ) {
 
     local melee, slot
-
-    for ( local i = 0; i < SLOT_COUNT; i++ ) {
-
-        local held_weapon = GetPropEntityArray( player, STRING_NETPROP_MYWEAPONS, i )
+    for ( local i = 0, held_weapon; i < SLOT_COUNT; held_weapon = GetPropEntityArray( player, STRING_NETPROP_MYWEAPONS, i ), i++ ) {
 
         if ( held_weapon && held_weapon.IsMeleeWeapon() ) {
 
@@ -59,7 +19,7 @@ function _MotherlandUtils::InstantHolster( player ) {
         }
     }
     
-    player.AddCond(TF_COND_MELEE_ONLY)
+    player.AddCond( TF_COND_MELEE_ONLY )
     
     ClientCmd.AcceptInput( "Command", "firstperson", player, player )
     

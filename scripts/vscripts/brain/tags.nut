@@ -37,7 +37,7 @@ _MotherlandTags.Tags <- {
         if ( 
             GetPropBool( _MotherlandMain.gateB, "m_bLocked" ) 
             && bot.HasBotAttribute( AGGRESSIVE|IGNORE_FLAG ) 
-            && !bot.HasBotTag( "tag_alwayspush" ) 
+            && !bot.HasBotTag( "motherland_alwayspush" ) 
         )
         bot.RemoveBotAttribute( AGGRESSIVE|IGNORE_FLAG )
     }
