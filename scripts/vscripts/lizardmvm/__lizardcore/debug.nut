@@ -188,6 +188,20 @@ OnDevCommand("taunt", function(player, args)
 	taunt_weapon.Kill()
 });
 
+OnDevCommand("ent_fire", function(caller, args)
+{
+    DoEntFire(args[0], args[1], args[2], 0, caller, caller);
+});
+
+OnDevCommand("run_code", function(caller, args)
+{
+    local result = "";
+    foreach (arg in args)
+        result += arg + " ";
+    TempPrint(result)
+    compilestring(result)();
+});
+
 //======================================
 //Print Debug
 //======================================

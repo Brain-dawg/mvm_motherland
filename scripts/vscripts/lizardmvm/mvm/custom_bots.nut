@@ -2,28 +2,52 @@
 // Traintank Passengers
 //========================================================
 
-traintank_tepeports <- CollectByName("traintank_tepeport");
-traintank_tepeports_all <- CollectByName("traintank_tepeport*");
-traintank_tepeports_giant <- CollectByName("traintank_giant_teleport");
+traintank_tepeports_a <- CollectByName("traintank_teleport_a");
+traintank_tepeports_giant_a <- CollectByName("traintank_teleport_giant_a");
+traintank_tepeports_b <- CollectByName("traintank_teleport_b");
+traintank_tepeports_giant_b <- CollectByName("traintank_teleport_giant_b");
+traintank_tepeports_c <- CollectByName("traintank_teleport_c");
+traintank_tepeports_giant_c <- CollectByName("traintank_teleport_giant_c");
 
-TempPrint(TableToString(traintank_tepeports))
+traintank_tepeports_all <- [traintank_tepeports_a, traintank_tepeports_b, traintank_tepeports_c];
+traintank_tepeports_giant_all <- [traintank_tepeports_giant_a, traintank_tepeports_giant_b, traintank_tepeports_giant_c];
 
-OnGameEvent("player_spawn_post", function(bot, params)
+//OnGameEvent("player_spawn_post", function(bot, params)
+function ConvertToTrainBot(bot)
 {
-    if (!bot.HasBotTag("traintank_spawn"))
-        return;
-
     local randomTeleport;
     if (bot.IsMiniBoss())
-        randomTeleport = RandomElement(traintank_tepeports_giant);
-    else if (currentGatePointIndex == 1)
-        randomTeleport = RandomElement(traintank_tepeports_all);
+        randomTeleport = RandomElement(traintank_tepeports_giant_all[currentGatePointIndex]);
     else
-        randomTeleport = RandomElement(traintank_tepeports);
+        randomTeleport = RandomElement(traintank_tepeports_all[currentGatePointIndex]);
 
     bot.Teleport(true, randomTeleport.GetOrigin(), true, randomTeleport.GetAbsAngles(), true, Vector());
-    bot.AddCondEx(TF_COND_INVULNERABLE, 1.5, null);
-});
+    RunWithDelay(0.1, function()
+    {
+        bot.AddCondEx(TF_COND_INVULNERABLE, 1.5, null);
+    })
+
+    local nearestParticle = FindByNameNearest("train_teleporters_vfx*", bot.GetCenter(), 500);
+    if (nearestParticle)
+    {
+        local particle = SpawnEntityFromTable("info_particle_system", {
+            effect_name = "Motherland_train_lighting_parent",
+            origin = nearestParticle.GetOrigin(),
+            start_active = 1
+        })
+        SetPropEntityArray(particle, "m_hControlPointEnts", bot.FirstMoveChild(), 0);
+        SetPropEntityArray(particle, "m_hControlPointEnts", bot.FirstMoveChild(), 1);
+        EntFireByHandle(particle, "Kill", "", 3, null, null);
+    }
+
+    EmitSoundEx({
+        sound_name = "beams/beamstart5.wav",
+        entity = bot,
+        volume = 1,
+        sound_level = 150,
+        channel = CHAN_AUTO
+    });
+}
 
 
 //========================================================
@@ -32,6 +56,7 @@ OnGameEvent("player_spawn_post", function(bot, params)
 
 ::JETPACK_MODEL_INDEX <- PrecacheModel("models/motherland/bot_rocketpack.mdl");
 PrecacheParticle("botpack_exhaust");
+PrecacheParticle("Motherland_cap_parent");
 
 OnGameEvent("player_spawn_post", function(bot, params)
 {
@@ -359,7 +384,7 @@ OnGameEvent("player_spawn_post", function(bot, params)
 
 	AddTimer(0.5, function()
 	{
-		if (this.GetRageMeter() > 25 && !this.IsRageDraining())
+		if (this.GetRageMeter() > 15 && !this.IsRageDraining())
 		{
 			SetPropFloat(this, "m_Shared.m_flRageMeter", 100);
 			this.Taunt(TAUNT_BASE_WEAPON, 0);

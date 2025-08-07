@@ -230,6 +230,7 @@ class MvMGatePoint
 
     function OnDeviceCapture() //activator, caller
     {
+        DispatchParticleEffect("Motherland_cap_parent", hFlagTarget.GetOrigin(), Vector());
         TempPrint("ATTEMPTED OnDeviceCapture "+GetPropBool(hPointTrigger, "m_bDisabled")+" for "+hPointTrigger)
         TempPrint("ATTEMPTED OnDeviceCapture "+activator+" "+caller+" "+this)
         if (GetPropBool(hPointTrigger, "m_bDisabled"))

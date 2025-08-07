@@ -9,6 +9,7 @@ EntFire("func_door", "AddOutput", "OnFullyClosed tf_point_nav_interface:Recomput
 EntFire("base_bomb", "RunScriptCode", "self.SetSkin(0)");
 EntFire("gate1_bomb", "RunScriptCode", "self.SetSkin(1)");
 EntFire("holograms_bomb_shared", "Enable");
+EntFire("block_default_main_path", "UnBlockNav");
 
 //===============================================================
 // Temporary flag model swap
@@ -78,6 +79,8 @@ function RecomputeBlockersFix()
 const TANK_SHORTCUT_DOOR_NAME = "tank_shortcut_door";
 function TankReachedShortcutGate(hTank)
 {
+    EntFire("tf_gamerules", "PlayVO", "Announcer.MVM_Tank_Alert_Near_Hatch");
+
     local hDoor = FindByName(null, TANK_SHORTCUT_DOOR_NAME);
     local height = (hDoor.GetBoundingMaxs() - hDoor.GetBoundingMins()).z * 0.85;
     local timeToOpenDoor = (height / GetPropFloat(hDoor, "m_flSpeed"));
@@ -98,11 +101,18 @@ function TankReachedShortcutGate(hTank)
 // Peaceful train send-off logic
 //===============================================================
 
+bPeacefulTrainDisabled <- false;
+
+function DisablePeacefulTrain()
+{
+    bPeacefulTrainDisabled = true;
+}
+
 function RunSetupTrain()
 {
     RunWithDelay(RandomInt(40, 55), RunSetupTrain);
     //if (!FindByClassname(null, "tank_boss"))
-    if (!InSetup())
+    if (!InSetup() || bPeacefulTrainDisabled)
         return;
     DoEntFire("peaceful_train" + RandomInt(1, 2), "StartForward", "", 0, null, null);
     DoEntFire("train_warning", "Trigger", "", 0, null, null);
