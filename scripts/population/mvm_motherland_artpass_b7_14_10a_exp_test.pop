@@ -127,6 +127,7 @@ WaveSchedule {
 		DesiredCount 1
 
 		TFBot {
+
 			Template T_TFBot_Engineer_Sentry_Battle
 			Item "The Gunslinger"
 			Item "Packable Provisions"
@@ -261,7 +262,7 @@ WaveSchedule {
 
 			Target logic_script_lizardmvm
 			Action CallScriptFunction
-			Param "DisableSecondBomb"
+			Param DisableSecondBomb
 		}
 
 		WaveSpawn {
@@ -282,9 +283,9 @@ WaveSchedule {
 
 			StartWaveOutput {
 
-				Target __motherland_exp
+				Target __motherland_wavebar
 				Action RunScriptCode
-				Param "Wavebar.RemoveWaveIcon( `soldier_blackbox`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )"
+				Param "RemoveWaveIcon( `soldier_blackbox`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )"
 			}
 
 			// no crit particles to save fps
@@ -297,7 +298,7 @@ WaveSchedule {
 				ClassIcon scout_bat
 				ItemAttributes {
 					ItemName "Batsaber"
-					"set item tint rgb" 16711680
+					"set item tint rgb" 65501
 				}
 			}
 		}
@@ -318,47 +319,20 @@ WaveSchedule {
 			TotalCurrency 150
 			WaitBeforeStarting 8
 
-			RandomChoice {
+			TFBot {
 
-				TFBot {
+				Template T_TFBot_Scout_Melee
+				Item "Batsaber"
+				ClassIcon scout_bat
+				ItemAttributes {
 
-					Template T_TFBot_Scout_Melee
-					Item "Batsaber"
-					ClassIcon scout_bat
-					ItemAttributes {
-
-						ItemName "Batsaber"
-						"set item tint rgb" 16711680
-						"crit vs non burning players" 1
-					}
-				}
-				TFBot {
-
-					Template T_TFBot_Scout_Melee
-					Item "Batsaber"
-					ClassIcon scout_bat
-					ItemAttributes {
-
-						ItemName "Batsaber"
-						"set item tint rgb" 65501
-						"crit vs non burning players" 1
-					}
-				}
-				TFBot {
-
-					Template T_TFBot_Scout_Melee
-					Item "Batsaber"
-					ClassIcon scout_bat
-					ItemAttributes {
-
-						ItemName "Batsaber"
-						"set item tint rgb" 12807213
-						"crit vs non burning players" 1
-					}
+					ItemName "Batsaber"
+					"set item tint rgb" 65501
+					"crit vs non burning players" 1
 				}
 			}
 		}
-
+		// gate-only bats
 		WaveSpawn {
 
 			Name "wave1a"
@@ -370,24 +344,21 @@ WaveSchedule {
 			MaxActive 5
 			SpawnCount 5
 			WaitBetweenSpawns 1
-			WaitBeforeStarting 8
+			// WaitBeforeStarting 8
 			RandomSpawn 1
 			TotalCurrency 50
 
 			TFBot {
 
 				Template T_TFBot_Scout_Melee
-				Item "Batsaber"
 				ClassIcon scout_bat
 				BehaviorModifiers Push
 				Tag nav_flank
 				Tag motherland_revertgatebot
-				ItemAttributes {
-
-					ItemName "Batsaber"
-					"set item tint rgb" 15335168
-					"crit vs non burning players" 1
-				}
+				Tag "motherland_paintall{ color = 15335168 }"
+				Item "The Delinquent's Down Vest"
+				Item "Blizzard Britches"
+				Item "Batsaber"
 			}
 		}
 
@@ -504,7 +475,7 @@ WaveSchedule {
 							Item "The Sandvich Safe"
 							Item "The Wing Mann"
 							Tag bot_giant
-							Tag "motherland_suicidecounter{ attacker = _Motherland_Expert.TriggerHurt, inflictor = _Motherland_Expert.TriggerHurt, amount = 2 }"
+							Tag "motherland_suicidecounter{ attacker = _MotherlandMain.TriggerHurt, inflictor = _MotherlandMain.TriggerHurt, amount = 2 }"
 							Attributes UseBossHealthBar
 							Attributes AlwaysFireWeapon
 							Attributes MiniBoss
@@ -538,7 +509,7 @@ WaveSchedule {
 							Item "The Sandvich Safe"
 							Item "The Wing Mann"
 							Tag bot_giant
-							Tag "motherland_suicidecounter{ attacker = _Motherland_Expert.TriggerHurt, inflictor = _Motherland_Expert.TriggerHurt, amount = 2 }"
+							Tag "motherland_suicidecounter{ attacker = _MotherlandMain.TriggerHurt, inflictor = _MotherlandMain.TriggerHurt, amount = 2 }"
 							Attributes UseBossHealthBar
 							Attributes AlwaysFireWeapon
 							Attributes MiniBoss
@@ -572,7 +543,7 @@ WaveSchedule {
 							Item "The Sandvich Safe"
 							Item "The Wing Mann"
 							Tag bot_giant
-							Tag "motherland_suicidecounter{ attacker = _Motherland_Expert.TriggerHurt, inflictor = _Motherland_Expert.TriggerHurt, amount = 2 }"
+							Tag "motherland_suicidecounter{ attacker = _MotherlandMain.TriggerHurt, inflictor = _MotherlandMain.TriggerHurt, amount = 2 }"
 							Attributes UseBossHealthBar
 							Attributes AlwaysFireWeapon
 							Attributes MiniBoss
@@ -625,9 +596,9 @@ WaveSchedule {
 
 			FirstSpawnOutput {
 
-				Target __motherland_exp
+				Target __motherland_wavebar
 				Action RunScriptCode
-				Param "Wavebar.SetWaveIcon( `soldier_blackbox`, 2|32, 1, false )"
+				Param "SetWaveIcon( `soldier_blackbox`, ICON_SUPPORT|ICON_SUPPORT_LIMITED, 1, false )"
 			}
 
 			RandomChoice {
@@ -652,10 +623,10 @@ WaveSchedule {
 
 		StartWaveOutput {
 
-			Target __motherland_exp
+			Target __motherland_wavebar
 			Action RunScriptCode
 			Param "
-				Wavebar.RemoveWaveIcon( `soldier_mangler_v2`, 0 )
+				RemoveWaveIcon( `soldier_mangler_v2`, 0 )
 				EntFire(`logic_script_lizardmvm`, `CallScriptFunction`, `DisableSecondBomb`)
 			"
 		}
@@ -838,12 +809,12 @@ WaveSchedule {
 
 			DoneOutput {
 
-				Target __motherland_exp
+				Target __motherland_wavebar
 				Action RunScriptCode
 				Param "
 					Utils.ScriptEntFireSafe( `logic_script_lizardmvm`, `SetBSpawns( false )` )
-					Wavebar.RemoveWaveIcon( `pyro`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-					Wavebar.RemoveWaveIcon( `pyro_flare`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+					RemoveWaveIcon( `pyro`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+					RemoveWaveIcon( `pyro_flare`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
 				"
 			}
 		}
@@ -895,9 +866,9 @@ WaveSchedule {
 
 			FirstSpawnOutput {
 
-				Target __motherland_exp
+				Target __motherland_wavebar
 				Action RunScriptCode
-				Param "Wavebar.SetWaveIcon( `soldier_mangler_v2`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT, 1, false )"
+				Param "SetWaveIcon( `soldier_mangler_v2`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT, 1, false )"
 			}
 
 			Tank {
@@ -925,12 +896,12 @@ WaveSchedule {
 
 		StartWaveOutput {
 
-			Target __motherland_exp
+			Target __motherland_wavebar
 			Action RunScriptCode
 			Param "
-				Wavebar.RemoveWaveIcon( `heavy_shotgun`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-				Wavebar.RemoveWaveIcon( `medic`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-				Wavebar.RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+				RemoveWaveIcon( `heavy_shotgun`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+				RemoveWaveIcon( `medic`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+				RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
 			"
 		}
 
@@ -1269,12 +1240,12 @@ WaveSchedule {
 
 			DoneOutput {
 
-				Target __motherland_exp
+				Target __motherland_wavebar
 				Action RunScriptCode
 				Param "
-					Wavebar.RemoveWaveIcon( `sniper_bow`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT )
-					Wavebar.RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-					Wavebar.RemoveWaveIcon( `heavy_champ_giant`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS )
+					RemoveWaveIcon( `sniper_bow`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT )
+					RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+					RemoveWaveIcon( `heavy_champ_giant`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS )
 				"
 			}
 
@@ -1309,11 +1280,11 @@ WaveSchedule {
 			RandomSpawn 1
 			// DoneOutput {
 
-			// 	Target __motherland_exp
+			// 	Target __motherland_wavebar
 			// 	Action RunScriptCode
 			// 	Param "
-			// 		Wavebar.RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-			// 		Wavebar.RemoveWaveIcon( `heavy_champ_giant`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS )
+			// 		RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+			// 		RemoveWaveIcon( `heavy_champ_giant`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS )
 			// 	"
 			// }
 
@@ -1386,12 +1357,12 @@ WaveSchedule {
 			RandomSpawn 1
 			// DoneOutput {
 
-			// 	Target __motherland_exp
+			// 	Target __motherland_wavebar
 			// 	Action RunScriptCode
 			// 	Param "
 
-			// 		Wavebar.RemoveWaveIcon( `scout`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-			// 		Wavebar.RemoveWaveIcon( `soldier`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+			// 		RemoveWaveIcon( `scout`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+			// 		RemoveWaveIcon( `soldier`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
 			// 	"
 			// }
 
@@ -1552,15 +1523,15 @@ WaveSchedule {
 
 			FirstSpawnOutput {
 
-				Target __motherland_exp
+				Target __motherland_wavebar
 				Action RunScriptCode
-				Param "Wavebar.SetWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED, 1, false )"
+				Param "SetWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED, 1, false )"
 			}
 			DoneOutput {
 
-				Target __motherland_exp
+				Target __motherland_wavebar
 				Action RunScriptCode
-				Param "Wavebar.RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )"
+				Param "RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )"
 			}
 
 			RandomChoice {

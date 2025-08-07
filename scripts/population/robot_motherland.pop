@@ -23,6 +23,7 @@ WaveSchedule {
 					FindAndConvertTrainTank()
 					EntFire( `traintank_base_boss`, `RunScriptCode`, `SetPropInt( self, \`m_bloodColor\`, 3 )`, 1 )
 				"
+				Delay 0.1
 			}
 
 			TFBot { Template T_TFBot_Motherland_Train }

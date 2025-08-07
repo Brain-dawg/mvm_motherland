@@ -76,7 +76,15 @@ WaveSchedule
                 SetRobotOwnedGate( `gate2` )
                 DisableSecondBomb()
                 IncludeScript(`brain/main`)
+                EntFire( `func_door`, `Close` )
             "
+        }
+
+        StartWaveOutput {
+            
+            Target BigNet
+            Action RunScriptCode
+            Param "EntFire( `gate2_spawn_door`, `Open` )"
         }
 
         // Subwave description here
@@ -428,15 +436,15 @@ WaveSchedule
 
             StartWaveOutput {
 
-                Target __motherland_exp
+                Target __motherland_wavebar
                 Action RunScriptCode
-                Param "Wavebar.SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS )"
+                Param "SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS )"
             }
             DoneOutput {
 
-                Target __motherland_exp
+                Target __motherland_wavebar
                 Action RunScriptCode
-                Param "Wavebar.SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS|ICON_ALWAYSCRIT )"
+                Param "SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS|ICON_ALWAYSCRIT )"
             }
 
             TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag jetpack_spawn Tag nav_main Tag bot_giant }

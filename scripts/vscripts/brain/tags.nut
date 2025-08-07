@@ -1,5 +1,6 @@
+__CREATE_SCOPE( "__motherland_tags", "_MotherlandTags" )
 
-::_Motherland_Expert.Tags <- {
+_MotherlandTags.Tags <- {
 
     function motherland_suicidecounter( bot, args ) {
 
@@ -34,11 +35,11 @@
     function motherland_revertgatebot( bot, args ) {
 
         if ( 
-            GetPropBool( _Motherland_Expert.gateB, "m_bLocked" ) 
+            GetPropBool( _MotherlandMain.gateB, "m_bLocked" ) 
             && bot.HasBotAttribute( AGGRESSIVE|IGNORE_FLAG ) 
             && !bot.HasBotTag( "tag_alwayspush" ) 
         )
-            bot.RemoveBotAttribute( AGGRESSIVE|IGNORE_FLAG )
+        bot.RemoveBotAttribute( AGGRESSIVE|IGNORE_FLAG )
     }
 
     function motherland_altfire( bot, args ) {
@@ -57,16 +58,16 @@
         local count = "count" in args ? args.count : 1
         local flags = "flags" in args ? args.flags : MVM_CLASS_FLAG_SUPPORT|MVM_CLASS_FLAG_SUPPORT_LIMITED
 
-        if ( icon && !_Motherland_Expert.Wavebar.GetWaveIcon( icon, flags ) )
-            _Motherland_Expert.Wavebar.SetWaveIcon( icon, flags, count, false )
+        if ( icon && !_MotherlandWavebar.GetWaveIcon( icon, flags ) )
+            _MotherlandWavebar.SetWaveIcon( icon, flags, count, false )
         
-        _Motherland_Expert.Events.AddRemoveEventHook( "player_death", format( "LimitedSupport_%d", bot.entindex() ), function( params ) {
+        _EventWrapper( "player_death", format( "LimitedSupport_%d", bot.entindex() ), function( params ) {
 
             local _bot = GetPlayerFromUserID( params.userid )
 
             if ( _bot != bot ) return
 
-            _Motherland_Expert.Wavebar.IncrementWaveIcon( icon, flags, -1 )
+            _MotherlandWavebar.IncrementWaveIcon( icon, flags, -1 )
             
         }, EVENT_WRAPPER_TAGS )
     }
@@ -85,7 +86,7 @@
         local delaytime = Time() + delay
 
         local scope = bot.GetScriptScope()
-        scope.PressButton <- _Motherland_Expert.Utils.PressButton
+        scope.PressButton <- _MotherlandUtils.PressButton
 
         function FireWeaponThink() {
 
@@ -116,7 +117,7 @@
 
     function motherland_minisentry( bot, args ) {
 
-        _Motherland_Expert.Events.AddRemoveEventHook( "player_builtobject", format( "MiniSentry_%d", bot.entindex() ), function( params ) {
+        _EventWrapper( "player_builtobject", format( "MiniSentry_%d", bot.entindex() ), function( params ) {
 
             local _bot = GetPlayerFromUserID( params.userid )
 
@@ -178,7 +179,7 @@
         }
         bot.GetScriptScope().BotThinkTable.DispenserOverrideThink <- DispenserOverrideThink
 
-        _Motherland_Expert.Events.AddRemoveEventHook( "player_builtobject", format( "DispenserOverride_%d", bot.entindex() ), function( params ) {
+        _EventWrapper( "player_builtobject", format( "DispenserOverride_%d", bot.entindex() ), function( params ) {
 
             local _bot = GetPlayerFromUserID( params.userid )
 
@@ -199,14 +200,16 @@
 
                 if ( obj != OBJ_DISPENSER ) {
 
-                    building.ValidateScriptScope()
-                    building.GetScriptScope().CheckBuiltThink <- function() {
+                    local building_scope = _MotherlandUtils.GetEntScope( building )
+
+                    function CheckBuiltThink() {
 
                         if ( GetPropBool( building, "m_bBuilding" ) ) return
 
                         EntFireByHandle( building, "Disable", "", -1, null, null )
-                        delete building.GetScriptScope().CheckBuiltThink
+                        delete building_scope.CheckBuiltThink
                     }
+                    building_scope.CheckBuiltThink <- CheckBuiltThink
                     AddThinkToEnt( building, "CheckBuiltThink" )
                 }
 
@@ -288,7 +291,7 @@
 
                     Utils.InstantHolster( self )
                     self.GetActiveWeapon().AddAttribute( "disable weapon switch", 1, 2 )
-					_Motherland_Expert.Utils.ScriptEntFireSafe( self.GetActiveWeapon(), "self.RemoveAttribute( `disable weapon switch` )", 2.0 )
+                    _MotherlandUtils.ScriptEntFireSafe( self.GetActiveWeapon(), "self.RemoveAttribute( `disable weapon switch` )", 2.0 )
                     return 0.2
                 }
             }
@@ -298,124 +301,191 @@
 
     function motherland_setmission( bot, args ) {
 
-		local mission 		 = "mission" in args        ? args.mission : args.type
-		local target 		 = "target" in args         ? args.target : "__MISSION_NO_TARGET"
-		local suicide_bomber = "suicide_bomber" in args ? args.suicide_bomber : false
+        local mission 		 = "mission" in args        ? args.mission : args.type
+        local target 		 = "target" in args         ? args.target : "__MISSION_NO_TARGET"
+        local suicide_bomber = "suicide_bomber" in args ? args.suicide_bomber : false
 
-		if ( mission != NO_MISSION ) {
+        if ( mission != NO_MISSION ) {
 
-			if ( !bot.HasBotAttribute( IGNORE_FLAG ) )
-				bot.AddBotAttribute( IGNORE_FLAG )
+            if ( !bot.HasBotAttribute( IGNORE_FLAG ) )
+                bot.AddBotAttribute( IGNORE_FLAG )
 
-			local bomb = GetPropEntity( bot, "m_hItem" )
-			if ( bomb )
-				bomb.AcceptInput( "ForceDrop", "", null, null )
-		}
+            local bomb = GetPropEntity( bot, "m_hItem" )
+            if ( bomb )
+                bomb.AcceptInput( "ForceDrop", "", null, null )
+        }
 
-		bot.SetMission( mission, true )
-		local mission_target = FindByName( null, target )
-		if ( target == "__MISSION_NO_TARGET" || ( !mission_target || !mission_target.IsValid() ) ) {
+        bot.SetMission( mission, true )
+        local mission_target = FindByName( null, target )
+        if ( target == "__MISSION_NO_TARGET" || ( !mission_target || !mission_target.IsValid() ) ) {
 
-			if ( mission == MISSION_DESTROY_SENTRIES ) {
+            if ( mission == MISSION_DESTROY_SENTRIES ) {
 
-				local target_list = []
-				local classname = suicide_bomber ? "player" : "obj_sentrygun"
+                local target_list = []
+                local classname = suicide_bomber ? "player" : "obj_sentrygun"
 
-				for ( local random_target; random_target = FindByClassname( random_target, classname ); )
-					if ( random_target.GetTeam() != bot.GetTeam() )
-						target_list.append( random_target )
+                for ( local random_target; random_target = FindByClassname( random_target, classname ); )
+                    if ( random_target.GetTeam() != bot.GetTeam() )
+                        target_list.append( random_target )
 
-				if ( target_list.len() )
-					mission_target = target_list[RandomInt( 0, target_list.len() - 1 )]
-			}
-			else return
-		}
-		else if ( mission_target && mission_target.IsValid() )
-			bot.SetMissionTarget( mission_target )
+                if ( target_list.len() )
+                    mission_target = target_list[RandomInt( 0, target_list.len() - 1 )]
+            }
+            else return
+        }
+        else if ( mission_target && mission_target.IsValid() )
+            bot.SetMissionTarget( mission_target )
     }
 
     function motherland_usebestweapon( bot, args ) {
 
-		function BestWeaponThink() {
+        function BestWeaponThink() {
 
-			switch( bot.GetPlayerClass() ) {
+            switch( bot.GetPlayerClass() ) {
 
-			case TF_CLASS_SCOUT:
+            case TF_CLASS_SCOUT:
 
-				if ( bot.GetActiveWeapon() != _Motherland_Expert.Utils.GetItemInSlot( bot, SLOT_SECONDARY ) )
-					bot.Weapon_Switch( _Motherland_Expert.Utils.GetItemInSlot( bot, SLOT_SECONDARY ) )
+                if ( bot.GetActiveWeapon() != _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
+                    bot.Weapon_Switch( _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
 
-				for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
+                for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
 
-					if ( p.GetTeam() == bot.GetTeam() ) continue
+                    if ( p.GetTeam() == bot.GetTeam() ) continue
 
-					local primary = _Motherland_Expert.Utils.GetItemInSlot( bot, SLOT_PRIMARY )
+                    local primary = _MotherlandUtils.GetItemInSlot( bot, SLOT_PRIMARY )
 
-					bot.Weapon_Switch( primary )
-					primary.AddAttribute( "disable weapon switch", 1, 1 )
-					_Motherland_Expert.Utils.ScriptEntFireSafe( primary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
-				}
-			break
+                    bot.Weapon_Switch( primary )
+                    primary.AddAttribute( "disable weapon switch", 1, 1 )
+                    _MotherlandUtils.ScriptEntFireSafe( primary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
+                }
+            break
 
-			case TF_CLASS_SNIPER:
+            case TF_CLASS_SNIPER:
 
-				for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 750 ); ) {
+                for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 750 ); ) {
 
-					if ( 
+                    if ( 
                         p.GetTeam() == bot.GetTeam()
                         || bot.GetActiveWeapon().GetSlot() == SLOT_SECONDARY
                         || !p.IsAlive()
                         || fabs( p.GetCenter().Length() - bot.GetCenter().Length() ) < 250 // so melee snipers still work
                     ) continue
 
-					local secondary = _Motherland_Expert.Utils.GetItemInSlot( bot, SLOT_SECONDARY )
+                    local secondary = _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY )
 
-					bot.Weapon_Switch( secondary )
-					secondary.AddAttribute( "disable weapon switch", 1, 1 )
-					_Motherland_Expert.Utils.ScriptEntFireSafe( secondary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
+                    bot.Weapon_Switch( secondary )
+                    secondary.AddAttribute( "disable weapon switch", 1, 1 )
+                    _MotherlandUtils.ScriptEntFireSafe( secondary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
                     bot.PressFireButton( 1.0 )
-				}
-			break
+                }
+            break
 
-			case TF_CLASS_SOLDIER:
+            case TF_CLASS_SOLDIER:
 
-				for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
+                for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
 
-					if ( p.GetTeam() == bot.GetTeam() || bot.GetActiveWeapon().Clip1() != 0 ) 
+                    if ( p.GetTeam() == bot.GetTeam() || bot.GetActiveWeapon().Clip1() != 0 ) 
                         continue
 
-					local secondary = _Motherland_Expert.Utils.GetItemInSlot( bot, SLOT_SECONDARY )
+                    local secondary = _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY )
 
-					bot.Weapon_Switch( secondary )
-					secondary.AddAttribute( "disable weapon switch", 1, 2 )
-					_Motherland_Expert.Utils.ScriptEntFireSafe( secondary, "self.RemoveAttribute( `disable weapon switch` )", 2.0 )
-				}
-			break
+                    bot.Weapon_Switch( secondary )
+                    secondary.AddAttribute( "disable weapon switch", 1, 2 )
+                    _MotherlandUtils.ScriptEntFireSafe( secondary, "self.RemoveAttribute( `disable weapon switch` )", 2.0 )
+                }
+            break
 
-			case TF_CLASS_PYRO:
+            case TF_CLASS_PYRO:
 
-				if ( bot.GetActiveWeapon() != _Motherland_Expert.Utils.GetItemInSlot( bot, SLOT_SECONDARY ) )
-					bot.Weapon_Switch( _Motherland_Expert.Utils.GetItemInSlot( bot, SLOT_SECONDARY ) )
+                if ( bot.GetActiveWeapon() != _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
+                    bot.Weapon_Switch( _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
 
-				for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
+                for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
 
-					if ( p.GetTeam() == bot.GetTeam() ) continue
+                    if ( p.GetTeam() == bot.GetTeam() ) continue
 
-					local primary = _Motherland_Expert.Utils.GetItemInSlot( bot, SLOT_PRIMARY )
+                    local primary = _MotherlandUtils.GetItemInSlot( bot, SLOT_PRIMARY )
 
-					bot.Weapon_Switch( primary )
-					primary.AddAttribute( "disable weapon switch", 1, 1 )
-					_Motherland_Expert.Utils.ScriptEntFireSafe( primary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
-				}
-			break
-			}
-		}
+                    bot.Weapon_Switch( primary )
+                    primary.AddAttribute( "disable weapon switch", 1, 1 )
+                    _MotherlandUtils.ScriptEntFireSafe( primary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
+                }
+            break
+            }
+        }
 
-		bot.GetScriptScope().BotThinkTable.BestWeaponThink <- BestWeaponThink
+        bot.GetScriptScope().BotThinkTable.BestWeaponThink <- BestWeaponThink
+    }
+
+    function motherland_paintall( bot, args ) {
+
+        for (local child = bot.FirstMoveChild(); ( child && child instanceof CEconEntity ); child = child.NextMovePeer()) {
+
+            child.AddAttribute( "set item tint RGB", args.color, -1 )
+
+            if ( "color2" in args )
+                child.AddAttribute( "set item tint RGB 2", args.color2, -1 )
+        }
     }
 }
 
-_Motherland_Expert.Events.AddRemoveEventHook( "player_spawn", "TagsPlayerSpawn", function( params ) {
+function _MotherlandTags::ParseTagArguments( bot, tag ) {
+
+    local newtags = {}
+
+    if ( !tag.find( "{" ) ) return {}
+
+    local separator = tag.find( "{" ) ? "{" : "|"
+
+    local splittag = _MotherlandUtils.SplitOnce( tag, separator )
+
+    if ( separator == "{" )  {
+
+        // Allow inputting strings using backticks.
+        local arr = split( splittag[1], "`" )
+        local end = arr.len() - 1
+        if ( end > 1 ) {
+            local str = ""
+            foreach ( i, sub in arr ) {
+
+                if ( i == end ) {
+                    str += sub
+                    break
+                }
+                str += sub + "\""
+            }
+            compilestring( format( @"::__motherlandtagstemp <- { %s", str ) )()
+        } else {
+            compilestring( format( @"::__motherlandtagstemp <- { %s", splittag[1] ) )()
+        }
+        foreach( k, v in ::__motherlandtagstemp ) newtags[k] <- v
+
+        delete ::__motherlandtagstemp
+    }
+
+    return newtags
+}
+
+function _MotherlandTags::EvaluateTags( bot ) {
+
+    local bot_tags = {}
+
+    bot.GetAllBotTags( bot_tags )
+
+    // bot has no tags
+    if ( !bot_tags.len() ) return
+
+    foreach( i, tag in bot_tags ) {
+
+        local func = split( tag, "{" )[0]
+        local args = ParseTagArguments( bot, tag )
+
+        if ( func in _MotherlandTags.Tags )
+            _MotherlandTags.Tags[func].call( bot.GetScriptScope(), bot, args )
+    }
+}
+
+_EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
 
     local player = GetPlayerFromUserID( params.userid )
 
@@ -447,8 +517,6 @@ _Motherland_Expert.Events.AddRemoveEventHook( "player_spawn", "TagsPlayerSpawn",
 
     AddThinkToEnt( bot, "BotThinks" )
 
-    _Motherland_Expert.Utils.ScriptEntFireSafe( bot, "_Motherland_Expert.Utils.EvaluateTags( self )", 0.015 )
+    _MotherlandUtils.ScriptEntFireSafe( bot, "_MotherlandTags.EvaluateTags( self )", 0.1 )
 
 }, EVENT_WRAPPER_TAGS )
-
-::_Motherland_Expert.Tags.setdelegate( ::_Motherland_Expert )
