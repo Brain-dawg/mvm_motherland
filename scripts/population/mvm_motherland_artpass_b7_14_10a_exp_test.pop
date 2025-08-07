@@ -1,0 +1,1645 @@
+#base robot_standard.pop
+#base robot_giant.pop
+#base robot_motherland.pop
+
+WaveSchedule {
+
+	StartingCurrency 1600
+	RespawnWaveTime 5
+	CanBotsAttackWhileInSpawnRoom No
+	Advanced 1
+
+	// Buster
+	Mission {
+
+		Objective DestroySentries
+
+		Where spawnbot_base_upper
+		Where spawnbot_base_battlements
+		Where spawnbot_gate1_upper
+		// Where spawnbot_gate1_upper
+		Where spawnbot_gate2_upper
+		Where spawnbot_gate2_flank
+		BeginAtWave 1
+		RunForThisManyWaves 6
+		CooldownTime 30
+
+		TFBot {
+
+			Template T_TFBot_SentryBuster
+			Attributes IgnoreEnemies
+			Skill Easy
+		}
+	}
+
+	// W1
+	Mission {
+
+		Objective Spy
+
+		InitialCooldown 30
+		Where spawnbot_base_upper
+		Where spawnbot_base_battlements
+		Where spawnbot_gate1_upper
+		// Where spawnbot_gate1_upper
+		Where spawnbot_gate2_upper
+		BeginAtWave 1
+		RunForThisManyWaves 1
+		CooldownTime 40
+		DesiredCount 3
+
+		TFBot {
+
+			Class Spy
+			Skill Expert
+			Item "The Spy-cicle"
+			Item "The Enforcer"
+		}
+	}
+
+	Mission {
+
+		Objective Sniper
+
+		Where spawnbot_base_upper
+		Where spawnbot_base_battlements
+		Where spawnbot_gate1_upper
+		// Where spawnbot_gate1_upper
+		Where spawnbot_gate2_upper
+		BeginAtWave 1
+		RunForThisManyWaves 1
+		CooldownTime 25
+		DesiredCount 2
+
+		TFBot {
+
+			Class Sniper
+			Skill Expert
+			ClassIcon sniper
+			Item "The Cozy Camper"
+			Item "The Bazaar Bargain"
+			Item "The Shahanshah"
+		}
+	}
+
+	// W2
+	Mission {
+
+		Objective Spy
+
+		InitialCooldown 30
+		Where spawnbot_base_upper
+		Where spawnbot_base_battlements
+		Where spawnbot_gate1_upper
+		// Where spawnbot_gate1_upper
+		Where spawnbot_gate2_upper
+		BeginAtWave 2
+		RunForThisManyWaves 1
+		CooldownTime 25
+		DesiredCount 3
+
+		TFBot {
+
+			Class Spy
+			Skill Expert
+			Item "The Spy-cicle"
+			Item "The Enforcer"
+			ItemAttributes {
+
+				ItemName "The Enforcer"
+				"auto fires full clip" 1
+				"auto fires when full" 1
+				"Reload time decreased" 3
+			}
+		}
+	}
+
+	Mission {
+
+		Objective Engineer
+
+		Where spawnbot_base_battlements
+		Where spawnbot_gate1_battlements
+		Where spawnbot_gate2_flank
+		BeginAtWave 2
+		RunForThisManyWaves 1
+		CooldownTime 10
+		DesiredCount 1
+
+		TFBot {
+			Template T_TFBot_Engineer_Sentry_Battle
+			Item "The Gunslinger"
+			Item "Packable Provisions"
+			Item "Hazard Handler"
+			Item "Delldozer"
+			Tag "motherland_minisentry"
+		}
+	}
+
+	Mission {
+
+		Objective Sniper
+
+		InitialCooldown 120
+		Where spawnbot_base_upper
+		Where spawnbot_base_battlements
+		Where spawnbot_gate1_upper
+		// Where spawnbot_gate1_upper
+		Where spawnbot_gate2_upper
+		BeginAtWave 2
+		RunForThisManyWaves 1
+		CooldownTime 20
+		DesiredCount 4
+
+		TFBot {
+
+			Class Demoman
+			Skill Expert
+			Name "Hybrid Samurai"
+			Attributes HoldFireUntilFullReload
+			ClassIcon demoknight_samurai
+			MaxVisionRange 1500
+			Item "The Loch-N-Load"
+			Item "The Splendid Screen"
+			Item "The Half-Zatoichi"
+			Item "Demo Kabuto"
+			// Item "Bushi-Dou"
+		//	Item "Shin Shredders"
+
+			CharacterAttributes {
+
+				"charge recharge rate increased" 1.5
+				"deploy time decreased" 0.1
+				"gesture speed increase" 2
+				"full charge turn control" 50
+			}
+
+			ItemAttributes {
+
+				ItemName "The Half-Zatoichi"
+				"critboost on kill" 6
+				"honorbound" 0
+				"Attack not cancel charge" 1
+			}
+
+			ItemAttributes {
+
+				ItemName "The Loch-N-Load"
+				"Projectile speed increased" 1
+				"no self blast dmg" 2
+			}
+		}
+	}
+
+	// W4
+	Mission {
+
+		Objective Spy
+
+		InitialCooldown 10
+		Where spawnbot_base_upper
+		Where spawnbot_base_battlements
+		Where spawnbot_gate1_upper
+		// Where spawnbot_gate1_upper
+		Where spawnbot_gate2_upper
+		BeginAtWave 4
+		RunForThisManyWaves 1
+		CooldownTime 30
+		DesiredCount 10
+
+		TFBot { Template T_TFBot_Spy }
+	}
+
+	Mission {
+
+		Objective Engineer
+
+		InitialCooldown 10
+		Where spawnbot_base_battlements
+		Where spawnbot_base_upper
+		Where spawnbot_gate1_battlements
+		Where spawnbot_gate2_upper
+		BeginAtWave 4
+		RunForThisManyWaves 1
+		CooldownTime 20
+		DesiredCount 3
+
+		TFBot { Template T_TFBot_Engineer_Sentry_Battle_TeleIn }
+	}
+
+	// W6
+	Mission {
+
+		Objective Sniper
+
+		// InitialCooldown 10
+		Where spawnbot_base_battlements
+		Where spawnbot_base_upper
+		Where spawnbot_gate1_battlements
+		Where spawnbot_gate2_upper
+		BeginAtWave 6
+		RunForThisManyWaves 1
+		CooldownTime 25
+		DesiredCount 4
+
+		TFBot {
+
+			Template T_TFBot_Sniper_Sydney_Jarate
+		}
+	}
+
+	Wave {
+
+		InitWaveOutput {
+
+			Target BigNet
+			Action RunScriptFile
+			Param "brain/main"
+		}
+
+		StartWaveOutput {
+
+			Target logic_script_lizardmvm
+			Action CallScriptFunction
+			Param "DisableSecondBomb"
+		}
+
+		WaveSpawn {
+
+			Name "wave1a"
+			Where spawnbot_base_main
+			Where spawnbot_base_closet
+			Where spawnbot_base_upper
+			Where spawnbot_base_battlements
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate1_main
+			// Where spawnbot_gate1_upper
+			Where spawnbot_gate2_upper
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 7
+
+			StartWaveOutput {
+
+				Target __motherland_exp
+				Action RunScriptCode
+				Param "Wavebar.RemoveWaveIcon( `soldier_blackbox`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )"
+			}
+
+			// no crit particles to save fps
+			// dummy AlwaysCrit bot for the crit icon
+			TFBot {
+
+				Template T_TFBot_Scout_Melee
+				Item "Batsaber"
+				Attributes AlwaysCrit
+				ClassIcon scout_bat
+				ItemAttributes {
+					ItemName "Batsaber"
+					"set item tint rgb" 16711680
+				}
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave1a"
+			Where spawnbot_base_main
+			Where spawnbot_base_closet
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_upper
+			TotalCount 69 // nice
+			MaxActive 9
+			SpawnCount 3
+			RandomSpawn 1
+			TotalCurrency 150
+			WaitBeforeStarting 8
+
+			RandomChoice {
+
+				TFBot {
+
+					Template T_TFBot_Scout_Melee
+					Item "Batsaber"
+					ClassIcon scout_bat
+					ItemAttributes {
+
+						ItemName "Batsaber"
+						"set item tint rgb" 16711680
+						"crit vs non burning players" 1
+					}
+				}
+				TFBot {
+
+					Template T_TFBot_Scout_Melee
+					Item "Batsaber"
+					ClassIcon scout_bat
+					ItemAttributes {
+
+						ItemName "Batsaber"
+						"set item tint rgb" 65501
+						"crit vs non burning players" 1
+					}
+				}
+				TFBot {
+
+					Template T_TFBot_Scout_Melee
+					Item "Batsaber"
+					ClassIcon scout_bat
+					ItemAttributes {
+
+						ItemName "Batsaber"
+						"set item tint rgb" 12807213
+						"crit vs non burning players" 1
+					}
+				}
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave1a"
+			Where spawnbot_base_battlements
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_upper
+			Where spawnbot_gate2_main
+			TotalCount 30
+			MaxActive 5
+			SpawnCount 5
+			WaitBetweenSpawns 1
+			WaitBeforeStarting 8
+			RandomSpawn 1
+			TotalCurrency 50
+
+			TFBot {
+
+				Template T_TFBot_Scout_Melee
+				Item "Batsaber"
+				ClassIcon scout_bat
+				BehaviorModifiers Push
+				Tag nav_flank
+				Tag motherland_revertgatebot
+				ItemAttributes {
+
+					ItemName "Batsaber"
+					"set item tint rgb" 15335168
+					"crit vs non burning players" 1
+				}
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave1b"
+			Where spawnbot_base_jetpack1
+			Where spawnbot_gate1_jetpack1
+			Where spawnbot_gate2_jetpack1
+			TotalCount 6
+			MaxActive 3
+			SpawnCount 3
+			WaitBetweenSpawns 15
+			TotalCurrency 50
+
+			Squad {
+
+				TFBot { 
+
+					Template T_TFBot_Giant_Soldier_Spammer 
+					Tag bot_giant
+					Tag jetpack_spawn
+					Tag motherland_alwaysglow
+				}
+				TFBot { Template T_TFBot_Medic Tag jetpack_spawn }
+				TFBot { Template T_TFBot_Medic Tag jetpack_spawn }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave1b1"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 3
+			MaxActive 1
+			SpawnCount 1
+			WaitBetweenSpawns 10
+			WaitForAllDead "wave1b"
+			TotalCurrency 50
+
+			Squad {
+
+				TFBot {
+
+					Template T_TFBot_Giant_Soldier_Spammer
+					Attributes AlwaysCrit
+					Skill Normal
+					Tag bot_giant
+				}
+				TFBot { Template T_TFBot_Medic Tag jetpack_spawn }
+				TFBot { Template T_TFBot_Medic Tag jetpack_spawn }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave1b2"
+			Where spawnbot_base_jetpack1
+			Where spawnbot_gate1_jetpack1
+			Where spawnbot_gate2_jetpack1
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitForAllDead "wave1b1"
+			TotalCurrency 50
+
+			TFBot { 
+				Template T_TFBot_Soldier_BurstFire
+				Skill Normal
+				Tag bot_giant
+				Tag jetpack_spawn
+				Tag motherland_alwaysglow
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave1c"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 4
+			MaxActive 4
+			SpawnCount 4
+			WaitBeforeStarting 1
+			FirstSpawnWarningSound "vo\mvm\mght\heavy_mvm_m_sandwichtaunt05.mp3"
+			TotalCurrency 100
+			WaitForAllDead "wave1b2"
+
+			FirstSpawnOutput {
+
+				Target logic_script_lizardmvm
+				Action RunScriptCode
+				Param "SetBSpawns( true )"
+			}
+
+			Squad {
+
+				TFBot {
+
+					Template T_TFBot_Giant_Heavyweapons
+					Name "Chief Sandvich"
+					Health 15000
+					ClassIcon heavy_robosandvich_nys
+
+					// gets progressively weaker for each gate cap
+					EventChangeAttributes {
+
+						Default {
+
+							Item "The Robo-Sandvich"
+							Item "The Sandvich Safe"
+							Item "The Wing Mann"
+							Tag bot_giant
+							Tag "motherland_suicidecounter{ attacker = _Motherland_Expert.TriggerHurt, inflictor = _Motherland_Expert.TriggerHurt, amount = 2 }"
+							Attributes UseBossHealthBar
+							Attributes AlwaysFireWeapon
+							Attributes MiniBoss
+							ItemAttributes {
+
+								ItemName "TF_WEAPON_MINIGUN"
+								"single wep holster time increased" 0.01
+								"spunup_damage_resistance" 0.6
+							}
+
+							ItemAttributes {
+
+								ItemName "The Robo-Sandvich"
+								"force weapon switch" 1
+								"lunchbox healing decreased" 30
+								"gesture speed increase" 1.2
+								"item_meter_charge_rate" 14
+							}
+
+							CharacterAttributes {
+
+								"damage force reduction" 0
+								"airblast vulnerability multiplier" 0
+								"airblast vertical vulnerability multiplier" 0
+								"move speed penalty" 0.5
+							}
+						}
+						GateACapped {
+
+							Item "The Robo-Sandvich"
+							Item "The Sandvich Safe"
+							Item "The Wing Mann"
+							Tag bot_giant
+							Tag "motherland_suicidecounter{ attacker = _Motherland_Expert.TriggerHurt, inflictor = _Motherland_Expert.TriggerHurt, amount = 2 }"
+							Attributes UseBossHealthBar
+							Attributes AlwaysFireWeapon
+							Attributes MiniBoss
+							ItemAttributes {
+
+								ItemName "TF_WEAPON_MINIGUN"
+								"single wep holster time increased" 0.01
+								"spunup_damage_resistance" 0.8
+							}
+
+							ItemAttributes {
+
+								ItemName "The Robo-Sandvich"
+								"force weapon switch" 1
+								"lunchbox healing decreased" 15
+								"gesture speed increase" 1.2
+								"item_meter_charge_rate" 25
+							}
+
+							CharacterAttributes {
+
+								"damage force reduction" 0
+								"airblast vulnerability multiplier" 0
+								"airblast vertical vulnerability multiplier" 0
+								"move speed penalty" 0.5
+							}
+						}
+						GateBCapped {
+
+							Item "The Robo-Sandvich"
+							Item "The Sandvich Safe"
+							Item "The Wing Mann"
+							Tag bot_giant
+							Tag "motherland_suicidecounter{ attacker = _Motherland_Expert.TriggerHurt, inflictor = _Motherland_Expert.TriggerHurt, amount = 2 }"
+							Attributes UseBossHealthBar
+							Attributes AlwaysFireWeapon
+							Attributes MiniBoss
+							ItemAttributes {
+
+								ItemName "TF_WEAPON_MINIGUN"
+								"single wep holster time increased" 0.01
+							}
+
+							ItemAttributes {
+
+								ItemName "The Robo-Sandvich"
+								"force weapon switch" 1
+								"lunchbox healing decreased" 5
+								"gesture speed increase" 1.2
+								"item_meter_charge_rate" 35
+							}
+
+							CharacterAttributes {
+
+								"damage force reduction" 0
+								"airblast vulnerability multiplier" 0
+								"airblast vertical vulnerability multiplier" 0
+								"move speed penalty" 0.5
+							}
+						}
+					}
+				}
+
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner ClassIcon soldier_banner_trio }
+				TFBot { Template T_TFBot_Soldier_Extended_Concheror ClassIcon soldier_banner_trio }
+				TFBot { Template T_TFBot_Soldier_Extended_Battalion ClassIcon soldier_banner_trio }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave1c"
+			Where spawnbot_base_main
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_main
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate2_main
+			Where spawnbot_gate2_upper
+			TotalCount 9999
+			Support Limited
+			WaitBetweenSpawns 8
+			MaxActive 1
+			WaitForAllDead "wave1b2"
+
+			FirstSpawnOutput {
+
+				Target __motherland_exp
+				Action RunScriptCode
+				Param "Wavebar.SetWaveIcon( `soldier_blackbox`, 2|32, 1, false )"
+			}
+
+			RandomChoice {
+
+				TFBot { Template T_TFBot_Soldier_RocketShotgun }
+				TFBot { Template T_TFBot_Soldier_RocketShotgun }
+				TFBot { Template T_TFBot_Soldier_RocketShotgun }
+				TFBot { Template T_TFBot_Soldier_RocketShotgun }
+				TFBot { Template T_TFBot_Soldier_RocketShotgun Tag nav_flank BehaviorModifiers Push }
+			}
+		}
+	}
+
+	Wave {
+
+		InitWaveOutput {
+
+			Target BigNet
+			Action RunScriptFile
+			Param "brain/main"
+		}
+
+		StartWaveOutput {
+
+			Target __motherland_exp
+			Action RunScriptCode
+			Param "
+				Wavebar.RemoveWaveIcon( `soldier_mangler_v2`, 0 )
+				EntFire(`logic_script_lizardmvm`, `CallScriptFunction`, `DisableSecondBomb`)
+			"
+		}
+
+		WaveSpawn {
+
+			Name "wave2a"
+			Where spawnbot_base_battlements
+			TotalCount 5
+			MaxActive 2
+			SpawnCount 1
+			TotalCurrency 100
+			WaitBetweenSpawns 2
+			Support Limited
+
+			RandomChoice {
+
+				TFBot {
+					Class Pyro
+					Skill Expert
+
+					Item "The Nostromo Napalmer"
+					ItemAttributes {
+
+						ItemName "The Nostromo Napalmer"
+						"lunchbox adds minicrits" 2
+						"airblast disabled" 1
+					}
+				}
+				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
+				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
+				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank BehaviorModifiers Push }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave2a"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 3
+			MaxActive 3
+			SpawnCount 3
+			WaitBeforeStarting 3
+			TotalCurrency 50
+
+			FirstSpawnOutput {
+				Target logic_script_lizardmvm
+				Action RunScriptCode
+				Param "SetBSpawns( true )"
+			}
+
+			Squad {
+
+				TFBot {
+
+					Template T_TFBot_Giant_Pyro
+					ClassIcon pyro_dragon_fury_swordstone
+					Tag bot_giant
+					Item "The Dragon's Fury"
+					Name "Giant Dragon's Fury Pyro"
+				}
+				TFBot { Template T_TFBot_Giant_Medic_Regen Attributes IgnoreEnemies Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic_Regen Attributes IgnoreEnemies Tag bot_giant }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave2b"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 2
+			MaxActive 2
+			SpawnCount 2
+			WaitBeforeStarting 25
+			TotalCurrency 50
+
+			Squad {
+
+				TFBot {
+
+					Template T_TFBot_Giant_Pyro
+					Skill Expert
+					Tag bot_giant
+					Attributes AlwaysCrit
+					ClassIcon pyro_dragon_fury_swordstone_giant
+					Item "The Dragon's Fury"
+					Name "Giant Dragon's Fury Pyro"
+				}
+				TFBot { Template T_TFBot_Giant_Medic_Regen Attributes IgnoreEnemies Tag bot_giant }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave2c"
+			Where spawnbot_base_closet_b
+			Where spawnbot_base_upper_b
+			Where spawnbot_base_battlements_b
+			Where spawnbot_gate1_upper_b
+			Where spawnbot_gate1_main_b
+			Where spawnbot_gate2_upper_b
+			Where spawnbot_gate2_main_b
+			WaitBeforeStarting 15
+			TotalCount 80
+			MaxActive 8
+			SpawnCount 2
+			TotalCurrency 100
+			WaitBetweenSpawns 2
+			Support Limited
+
+			RandomChoice {
+
+				TFBot {
+					Class Pyro
+					Skill Expert
+					Item "The Nostromo Napalmer"
+
+					ItemAttributes {
+
+						ItemName "The Nostromo Napalmer"
+						"lunchbox adds minicrits" 2
+						"airblast disabled" 1
+					}
+				}
+				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
+				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
+				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank BehaviorModifiers Push }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave2c1"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate2_upper
+			TotalCount 3
+			MaxActive 1
+			SpawnCount 1
+			WaitForAllDead "wave2b"
+			WaitBeforeStarting 5
+			WaitBetweenSpawnsAfterDeath 3
+			TotalCurrency 100
+
+			TFBot { Template T_TFBot_Giant_Scout_Fast Skill Expert Item "Sun-on-a-Stick" ClassIcon scout_sunstick_swordstone Tag bot_giant Tag nav_main }
+		}
+
+		WaveSpawn {
+
+			Name "wave2c2"
+			Where spawnbot_base_jetpack1
+			Where spawnbot_gate1_jetpack1
+			Where spawnbot_gate2_jetpack1
+			TotalCount 10
+			MaxActive 5
+			SpawnCount 5
+			WaitForAllDead "wave2b"
+			TotalCurrency 100
+
+			Squad {
+
+				TFBot {
+
+					Template T_TFBot_Heavyweapons_Heater
+					Tag bot_giant
+					Tag nav_main
+					Tag jetpack_spawn
+					Tag motherland_altfire
+					Tag motherland_alwaysglow
+				}
+				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies Tag jetpack_spawn }
+				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies Tag jetpack_spawn }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn }
+			}
+
+			DoneOutput {
+
+				Target __motherland_exp
+				Action RunScriptCode
+				Param "
+					Utils.ScriptEntFireSafe( `logic_script_lizardmvm`, `SetBSpawns( false )` )
+					Wavebar.RemoveWaveIcon( `pyro`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+					Wavebar.RemoveWaveIcon( `pyro_flare`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+				"
+			}
+		}
+
+		WaveSpawn {
+
+			Name "tanksupport"
+			Where spawnbot_base_closet
+			Where spawnbot_base_upper
+			Where spawnbot_base_battlements
+			Where spawnbot_gate1_upper
+			// Where spawnbot_gate1_upper
+			Where spawnbot_gate2_upper
+			Where spawnbot_gate2_flank
+			Support 1
+			MaxActive 8
+			SpawnCount 1
+			WaitBetweenSpawns 2
+			WaitForAllDead "wave2c2"
+			WaitBeforeStarting 3
+
+			TFBot {
+
+				Class Soldier
+				Skill Normal
+				Name "Charged Mangler Soldier"
+				Item "The Cow Mangler 5000"
+				Tag nav_flank
+				Attributes AlwaysCrit
+				WeaponRestrictions PrimaryOnly
+				ClassIcon soldier_mangler_v2
+
+				ItemAttributes {
+
+					ItemName "The Cow Mangler 5000"
+					"Set DamageType Ignite" 1
+					"set item tint rgb" 1048732
+				}
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave2d"
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitForAllDead "wave2c2"
+
+			FirstSpawnOutput {
+
+				Target __motherland_exp
+				Action RunScriptCode
+				Param "Wavebar.SetWaveIcon( `soldier_mangler_v2`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT, 1, false )"
+			}
+
+			Tank {
+
+				Name Tank
+				Health 26500
+				StartingPathTrackNode "tank_path_0"
+				OnBombDroppedOutput
+				{
+					Target boss_deploy_relay
+					Action Trigger
+				}
+			}
+		}
+	}
+
+	Wave {
+
+		InitWaveOutput {
+
+			Target BigNet
+			Action RunScriptFile
+			Param "brain/main"
+		}
+
+		StartWaveOutput {
+
+			Target __motherland_exp
+			Action RunScriptCode
+			Param "
+				Wavebar.RemoveWaveIcon( `heavy_shotgun`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+				Wavebar.RemoveWaveIcon( `medic`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+				Wavebar.RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+			"
+		}
+
+		WaveSpawn {
+
+			Name "wave3_pretrain"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 2
+			TotalCurrency 50
+			StartWaveWarningSound "ambient/alarms/train_horn_distant1.wav"
+
+			TFBot { Template T_TFBot_Giant_Heavyweapons_Shotgun Tag bot_giant Tag nav_main }
+		}
+
+		WaveSpawn {
+
+			Name "wave3_pretrain"
+			Where spawnbot_base_main
+			Where spawnbot_base_closet
+			Where spawnbot_gate1_main
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate2_main
+			Where spawnbot_gate2_upper
+			TotalCount 10
+			MaxActive 3
+			SpawnCount 1
+			WaitBetweenSpawns 5
+			WaitBeforeStarting 2.1
+			TotalCurrency 50
+
+			Squad {
+
+				TFBot { Template T_TFBot_Soldier_Extended_Concheror Tag nav_main }
+				TFBot { Class Heavy Skill Normal Attributes AlwaysCrit Tag nav_main }
+				TFBot { Class Heavy Skill Normal Attributes AlwaysCrit Tag nav_main }
+				TFBot { Template T_TFBot_Medic_QuickUber Tag nav_main }
+				TFBot { Template T_TFBot_Medic_QuickUber Tag nav_main }
+			}
+		}
+
+		WaveSpawn {
+
+			Template T_WaveSpawn_Motherland_Train
+			Name "wave3traintank"
+			WaitForAllDead "wave3_pretrain"
+			TFBot {
+
+				Template T_TFBot_Motherland_Train 
+				Tag "motherland_limitedsupport{ icon = `heavy_shotgun` count = 1 }" 
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave3traintank_support"
+			Where spawnbot_traintank
+			TotalCount 9999
+			MaxActive 10
+			SpawnCount 1
+			WaitBetweenSpawns 1
+			WaitBeforeStarting 1
+			WaitForAllSpawned "wave3traintank"
+			Support Limited
+			RandomSpawn 1
+
+			RandomChoice {
+
+				TFBot {
+
+					Class Soldier
+					ClassIcon heavy_shotgun
+					WeaponRestrictions SecondaryOnly
+					Skill Expert
+					Attributes IgnoreFlag
+					BehaviorModifiers Push
+					Tag nav_main
+					Tag traintank_spawn
+					Tag motherland_revertgatebot
+				}
+				TFBot {
+
+					Class Heavyweapons
+					ClassIcon heavy_shotgun
+					WeaponRestrictions SecondaryOnly
+					Skill Expert
+					Attributes IgnoreFlag
+					BehaviorModifiers Push
+					Tag nav_main
+					Tag traintank_spawn
+					Tag motherland_revertgatebot
+				}
+				TFBot {
+
+					Class Pyro
+					ClassIcon heavy_shotgun
+					WeaponRestrictions SecondaryOnly
+					Skill Expert
+					Attributes IgnoreFlag
+					BehaviorModifiers Push
+					Tag nav_main
+					Tag traintank_spawn
+					Tag motherland_revertgatebot
+				}
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave3train1"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 4
+			MaxActive 2
+			SpawnCount 1
+			WaitBetweenSpawns 10
+			WaitBeforeStarting 2
+			TotalCurrency 100
+			WaitForAllSpawned "wave3traintank"
+
+			TFBot { Template T_TFBot_Giant_Demo_RapidFire Tag bot_giant }
+		}
+
+		WaveSpawn {
+
+			Name "wave3train1"
+			Where spawnbot_base_main
+			Where spawnbot_base_closet
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_main
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate1_flank
+			Where spawnbot_gate2_main
+			Where spawnbot_gate2_upper
+			Where spawnbot_gate2_flank
+			TotalCount 32
+			MaxActive 8
+			SpawnCount 4
+			WaitBetweenSpawns 1
+			WaitBeforeStarting 2
+			TotalCurrency 50
+			WaitForAllSpawned "wave3traintank"
+			RandomSpawn 1
+
+			TFBot { Template T_TFBot_Demoman_Knight Tag nav_main }
+		}
+
+		WaveSpawn {
+
+			Name "wave3medicsupport"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 30
+			MaxActive 6
+			SpawnCount 2
+			WaitBetweenSpawns 1
+			Support Limited
+			WaitForAllDead "wave3train1"
+
+			TFBot { 
+				Template T_TFBot_Medic_BigHeal 
+				CharacterAttributes { "mod weapon blocks healing" 1 } 
+				Tag "motherland_limitedsupport{icon = `medic`, count = 30}" 
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave3train2"
+			Where spawnbot_base_main
+			Where spawnbot_base_closet
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_main
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate2_main
+			Where spawnbot_gate2_upper
+			TotalCount 30
+			MaxActive 8
+			SpawnCount 2
+			TotalCurrency 25
+			WaitForAllDead "wave3train1"
+			RandomSpawn 1
+			TFBot { Class Scout Item "The Force-A-Nature" Skill Expert ClassIcon scout_fan Tag nav_flank }
+		}
+
+		WaveSpawn {
+
+			Name "wave3train2"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 9
+			MaxActive 3
+			SpawnCount 1
+			WaitBetweenSpawns 1
+			TotalCurrency 50
+			WaitForAllDead "wave3train1"
+			RandomSpawn 1
+
+			TFBot { Template T_TFBot_Heavyweapons_Fist Attributes AlwaysCrit Tag bot_giant Tag nav_main }
+		}
+
+		WaveSpawn {
+
+			Name "wave3train2"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 9
+			MaxActive 3
+			SpawnCount 3
+			WaitBetweenSpawns 10
+			TotalCurrency 50
+			WaitForAllDead "wave3train1"
+			RandomSpawn 1
+			Squad {
+				TFBot { Template T_TFBot_Giant_Soldier_Spammer_Reload Tag bot_giant Tag nav_main }
+				TFBot { Template T_TFBot_Medic_Kritz }
+				TFBot { Template T_TFBot_Medic_Kritz }
+			}
+		}
+	}
+
+	Wave {
+
+		InitWaveOutput {
+
+			Target BigNet
+			Action RunScriptFile
+			Param "brain/main"
+		}
+
+		WaveSpawn {
+
+			Name "wave4a"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 8
+			MaxActive 2
+			SpawnCount 1
+			WaitBetweenSpawns 15
+			TotalCurrency 600
+			RandomSpawn 1
+
+			DoneOutput {
+
+				Target BigNet
+				Action RunScriptCode
+				Param "EntFire( `tank_boss`, `RunScriptCode`, `self.TakeDamage( INT_MAX, DMG_GENERIC, Entities.First() )` )"
+			}
+
+			RandomChoice {
+
+				TFBot { Template T_TFBot_Giant_Heavyweapons Tag motherland_altfire Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Heavyweapons_Natascha Tag motherland_altfire Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Heavyweapons_BrassBeast Tag motherland_altfire Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Heavyweapons_Deflector Tag motherland_altfire Tag bot_giant }
+				TFBot { Template T_TFBot_Heavyweapons_Heater Tag motherland_altfire Tag bot_giant Item "The Bunsen Brave" }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave4tanksupport"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			SpawnCount 1
+			MaxActive 2
+			WaitBetweenSpawns 30
+			Support Limited
+			TotalCount 9999
+			RandomSpawn 1
+			Tank {
+
+				Name "tankboss"
+				Health 10000
+				StartingPathTrackNode tank_path_0
+				Speed 90
+
+				OnBombDroppedOutput {
+
+					Target boss_deploy_relay
+					Action Trigger
+				}
+
+				// OnKilledOutput {
+
+				// 	Target BigNet
+				// 	Action RunScriptCode
+				// 	Param "EntFire( RandomInt( 0, 3 ) == 3 ? `switch_tank_path_short` : `switch_tank_path_long`, `Trigger` )"
+				// }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave4supportmedics"
+			Where spawnbot_base_main
+			Where spawnbot_base_closet
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_main
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate2_main
+			Where spawnbot_gate2_upper
+			MaxActive 4
+			SpawnCount 1
+			WaitBetweenSpawns 6
+			Support 1
+			RandomSpawn 1
+			TFBot { Template T_TFBot_Medic_QuickUber }
+		}
+	}
+
+	Wave {
+
+		InitWaveOutput {
+
+			Target BigNet
+			Action RunScriptFile
+			Param "brain/main"
+		}
+
+		WaveSpawn {
+
+			Template T_WaveSpawn_Motherland_Train
+			Name "wave5traintank"
+			TotalCurrency	400
+
+			DoneOutput {
+
+				Target __motherland_exp
+				Action RunScriptCode
+				Param "
+					Wavebar.RemoveWaveIcon( `sniper_bow`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT )
+					Wavebar.RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+					Wavebar.RemoveWaveIcon( `heavy_champ_giant`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS )
+				"
+			}
+
+			TFBot { Template T_TFBot_Motherland_Train Health 30000 }
+		}
+
+		WaveSpawn {
+
+			Name "wave5traintank_support"
+			Where spawnbot_traintank
+			TotalCount 9999
+			MaxActive 6
+			SpawnCount 2
+			WaitBetweenSpawns 1
+			WaitBeforeStarting 1
+			WaitForAllSpawned "wave5traintank"
+			Support Limited
+			TFBot { Template T_TFBot_Sniper_Huntsman Attributes AlwaysCrit Tag nav_main Tag traintank_spawn }
+		}
+
+		WaveSpawn {
+
+			Name "w5tanktrain_support"
+			Where spawnbot_traintank
+			TotalCount 8
+			MaxActive 4
+			SpawnCount 4
+			WaitBeforeStarting 1
+			WaitBetweenSpawns 5
+			WaitForAllSpawned "wave5traintank"
+			Support Limited
+			RandomSpawn 1
+			// DoneOutput {
+
+			// 	Target __motherland_exp
+			// 	Action RunScriptCode
+			// 	Param "
+			// 		Wavebar.RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+			// 		Wavebar.RemoveWaveIcon( `heavy_champ_giant`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS )
+			// 	"
+			// }
+
+			Squad {
+
+				TFBot { 
+					Template T_TFBot_Giant_Boxing_Heavy 
+					Attributes AlwaysCrit 
+					Tag bot_giant 
+					Tag nav_main 
+					Tag traintank_spawn
+					Tag "motherland_limitedsupport{ icon = `heavy_champ_giant` count = 2 flags = ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS }"
+				}
+				TFBot { 
+					Template T_TFBot_Medic_Vacc_Bullet_Full 
+					ClassIcon medic_vac_trio_nys 
+					Tag nav_main 
+					Tag traintank_spawn 
+					Tag "motherland_limitedsupport{ icon = `medic_vac_trio_nys` count = 6 }"
+				}
+				TFBot { 
+					Template T_TFBot_Medic_Vacc_Blast_Full 
+					ClassIcon medic_vac_trio_nys 
+					Tag nav_main 
+					Tag traintank_spawn 
+					Tag "motherland_limitedsupport{ icon = `medic_vac_trio_nys` count = 6 }"
+				}
+				TFBot { 
+					Template T_TFBot_Medic_Vacc_Fire_Full 
+					ClassIcon medic_vac_trio_nys 
+					Tag nav_main 
+					Tag traintank_spawn 
+					Tag "motherland_limitedsupport{ icon = `medic_vac_trio_nys` count = 6 }"
+				}
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave5a"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 10
+			MaxActive 2
+			SpawnCount 2
+			TotalCurrency 200
+			WaitBeforeStarting 5
+			WaitForAllSpawned "wave5traintank"
+			Squad {
+
+				TFBot { Template T_TFBot_Giant_Scout_Fast Tag bot_giant Tag nav_main }
+				TFBot { Template T_TFBot_Giant_Scout_FAN Tag bot_giant Tag nav_main }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave5a"
+			Where spawnbot_base_battlements
+			TotalCurrency 100
+			WaitBetweenSpawns 3
+			WaitBeforeStarting 10
+			TotalCount 24
+			MaxActive 6
+			SpawnCount 3
+			WaitForAllSpawned "wave5traintank"
+			WaitBeforeStarting 6
+			Support Limited
+			RandomSpawn 1
+			// DoneOutput {
+
+			// 	Target __motherland_exp
+			// 	Action RunScriptCode
+			// 	Param "
+
+			// 		Wavebar.RemoveWaveIcon( `scout`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+			// 		Wavebar.RemoveWaveIcon( `soldier`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+			// 	"
+			// }
+
+			Squad {
+
+				TFBot { Class Soldier Skill Expert Tag nav_flank Tag "motherland_limitedsupport{ icon = `soldier` count = 8 }" }
+				TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag nav_flank Tag "motherland_limitedsupport{ icon = `scout` count = 16 }" }
+				TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag nav_flank Tag "motherland_limitedsupport{ icon = `scout` count = 16 }" }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave5b"
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate2_upper
+			TotalCount 30
+			MaxActive 12
+			SpawnCount 2
+			WaitBetweenSpawns 1
+			TotalCurrency 100
+			WaitForAllSpawned "wave5a"
+			WaitBeforeStarting 5
+			RandomSpawn 1
+			Squad {
+
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag nav_main }
+				TFBot { Class Demoman Skill Expert Tag nav_main }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave5b"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 6
+			MaxActive 3
+			SpawnCount 3
+			TotalCurrency 100
+			WaitForAllDead "wave5a"
+			RandomSpawn 1
+			Squad {
+
+				TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag bot_giant Attributes AlwaysCrit }
+				TFBot { Template T_TFBot_Giant_Medic Tag bot_giant Attributes AlwaysCrit }
+				TFBot { Template T_TFBot_Giant_Medic Tag bot_giant Attributes AlwaysCrit }
+			}
+		}
+	}
+
+	Wave {
+
+		InitWaveOutput {
+
+			Target BigNet
+			Action RunScriptFile
+			Param "brain/main"
+		}
+			
+		WaveSpawn {
+			Name "wave6a"
+			Where spawnbot_base_jetpack1
+			Where spawnbot_base_jetpack2
+			Where spawnbot_base_jetpack3
+			Where spawnbot_gate1_jetpack1
+			Where spawnbot_gate1_jetpack2
+			Where spawnbot_gate1_jetpack3
+			Where spawnbot_gate2_jetpack1
+			Where spawnbot_gate2_jetpack2
+			Where spawnbot_gate2_jetpack3
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			// StartWaveWarningSound "ui/gamestartup4.mp3"
+			
+			TFBot {
+
+				Class Heavy
+				Skill Expert
+				Health 70000
+				ClassIcon heavy_brass_beast_steak
+				Attributes MiniBoss
+				Attributes UseBossHealthBar
+				Attributes AlwaysFireWeapon
+				Tag jetpack_spawn
+				Name "B.E.A.R Mk.1"
+				Item "the buffalo steak sandvich"
+				Item "Warrior's Spirit"
+				Item "The Brass Beast"
+				Item "The K-9 Mane"
+
+				CharacterAttributes {
+
+					"damage force reduction" 0
+					"airblast vertical vulnerability multiplier" 0
+					"airblast vulnerability multiplier" 0
+					"override footstep sound set" 2
+					"gesture speed increase" 1.5
+					"deploy time increased" 0.5
+				}
+
+				ItemAttributes {
+
+					ItemName "Warrior's Spirit"
+
+					"provide on active"  1
+					"critboost on kill"  10
+					"damage bonus" 		 3
+					"move speed penalty" 0.8
+				}
+
+				ItemAttributes {
+
+					ItemName "the buffalo steak sandvich"
+
+					"force weapon switch" 	 1
+					"item_meter_charge_rate" 60
+					"deploy time increased"  0.01
+				}
+
+				ItemAttributes {
+
+					ItemName "The Brass Beast"
+
+					"provide on active" 		 1
+					"spunup_damage_resistance" 	 0.15
+					"move speed penalty"		 0.35
+					// "shot penetrate all players" 1
+					"attack projectiles" 		 2
+					"fire rate bonus with reduced health" 0.35
+				}
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave6vaccinator"
+			Where spawnbot_base_jetpack1
+			Where spawnbot_base_jetpack2
+			Where spawnbot_base_jetpack3
+			Where spawnbot_gate1_jetpack1
+			Where spawnbot_gate1_jetpack2
+			Where spawnbot_gate1_jetpack3
+			Where spawnbot_gate2_jetpack1
+			Where spawnbot_gate2_jetpack2
+			Where spawnbot_gate2_jetpack3
+			TotalCount 9999
+			MaxActive 4
+			SpawnCount 1
+			WaitForAllDead "wave6a"
+			WaitBetweenSpawns 5
+			TotalCurrency 50
+			Support Limited
+			RandomSpawn 1
+
+			FirstSpawnOutput {
+
+				Target __motherland_exp
+				Action RunScriptCode
+				Param "Wavebar.SetWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED, 1, false )"
+			}
+			DoneOutput {
+
+				Target __motherland_exp
+				Action RunScriptCode
+				Param "Wavebar.RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )"
+			}
+
+			RandomChoice {
+
+				TFBot { Template T_TFBot_Medic_Vacc_Bullet Tag jetpack_spawn ClassIcon medic_vac_trio_nys }
+				TFBot { Template T_TFBot_Medic_Vacc_Blast  Tag jetpack_spawn ClassIcon medic_vac_trio_nys }
+				TFBot { Template T_TFBot_Medic_Vacc_Fire   Tag jetpack_spawn ClassIcon medic_vac_trio_nys }
+			}
+		}
+
+		WaveSpawn {
+
+			Name "wave6b"
+			Where spawnbot_base_main
+			Where spawnbot_base_battlements
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_main
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate2_main
+			Where spawnbot_gate2_upper
+			TotalCount 30
+			MaxActive 8
+			SpawnCount 2
+			WaitBetweenSpawns 1
+			WaitBeforeStarting 3
+			WaitForAllDead "wave6a"
+			TotalCurrency 50
+			RandomSpawn 1
+			TFBot { Template T_TFBot_Demo_Sticky Attributes AlwaysCrit }
+		}
+
+		WaveSpawn {
+
+			Name "wave6b"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 12
+			MaxActive 8
+			SpawnCount 4
+			WaitBetweenSpawns 10
+			TotalCurrency 50
+			WaitBeforeStarting 5
+			WaitForAllDead "wave6a"
+			RandomSpawn 1
+			Squad {
+
+				TFBot {
+
+					Class Demoman
+					Name "Giant Bomber Demo"
+					Skill Normal
+					Health 3300
+					ClassIcon demo_burst
+					Item "Blast Defense"
+					Item "The Iron Bomber"
+					Attributes MiniBoss
+					Tag bot_giant
+
+					ItemAttributes {
+
+						ItemName "The Iron Bomber"
+						"auto fires when full" 1
+						"auto fires full clip" 1
+						"grenade no spin" 1
+						"fire rate bonus" 0.25
+						"faster reload rate" 0.35
+						"clip size bonus" 8
+						"move speed penalty" 0.5
+						"airblast vulnerability multiplier" 0.2
+						"override footstep sound set" 7
+						"is_festivized" 1
+						"hand scale" 1.15
+					}
+				}
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag bot_giant ClassIcon soldier_banner_trio }
+				TFBot { Template T_TFBot_Soldier_Extended_Battalion Tag bot_giant ClassIcon soldier_banner_trio }
+				TFBot { Template T_TFBot_Soldier_Extended_Concheror Tag bot_giant ClassIcon soldier_banner_trio }
+			}
+		}
+	}
+}
