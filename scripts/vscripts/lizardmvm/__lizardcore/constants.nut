@@ -28,9 +28,16 @@ SetPropBool(self, "m_bForcePurgeFixedupStrings", true);
     return entity;
 }
 
-::FindByClassnameNearest <- function(classname, center, radius)
+::FindByNameNearest <- function(name, origin, radius)
 {
-    local entity = Entities.FindByClassnameNearest(classname, center, radius);
+    local entity = Entities.FindByNameNearest(name, origin, radius);
+    SetPropBool(entity, "m_bForcePurgeFixedupStrings", true);
+    return entity;
+}
+
+::FindByClassnameNearest <- function(classname, origin, radius)
+{
+    local entity = Entities.FindByClassnameNearest(classname, origin, radius);
     SetPropBool(entity, "m_bForcePurgeFixedupStrings", true);
     return entity;
 }

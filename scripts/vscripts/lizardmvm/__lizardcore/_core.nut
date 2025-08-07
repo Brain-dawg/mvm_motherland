@@ -26,7 +26,8 @@ if (!("BeginBenchmark" in ROOT))
 
 ::TempPrint <- function(message, ...)
 {
-    printf.acall([this, message + "\n"].extend(vargv));
+    if (developer() > 0 || !IsDedicatedServer())
+        printf.acall([this, message + "\n"].extend(vargv));
 }
 
 if (!("PrintWarning" in ROOT))
@@ -59,14 +60,19 @@ try { IncludeScript(gamemode_name + "_addons/prepreload.nut"); } catch(e) { }
 DebugPrint("=====================================================================\nCore...");
 IncludeIfNot("__lizardcore/constants.nut", "SpawnEntityFromTableOriginal" in ROOT);
 
+
 ::lizardLibBaseCallbacks <- {};
 ::lizardLibEvents <- {};
-
 IncludeIfNot("__lizardcore/listeners.nut", "AddListener" in ROOT);
+
 
 ::lizardTimers <- [];
 ::lizardTimersLen <- 0;
-Include("__lizardcore/timers.nut");
+IncludeIfNot("__lizardcore/timers.nut", "AddTimer" in ROOT);
+local thinker = CreateByClassname("logic_relay");
+thinker.ValidateScriptScope();
+thinker.GetScriptScope().Timer_InitLoopForThisTick <- Timer_InitLoopForThisTick.bindenv(this);
+AddThinkToEnt(thinker, "Timer_InitLoopForThisTick");
 
 Include("__lizardcore/players.nut");
 IncludeIfNot("__lizardcore/util.nut", "FindEnemiesInRadius" in ROOT);

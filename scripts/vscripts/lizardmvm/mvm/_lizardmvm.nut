@@ -55,8 +55,3 @@ AddTimer(5, function()
 {
     Convars.SetValue("tf_mvm_respec_enabled", 1);
 })
-
-OnDevCommand("reset", function(player, args)
-{
-    ResetState();
-});

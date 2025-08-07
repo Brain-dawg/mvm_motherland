@@ -309,7 +309,7 @@ RegisterNewHookType("OnTakeDamage");
     return OnGameEvent(eventName, order, func, scope, true)
 }
 
-/*::SetDestroyCallback <- function(entity, callback)
+::SetDestroyCallback <- function(entity, callback)
 {
 	entity.ValidateScriptScope();
 	local scope = entity.GetScriptScope();
@@ -335,4 +335,4 @@ RegisterNewHookType("OnTakeDamage");
 			}
 		})
 	)
-}*/
+}

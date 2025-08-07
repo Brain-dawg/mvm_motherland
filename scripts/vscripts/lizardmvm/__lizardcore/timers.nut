@@ -6,6 +6,8 @@ CONST.TIMER_DELETE <- INT_MAX;
     //If the amount of arguments provided to AddTimer is more than
     // the amount of arguments `func` takes, use the last argument as the timer's scope
     // otherwise use the current scope as the timer's scope.
+    //Also, we don't move the boilerplate into a separate function to save on function calls.
+    // While the performance gain per call is small, it adds up.
     local infos = func.getinfos();
 
     local len = "parameters" in infos
@@ -16,10 +18,12 @@ CONST.TIMER_DELETE <- INT_MAX;
         ? vargv.pop()
         : null;
 
-    interval = clampFloor(0, interval);
+    if (interval < 0)
+        interval = 0;
     return AddTimerInternal(interval, interval, func, vargv, scope);
 }
-::OnTimer <- AddTimer;
+::Timer       <- AddTimer;
+::OnTimer     <- AddTimer;
 ::CreateTimer <- AddTimer;
 
 ::RunWithDelay <- function(delay, func, ...)
@@ -37,8 +41,8 @@ CONST.TIMER_DELETE <- INT_MAX;
     return AddTimerInternal(delay, FLT_MAX, func, vargv, scope);
 }
 ::Schedule <- RunWithDelay;
-::Delay <- RunWithDelay;
-::Delayed <- RunWithDelay;
+::Delay    <- RunWithDelay;
+::Delayed  <- RunWithDelay;
 
 ::OnTickEnd <- function(func, ...)
 {
@@ -70,29 +74,30 @@ CONST.TIMER_DELETE <- INT_MAX;
     return AddTimerInternal(0.01, FLT_MAX, func, vargv, scope);
 }
 
-::AddTimerInternal <- function(firstRunOffset, period, func, vargv, scope)
+::AddTimerInternal <- function(firstRunOffset, period, func, vargv, scopeOrEnt)
 {
-    if (scope == null)
-        scope = this;
-
+    if (scopeOrEnt == null)
+        scopeOrEnt = this;
     //If either the scope or the entity gets deleted, we delete the associated timers.
-    //Because the "scope" argument might be an entity or a script, we need to examine both cases.
-    //If the timer was never attached to an entity, we need to ignore its non-existance
-    local ent;
-    if ("IsValid" in scope)
-        ent = scope;
-    else if ("self" in scope)
-        ent = scope.self;
-    else
-        ent = null;
+    //The problem is that the entity's scope has a chance to survive for 1 extra tick after the entity has been deleted.
+    //So, we need to check for both the scope and the entity being valid every tick.
+    //
+    //If the timer's scope was never attached to an entity, we need to ignore the entity's non-existance.
+    //We can tell the difference between the 2 cases because a deleted entity doesn't become `null`, but an invalid entity.
+    //Therefore `ent` being null always means it was never associated with an entity.
+    local ent = null;
+    if ("IsValid" in scopeOrEnt)
+        ent = scopeOrEnt;
+    else if ("self" in scopeOrEnt)
+        ent = scopeOrEnt.self;
 
     local entry = [
         func,                     //Timer function
         vargv,                    //Timer function arguments
-        scope.weakref(),          //Timer scope (can be an entity instead)
+        scopeOrEnt.weakref(),     //Timer scope (can be an entity instead)
         ent,                      //Timer entity
-        Time() + firstRunOffset,  //Next activator time
-        period];                  //Period
+        Time() + firstRunOffset,  //Next activation time
+        period];                  //Activation period
 
     ::lizardTimers.push(entry);
     ::lizardTimersLen++;
@@ -108,22 +113,22 @@ CONST.TIMER_DELETE <- INT_MAX;
 
 //The timer run mechanism
 
-timerGenerator <- null;
+::timerGenerator <- null;
 
-Timer_InitLoopForThisTick <- function()
+::Timer_InitLoopForThisTick <- function()
 {
     timerGenerator <- Timer_IterationStep();
     EntFireByHandle(self, "CallScriptFunction", "Timer_IterationLoop", 0, null, null);
     return -1;
 }
 
-Timer_IterationLoop <- function()
+::Timer_IterationLoop <- function()
 {
 	if (resume timerGenerator)
 		EntFireByHandle(self, "CallScriptFunction", "Timer_IterationLoop", 0, null, null);
 }
 
-Timer_IterationStep <- function()
+::Timer_IterationStep <- function()
 {
     local time = Time();
     for (local i = 0; i < ::lizardTimersLen; i++)
@@ -140,22 +145,16 @@ Timer_IterationStep <- function()
             continue;
         entry[4] += entry[5];
 
-        try
+        local result;
+        try { result = entry[0].acall([entry[2]].extend(entry[1])); } catch(e) { }
+
+        if (result == INT_MAX || entry[5] == FLT_MAX)
         {
-            local result = entry[0].acall([entry[2]].extend(entry[1]));
-            if (result == INT_MAX || entry[5] == FLT_MAX)
-            {
-                ::lizardTimers.remove(i--);
-                ::lizardTimersLen--;
-            }
+            ::lizardTimers.remove(i--);
+            ::lizardTimersLen--;
         }
-        catch(e) { }
+
         yield true;
     }
     return null;
 }
-
-local thinker = CreateByClassname("logic_relay");
-thinker.ValidateScriptScope();
-thinker.GetScriptScope().Timer_InitLoopForThisTick <- Timer_InitLoopForThisTick.bindenv(this);
-AddThinkToEnt(thinker, "Timer_InitLoopForThisTick");
