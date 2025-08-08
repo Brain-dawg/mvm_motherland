@@ -12,6 +12,7 @@ function __CREATE_SCOPE( name, scope_ref = null, entity_ref = null, think_func =
 
 		ent = CreateByClassname( preserved ? "entity_saucer" : "logic_autosave" )
 		SetPropString( ent, "m_iName", name )
+		ent.ValidateScriptScope()
 	}
 
 	if ( ent.GetName() != name ) {
