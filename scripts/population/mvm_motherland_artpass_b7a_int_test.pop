@@ -535,9 +535,9 @@ WaveSchedule
             Where spawnbot_gate2_jetpack1
             Where spawnbot_gate2_jetpack2
             Where spawnbot_gate2_jetpack3
-            TotalCount 5
-            MaxActive 5
-            SpawnCount 5
+            TotalCount 2
+            MaxActive 2
+            SpawnCount 2
             TotalCurrency 100
             WaitForAllDead "wave4c"
             WaitBeforeStarting 5
@@ -546,11 +546,8 @@ WaveSchedule
 
                 ShouldPreserveSquad 1
 
-                TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Attributes AlwaysCrit Tag jetpack_spawn Tag nav_main Tag bot_giant }
+                TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag jetpack_spawn Tag nav_main Tag bot_giant }
                 TFBot { Template T_TFBot_Medic_SlowRecharge Tag jetpack_spawn Tag nav_main }
-                TFBot { Template T_TFBot_Medic_SlowRecharge Tag jetpack_spawn Tag nav_main }
-                TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag jetpack_spawn Tag nav_main }
-                TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag jetpack_spawn Tag nav_main }
             }
         }
     }

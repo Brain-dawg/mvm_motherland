@@ -590,7 +590,7 @@ WaveSchedule {
 			TotalCount 9999
 			Support Limited
 			WaitBetweenSpawns 8
-			MaxActive 1
+			MaxActive 3
 			WaitForAllDead "wave1b2"
 
 			FirstSpawnOutput {
@@ -600,14 +600,7 @@ WaveSchedule {
 				Param "SetWaveIcon( `soldier_blackbox`, ICON_SUPPORT|ICON_SUPPORT_LIMITED, 1, false )"
 			}
 
-			RandomChoice {
-
-				TFBot { Template T_TFBot_Soldier_RocketShotgun }
-				TFBot { Template T_TFBot_Soldier_RocketShotgun }
-				TFBot { Template T_TFBot_Soldier_RocketShotgun }
-				TFBot { Template T_TFBot_Soldier_RocketShotgun }
-				TFBot { Template T_TFBot_Soldier_RocketShotgun Tag nav_flank Tag motherland_revertgatebot Attributes Aggressive }
-			}
+			TFBot { Template T_TFBot_Soldier_RocketShotgun }
 		}
 	}
 
