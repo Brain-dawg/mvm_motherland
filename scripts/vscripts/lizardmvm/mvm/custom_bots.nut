@@ -384,6 +384,8 @@ OnGameEvent("player_spawn_post", function(bot, params)
 
 	AddTimer(0.5, function()
 	{
+        if (!this.IsAlive() || !this.HasBotTag("bot_phlog_pyro"))
+            return TIMER_DELETE;
 		if (this.GetRageMeter() > 15 && !this.IsRageDraining())
 		{
 			SetPropFloat(this, "m_Shared.m_flRageMeter", 100);

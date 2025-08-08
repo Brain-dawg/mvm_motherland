@@ -1,4 +1,5 @@
 //!CompilePal::IncludeDirectory("scripts/vscripts/lizardmvm")
+//!CompilePal::IncludeDirectory("models/motherland")
 
 gamemode_name <- "lizardmvm";
 ::useDebugReload <- true;

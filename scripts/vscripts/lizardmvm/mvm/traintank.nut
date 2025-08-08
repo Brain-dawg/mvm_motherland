@@ -28,10 +28,14 @@ function ConvertToTrainTank(bot)
     traintank_main.AddSolidFlags(FSOLID_NOT_SOLID);
     traintank_main.SetCollisionGroup(COLLISION_GROUP_NONE);
 
+    SetPropFloat(traintank_main, "m_flSpeed", 900);
     EntFire("traintank_main", "StartForward");
+    SetPropFloat(traintank_main, "m_flSpeed", 900);
 
     AddTimer(0.1, function()
     {
+        if (!this.IsAlive() || !this.HasBotTag("bot_tanktrain_hackbot"))
+            return TIMER_DELETE;
         this.Teleport(true, traintank_jail_target.GetOrigin(), false, QAngle(), true, Vector());
     }, bot);
     bot.AddCustomAttribute("cancel falling damage", 1, -1);
@@ -144,6 +148,8 @@ function ConvertToTrainTank(bot)
 
     AddTimer(-1, function()
     {
+        if (!this.IsAlive() || !this.HasBotTag("bot_tanktrain_hackbot"))
+            return TIMER_DELETE;
         foreach (player in GetPlayers(TF_TEAM_PVE_DEFENDERS))
             if (!player.IsAlive() && GetPropEntity(player, "m_hObserverTarget") == this)
                 SetPropEntity(player, "m_hObserverTarget", null);
@@ -156,6 +162,8 @@ function ConvertToTrainTank(bot)
 
     AddTimer(2, function()
     {
+        if (!this.IsAlive() || !this.HasBotTag("bot_tanktrain_hackbot"))
+            return TIMER_DELETE;
         EntFire("traintank_navblocker", "BlockNav");
     }, bot);
 }
@@ -330,8 +338,10 @@ function TrainPackUpSequence()
 function MoveTrain()
 {
     local traintank_main = FindByName(null, "traintank_main");
+    SetPropFloat(traintank_main, "m_flSpeed", 100);
     EntFire("traintank_main", "AddOutput", "startspeed 100");
     EntFire("traintank_main", "StartForward");
+    SetPropFloat(traintank_main, "m_flSpeed", 100);
     EntFire("spawnbot_traintank*", "Disable");
     EntFire("traintank_hurt", "Enable");
     EntFire("traintank_navblocker", "UnBlockNav", 0.1);
