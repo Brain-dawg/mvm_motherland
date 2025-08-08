@@ -1269,7 +1269,7 @@ WaveSchedule {
 			WaitBeforeStarting 1
 			WaitForAllSpawned "wave5traintank"
 			Support Limited
-			TFBot { Template T_TFBot_Sniper_Huntsman Attributes AlwaysCrit Tag nav_main // Tag traintank_spawn }
+			TFBot { Template T_TFBot_Sniper_Huntsman Attributes AlwaysCrit Tag nav_main }
 		}
 
 		WaveSpawn {
