@@ -55,7 +55,7 @@ WaveSchedule
         Where spawnbot_gate1_battlements
         Where spawnbot_gate2_upper
         Where spawnbot_gate2_flank
-        Where spawnbot_gate2_battlementsr
+        Where spawnbot_gate2_battlements
         BeginAtWave 4
         RunForThisManyWaves 1
         DesiredCount 2
@@ -76,7 +76,15 @@ WaveSchedule
                 SetRobotOwnedGate( `gate2` )
                 DisableSecondBomb()
                 IncludeScript(`brain/main`)
+                EntFire( `func_door`, `Close`, 1 )
             "
+        }
+
+        StartWaveOutput {
+            
+            Target __motherland_utils
+            Action RunScriptCode
+            Param "EntFire( `gate2_spawn_door`, `Open` )"
         }
 
         // Subwave description here
@@ -125,6 +133,7 @@ WaveSchedule
             Target logic_script_lizardmvm
             Action RunScriptCode
             Param "
+                IncludeScript( `brain/main` )
                 SetRobotOwnedGate( `gate1` )
                 DisableSecondBomb()
                 SendGlobalGameEvent( `show_annotation`, {
@@ -136,8 +145,10 @@ WaveSchedule
                    lifetime = -1
                    play_sound = `misc/null.wav`
                 })
+                EntFire( `flank_door`, `Close`, 1 )
+                EntFire( `tank_shortcut_door`, `Close`, 1 )
             "
-            Delay 1
+            Delay 0.2
         }
         StartWaveOutput {
 
@@ -268,7 +279,19 @@ WaveSchedule
             Param "
                 SetRobotOwnedGate( `gate1` )
                 DisableSecondBomb()
+                EntFire( `flank_door`, `Close`, 1 )
+                EntFire( `tank_shortcut_door`, `Close`, 1 )
+                SendGlobalGameEvent( `show_annotation`, {
+                   worldposX = -8359
+                   worldposY = 239
+                   worldposZ = 436
+                   id = 2543
+                   text = `Bots will spawn from Gate A!`
+                   lifetime = -1
+                   play_sound = `misc/null.wav`
+                })
             "
+            Delay 0.2
         }
 
         WaveSpawn {
@@ -285,9 +308,9 @@ WaveSchedule
             TotalCurrency 100
             Squad {
 
-                TFBot { Template T_TFBot_Giant_Soldier Tag bot_giant Tag nav_main }
-                TFBot { Template T_TFBot_Medic_SlowRecharge Tag nav_main }
-                TFBot { Template T_TFBot_Medic_SlowRecharge Tag nav_main }
+                TFBot { Template T_TFBot_Giant_Soldier Skill Normal Tag bot_giant Tag nav_main }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
             }
         }
 
@@ -428,15 +451,15 @@ WaveSchedule
 
             StartWaveOutput {
 
-                Target __motherland_exp
+                Target __motherland_wavebar
                 Action RunScriptCode
-                Param "Wavebar.SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS )"
+                Param "SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS )"
             }
             DoneOutput {
 
-                Target __motherland_exp
+                Target __motherland_wavebar
                 Action RunScriptCode
-                Param "Wavebar.SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS|ICON_ALWAYSCRIT )"
+                Param "SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS|ICON_ALWAYSCRIT )"
             }
 
             TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag jetpack_spawn Tag nav_main Tag bot_giant }
@@ -512,9 +535,9 @@ WaveSchedule
             Where spawnbot_gate2_jetpack1
             Where spawnbot_gate2_jetpack2
             Where spawnbot_gate2_jetpack3
-            TotalCount 5
-            MaxActive 5
-            SpawnCount 5
+            TotalCount 2
+            MaxActive 2
+            SpawnCount 2
             TotalCurrency 100
             WaitForAllDead "wave4c"
             WaitBeforeStarting 5
@@ -523,11 +546,8 @@ WaveSchedule
 
                 ShouldPreserveSquad 1
 
-                TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Attributes AlwaysCrit Tag jetpack_spawn Tag nav_main Tag bot_giant }
+                TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag jetpack_spawn Tag nav_main Tag bot_giant }
                 TFBot { Template T_TFBot_Medic_SlowRecharge Tag jetpack_spawn Tag nav_main }
-                TFBot { Template T_TFBot_Medic_SlowRecharge Tag jetpack_spawn Tag nav_main }
-                TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag jetpack_spawn Tag nav_main }
-                TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag jetpack_spawn Tag nav_main }
             }
         }
     }

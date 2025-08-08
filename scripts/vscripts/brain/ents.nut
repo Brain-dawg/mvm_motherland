@@ -45,8 +45,7 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
 
         function SetDestroyCallback( entity, callback ) {
 
-            entity.ValidateScriptScope()
-            local scope = entity.GetScriptScope()
+            local scope = entity.GetScriptScope() || ( entity.ValidateScriptScope(), entity.GetScriptScope() )
             scope.setdelegate( {}.setdelegate( {
                     parent   = scope.getdelegate()
                     id       = entity.GetScriptId()
@@ -115,9 +114,8 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
 
                 local maxangle = 350000.0 //max angle is actually 360,000.0, reset it a bit earlier just in case
                 local xyz = array( 3, 0.0 )
-                ent.ValidateScriptScope()
-                local scope = ent.GetScriptScope()
-                scope.RotateFixThink <- function() {
+                local scope = ent.GetScriptScope() || ( ent.ValidateScriptScope(), ent.GetScriptScope() )
+                function RotateFixThink() {
 
                     for ( local i = 0; i < 3; i++ ) {
 
@@ -132,6 +130,7 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
                     return -1
                 }
                 AddThinkToEnt( ent, "RotateFixThink" )
+                scope.RotateFixThink <- RotateFixThink
                 scope.noise <- GetPropString( ent, "m_NoiseRunning" )
 
                 _Motherland_EntAdditions.SetDestroyCallback( ent, @() StopAmbientSoundOn( self.GetScriptScope().noise, self ) )
@@ -159,9 +158,8 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
                     if ( spawnflags & 256 ) {
 
                         ent.AddEFlags( EFL_IS_BEING_LIFTED_BY_BARNACLE )
-                        for ( local i = 1; i <= MAX_CLIENTS; i++ ) {
+                        for ( local i = 1, player; i <= MAX_CLIENTS; player = PlayerInstanceFromIndex( i ), i++ ) {
 
-                            local player = PlayerInstanceFromIndex( i )
                             if ( player && player.IsValid() ) {
 
                                 ent.AcceptInput( "Enable", "", player, player )
@@ -190,9 +188,8 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
                     if ( spawnflags & 256 ) {
 
                         ent.AddEFlags( EFL_IS_BEING_LIFTED_BY_BARNACLE )
-                        for ( local i = 1; i <= MAX_CLIENTS; i++ ) {
+                        for ( local i = 1, player; i <= MAX_CLIENTS; player = PlayerInstanceFromIndex( i ), i++ ) {
 
-                            local player = PlayerInstanceFromIndex( i )
                             if ( player && player.IsValid() ) {
 
                                 SetPropEntity( ent, "m_hPlayer", player )
@@ -207,8 +204,7 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
                     return true
                 }
 
-                ent.ValidateScriptScope()
-                local scope = ent.GetScriptScope()
+                local scope = ent.GetScriptScope() || ( ent.ValidateScriptScope(), ent.GetScriptScope() )
                 scope.InputEnable <- InputEnable
                 scope.Inputenable <- InputEnable
                 scope.InputDisable <- InputDisable
@@ -218,13 +214,14 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
             //fix FireSound not working, added volume setting ( example: "sound_name_here.wav|40" )
             //fix ModelScale not working on arrows/rockets
             tf_point_weapon_mimic = function( ent, spawnflags ) {
+
                 local particle = CreateByClassname( "trigger_particle" )
-                ent.ValidateScriptScope()
+                local scope = ent.GetScriptScope() || ( ent.ValidateScriptScope(), ent.GetScriptScope() )
 
                 local modelscale = GetPropFloat( ent, "m_flModelScale" )
                 local firesound = GetPropString( ent, "m_pzsFireSound" )
 
-                ent.GetScriptScope().ProjectileFixes <- function() {
+                function ProjectileFixes() {
 
                     for ( local projectile; projectile = FindByClassnameWithin( projectile, "tf_projectile*", ent.GetOrigin(), 1 ); ) {
 
@@ -279,6 +276,7 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
 
                     return -1
                 }
+                scope.ProjectileFixes <- ProjectileFixes
                 AddThinkToEnt( ent, "ProjectileFixes" )
             }
         }
