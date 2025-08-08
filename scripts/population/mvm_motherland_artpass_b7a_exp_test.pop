@@ -355,6 +355,7 @@ WaveSchedule {
 				ClassIcon scout_bat
 				Tag nav_flank
 				Tag motherland_revertgatebot
+				Attributes Aggressive
 				Item "The Delinquent's Down Vest"
 				Item "Blizzard Britches"
 				Item "Batsaber"
@@ -606,7 +607,7 @@ WaveSchedule {
 				TFBot { Template T_TFBot_Soldier_RocketShotgun }
 				TFBot { Template T_TFBot_Soldier_RocketShotgun }
 				TFBot { Template T_TFBot_Soldier_RocketShotgun }
-				TFBot { Template T_TFBot_Soldier_RocketShotgun Tag motherland_revertgatebot Tag nav_flank }
+				TFBot { Template T_TFBot_Soldier_RocketShotgun Tag nav_flank Tag motherland_revertgatebot Attributes Aggressive }
 			}
 		}
 	}
@@ -657,7 +658,7 @@ WaveSchedule {
 				}
 				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
 				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
-				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank Tag motherland_revertgatebot }
+				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank Tag motherland_revertgatebot Attributes Aggressive }
 			}
 		}
 
@@ -757,7 +758,7 @@ WaveSchedule {
 				}
 				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
 				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
-				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank Tag motherland_revertgatebot }
+				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank Tag motherland_revertgatebot Attributes Aggressive }
 			}
 		}
 
@@ -784,6 +785,7 @@ WaveSchedule {
 				Tag bot_giant
 				Tag nav_main
 				Tag motherland_revertgatebot
+				Attributes Aggressive
 			}
 		}
 
@@ -812,10 +814,11 @@ WaveSchedule {
 					Tag motherland_altfire
 					Tag motherland_alwaysglow
 					Tag motherland_revertgatebot
+					Attributes Aggressive
 					Item "The Bunsen Brave"
 				}
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn Tag motherland_revertgatebot }
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn Tag motherland_revertgatebot }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn Tag motherland_revertgatebot Attributes Aggressive }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn Tag motherland_revertgatebot Attributes Aggressive }
 				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies Tag jetpack_spawn }
 				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies Tag jetpack_spawn }
 			}
@@ -996,6 +999,7 @@ WaveSchedule {
 					Tag nav_main
 					// Tag traintank_spawn
 					Tag motherland_revertgatebot
+					Attributes Aggressive
 				}
 				TFBot {
 
@@ -1006,6 +1010,7 @@ WaveSchedule {
 					Tag nav_main
 					// Tag traintank_spawn
 					Tag motherland_revertgatebot
+					Attributes Aggressive
 				}
 				TFBot {
 
@@ -1016,6 +1021,7 @@ WaveSchedule {
 					Tag nav_main
 					// Tag traintank_spawn
 					Tag motherland_revertgatebot
+					Attributes Aggressive
 				}
 			}
 		}

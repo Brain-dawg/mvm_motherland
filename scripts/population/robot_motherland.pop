@@ -295,17 +295,17 @@ WaveSchedule {
 
                 ItemName "TF_WEAPON_GRENADELAUNCHER"
                 "is_passive_weapon" 1 // force grenade launcher anims
-                "override projectile type" 27
-				"fire rate penalty" 9999
-                "faster reload rate" 0.01
+                "override projectile type" 27 // don't shoot
+				"fire rate penalty" 9999 // don't shoot
+                "faster reload rate" 0.01 // no reload anim
             }
 
             ItemAttributes {
 
                 ItemName "Upgradeable TF_WEAPON_PIPEBOMBLAUNCHER"
-                "Projectile range increased" 0.35 //bots fire fullcharge stickies
+                "Projectile range increased" 0.35 // bots always fire fullcharge stickies
                 "faster reload rate" 0.5
-                "stickybomb charge rate" 0.01 //instant charge
+                "stickybomb charge rate" 0.01 // instant charge
                 "max pipebombs decreased" -7
             }
         }
