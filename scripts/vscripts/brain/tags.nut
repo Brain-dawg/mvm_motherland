@@ -77,25 +77,25 @@ _MotherlandTags.Tags <- {
         SetPropBool( bot, "m_bGlowEnabled", true )
     }
 
-    function motherland_limitedsupport( bot, args ) {
+    // function motherland_limitedsupport( bot, args ) {
 
-        local icon  = "icon" in args  ? args.icon : null
-        local count = "count" in args ? args.count : 1
-        local flags = "flags" in args ? args.flags : MVM_CLASS_FLAG_SUPPORT|MVM_CLASS_FLAG_SUPPORT_LIMITED
+    //     local icon  = "icon" in args  ? args.icon : null
+    //     local count = "count" in args ? args.count : 1
+    //     local flags = "flags" in args ? args.flags : MVM_CLASS_FLAG_SUPPORT|MVM_CLASS_FLAG_SUPPORT_LIMITED
 
-        if ( icon && !_MotherlandWavebar.GetWaveIcon( icon, flags ) )
-            _MotherlandWavebar.SetWaveIcon( icon, flags, count, false )
+    //     if ( icon && !_MotherlandWavebar.GetWaveIcon( icon, flags ) )
+    //         _MotherlandWavebar.SetWaveIcon( icon, flags, count, false )
         
-        _EventWrapper( "player_death", format( "LimitedSupport_%d", bot.entindex() ), function( params ) {
+    //     _EventWrapper( "player_death", format( "LimitedSupport_%d", bot.entindex() ), function( params ) {
 
-            local _bot = GetPlayerFromUserID( params.userid )
+    //         local _bot = GetPlayerFromUserID( params.userid )
 
-            if ( _bot != bot ) return
+    //         if ( _bot != bot ) return
 
-            _MotherlandWavebar.IncrementWaveIcon( icon, flags, -1 )
+    //         _MotherlandWavebar.IncrementWaveIcon( icon, flags, -1 )
             
-        }, EVENT_WRAPPER_TAGS )
-    }
+    //     }, EVENT_WRAPPER_TAGS )
+    // }
 
     function motherland_fireweapon( bot, args ) {
 
