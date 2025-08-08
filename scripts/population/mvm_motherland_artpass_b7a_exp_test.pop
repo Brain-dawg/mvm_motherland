@@ -1262,7 +1262,7 @@ WaveSchedule {
 				"
 			}
 
-			TFBot { Template T_TFBot_Motherland_Train Health 40000 }
+			TFBot { Template T_TFBot_Motherland_Train Health 32000 }
 		}
 
 		WaveSpawn {
@@ -1508,7 +1508,7 @@ WaveSchedule {
 					"move speed penalty"		 0.35
 					// "shot penetrate all players" 1
 					"attack projectiles" 		 2
-					"fire rate bonus with reduced health" 0.35
+					"fire rate bonus with reduced health" 0.55
 				}
 			}
 		}

@@ -76,7 +76,7 @@ WaveSchedule
                 SetRobotOwnedGate( `gate2` )
                 DisableSecondBomb()
                 IncludeScript(`brain/main`)
-                EntFire( `func_door`, `Close` )
+                EntFire( `func_door`, `Close`, 1 )
             "
         }
 
@@ -145,8 +145,8 @@ WaveSchedule
                    lifetime = -1
                    play_sound = `misc/null.wav`
                 })
-                EntFire( `flank_door`, `Close` )
-                EntFire( `tank_shortcut_door`, `Close` )
+                EntFire( `flank_door`, `Close`, 1 )
+                EntFire( `tank_shortcut_door`, `Close`, 1 )
             "
             Delay 0.2
         }
@@ -279,8 +279,8 @@ WaveSchedule
             Param "
                 SetRobotOwnedGate( `gate1` )
                 DisableSecondBomb()
-                EntFire( `flank_door`, `Close` )
-                EntFire( `tank_shortcut_door`, `Close` )
+                EntFire( `flank_door`, `Close`, 1 )
+                EntFire( `tank_shortcut_door`, `Close`, 1 )
                 SendGlobalGameEvent( `show_annotation`, {
                    worldposX = -8359
                    worldposY = 239
@@ -308,9 +308,9 @@ WaveSchedule
             TotalCurrency 100
             Squad {
 
-                TFBot { Template T_TFBot_Giant_Soldier Tag bot_giant Tag nav_main }
-                TFBot { Template T_TFBot_Medic_SlowRecharge Tag nav_main }
-                TFBot { Template T_TFBot_Medic_SlowRecharge Tag nav_main }
+                TFBot { Template T_TFBot_Giant_Soldier Skill Normal Tag bot_giant Tag nav_main }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
             }
         }
 
