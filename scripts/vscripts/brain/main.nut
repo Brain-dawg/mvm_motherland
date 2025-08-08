@@ -125,6 +125,8 @@ _MotherlandMain.ClientCmd    <- CreateByClassname( "point_clientcommand" )
 _MotherlandMain.ObjRes       <- FindByClassname( null, "tf_objective_resource" )
 _MotherlandMain.PopInterface <- FindByClassname( null, "point_populator_interface" )
 _MotherlandMain.popname      <- GetPropString( _MotherlandMain.ObjRes, "m_iszMvMPopfileName" )
+_MotherlandMain.GateBDoor    <- FindByName( null, "gate2_door_trigger" )
+_MotherlandMain.GateADoor    <- FindByName( null, "gate1_door_trigger" )
 
 IncludeScript( "brain/event_wrapper.nut" )
 IncludeScript( "brain/utils.nut" )

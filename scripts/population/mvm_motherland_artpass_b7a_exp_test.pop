@@ -352,10 +352,8 @@ WaveSchedule {
 
 				Template T_TFBot_Scout_Melee
 				ClassIcon scout_bat
-				BehaviorModifiers Push
 				Tag nav_flank
 				Tag motherland_revertgatebot
-				Tag "motherland_paintall{ color = 15335168 }"
 				Item "The Delinquent's Down Vest"
 				Item "Blizzard Britches"
 				Item "Batsaber"
@@ -376,9 +374,9 @@ WaveSchedule {
 
 			Squad {
 
-				TFBot { 
+				TFBot {
 
-					Template T_TFBot_Giant_Soldier_Spammer 
+					Template T_TFBot_Giant_Soldier_Spammer
 					Tag bot_giant
 					Tag jetpack_spawn
 					Tag motherland_alwaysglow
@@ -427,7 +425,7 @@ WaveSchedule {
 			WaitForAllDead "wave1b1"
 			TotalCurrency 50
 
-			TFBot { 
+			TFBot {
 				Template T_TFBot_Soldier_BurstFire
 				Skill Normal
 				Tag bot_giant
@@ -607,7 +605,7 @@ WaveSchedule {
 				TFBot { Template T_TFBot_Soldier_RocketShotgun }
 				TFBot { Template T_TFBot_Soldier_RocketShotgun }
 				TFBot { Template T_TFBot_Soldier_RocketShotgun }
-				TFBot { Template T_TFBot_Soldier_RocketShotgun Tag nav_flank BehaviorModifiers Push }
+				TFBot { Template T_TFBot_Soldier_RocketShotgun Tag motherland_revertgatebot Tag nav_flank }
 			}
 		}
 	}
@@ -626,7 +624,7 @@ WaveSchedule {
 			Target __motherland_wavebar
 			Action RunScriptCode
 			Param "
-				RemoveWaveIcon( `soldier_mangler_v2`, 0 )
+				RemoveWaveIcon( `soldier_mangler_v2`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
 				EntFire(`logic_script_lizardmvm`, `CallScriptFunction`, `DisableSecondBomb`)
 			"
 		}
@@ -658,7 +656,7 @@ WaveSchedule {
 				}
 				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
 				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
-				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank BehaviorModifiers Push }
+				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank Tag motherland_revertgatebot }
 			}
 		}
 
@@ -758,7 +756,7 @@ WaveSchedule {
 				}
 				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
 				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
-				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank BehaviorModifiers Push }
+				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank Tag motherland_revertgatebot }
 			}
 		}
 
@@ -776,7 +774,16 @@ WaveSchedule {
 			WaitBetweenSpawnsAfterDeath 3
 			TotalCurrency 100
 
-			TFBot { Template T_TFBot_Giant_Scout_Fast Skill Expert Item "Sun-on-a-Stick" ClassIcon scout_sunstick_swordstone Tag bot_giant Tag nav_main }
+			TFBot {
+
+				Template T_TFBot_Giant_Scout_Fast
+				Skill Expert
+				Item "Sun-on-a-Stick"
+				ClassIcon scout_sunstick_swordstone
+				Tag bot_giant
+				Tag nav_main
+				Tag motherland_revertgatebot
+			}
 		}
 
 		WaveSpawn {
@@ -793,6 +800,8 @@ WaveSchedule {
 
 			Squad {
 
+				ShouldPreserveSquad 1
+
 				TFBot {
 
 					Template T_TFBot_Heavyweapons_Heater
@@ -801,11 +810,13 @@ WaveSchedule {
 					Tag jetpack_spawn
 					Tag motherland_altfire
 					Tag motherland_alwaysglow
+					Tag motherland_revertgatebot
+					Item "The Bunsen Brave"
 				}
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn Tag motherland_revertgatebot }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn Tag motherland_revertgatebot }
 				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies Tag jetpack_spawn }
 				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies Tag jetpack_spawn }
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn }
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn }
 			}
 
 			DoneOutput {
@@ -840,11 +851,11 @@ WaveSchedule {
 			TFBot {
 
 				Class Soldier
-				Skill Normal
+				Skill Expert
 				Name "Charged Mangler Soldier"
 				Item "The Cow Mangler 5000"
 				Tag nav_flank
-				Attributes AlwaysCrit
+				// Attributes AlwaysCrit
 				WeaponRestrictions PrimaryOnly
 				ClassIcon soldier_mangler_v2
 
@@ -869,7 +880,7 @@ WaveSchedule {
 
 				Target __motherland_wavebar
 				Action RunScriptCode
-				Param "SetWaveIcon( `soldier_mangler_v2`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT, 1, false )"
+				Param "SetWaveIcon( `soldier_mangler_v2`, ICON_SUPPORT|ICON_SUPPORT_LIMITED, 1, false )"
 			}
 
 			Tank {
@@ -955,8 +966,8 @@ WaveSchedule {
 			WaitForAllDead "wave3_pretrain"
 			TFBot {
 
-				Template T_TFBot_Motherland_Train 
-				Tag "motherland_limitedsupport{ icon = `heavy_shotgun` count = 1 }" 
+				Template T_TFBot_Motherland_Train
+				Tag "motherland_limitedsupport{ icon = `heavy_shotgun` count = 1 }"
 			}
 		}
 
@@ -981,10 +992,8 @@ WaveSchedule {
 					ClassIcon heavy_shotgun
 					WeaponRestrictions SecondaryOnly
 					Skill Expert
-					Attributes IgnoreFlag
-					BehaviorModifiers Push
 					Tag nav_main
-					Tag traintank_spawn
+					// Tag traintank_spawn
 					Tag motherland_revertgatebot
 				}
 				TFBot {
@@ -993,10 +1002,8 @@ WaveSchedule {
 					ClassIcon heavy_shotgun
 					WeaponRestrictions SecondaryOnly
 					Skill Expert
-					Attributes IgnoreFlag
-					BehaviorModifiers Push
 					Tag nav_main
-					Tag traintank_spawn
+					// Tag traintank_spawn
 					Tag motherland_revertgatebot
 				}
 				TFBot {
@@ -1005,10 +1012,8 @@ WaveSchedule {
 					ClassIcon heavy_shotgun
 					WeaponRestrictions SecondaryOnly
 					Skill Expert
-					Attributes IgnoreFlag
-					BehaviorModifiers Push
 					Tag nav_main
-					Tag traintank_spawn
+					// Tag traintank_spawn
 					Tag motherland_revertgatebot
 				}
 			}
@@ -1068,10 +1073,10 @@ WaveSchedule {
 			Support Limited
 			WaitForAllDead "wave3train1"
 
-			TFBot { 
-				Template T_TFBot_Medic_BigHeal 
-				CharacterAttributes { "mod weapon blocks healing" 1 } 
-				Tag "motherland_limitedsupport{icon = `medic`, count = 30}" 
+			TFBot {
+				Template T_TFBot_Medic_BigHeal
+				CharacterAttributes { "mod weapon blocks healing" 1 }
+				Tag "motherland_limitedsupport{icon = `medic`, count = 30}"
 			}
 		}
 
@@ -1264,7 +1269,7 @@ WaveSchedule {
 			WaitBeforeStarting 1
 			WaitForAllSpawned "wave5traintank"
 			Support Limited
-			TFBot { Template T_TFBot_Sniper_Huntsman Attributes AlwaysCrit Tag nav_main Tag traintank_spawn }
+			TFBot { Template T_TFBot_Sniper_Huntsman Attributes AlwaysCrit Tag nav_main // Tag traintank_spawn }
 		}
 
 		WaveSpawn {
@@ -1291,33 +1296,33 @@ WaveSchedule {
 
 			Squad {
 
-				TFBot { 
-					Template T_TFBot_Giant_Boxing_Heavy 
-					Attributes AlwaysCrit 
-					Tag bot_giant 
-					Tag nav_main 
-					Tag traintank_spawn
+				TFBot {
+					Template T_TFBot_Giant_Boxing_Heavy
+					Attributes AlwaysCrit
+					Tag bot_giant
+					Tag nav_main
+					// Tag traintank_spawn
 					Tag "motherland_limitedsupport{ icon = `heavy_champ_giant` count = 2 flags = ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS }"
 				}
-				TFBot { 
-					Template T_TFBot_Medic_Vacc_Bullet_Full 
-					ClassIcon medic_vac_trio_nys 
-					Tag nav_main 
-					Tag traintank_spawn 
+				TFBot {
+					Template T_TFBot_Medic_Vacc_Bullet_Full
+					ClassIcon medic_vac_trio_nys
+					Tag nav_main
+					// Tag traintank_spawn
 					Tag "motherland_limitedsupport{ icon = `medic_vac_trio_nys` count = 6 }"
 				}
-				TFBot { 
-					Template T_TFBot_Medic_Vacc_Blast_Full 
-					ClassIcon medic_vac_trio_nys 
-					Tag nav_main 
-					Tag traintank_spawn 
+				TFBot {
+					Template T_TFBot_Medic_Vacc_Blast_Full
+					ClassIcon medic_vac_trio_nys
+					Tag nav_main
+					// Tag traintank_spawn
 					Tag "motherland_limitedsupport{ icon = `medic_vac_trio_nys` count = 6 }"
 				}
-				TFBot { 
-					Template T_TFBot_Medic_Vacc_Fire_Full 
-					ClassIcon medic_vac_trio_nys 
-					Tag nav_main 
-					Tag traintank_spawn 
+				TFBot {
+					Template T_TFBot_Medic_Vacc_Fire_Full
+					ClassIcon medic_vac_trio_nys
+					Tag nav_main
+					// Tag traintank_spawn
 					Tag "motherland_limitedsupport{ icon = `medic_vac_trio_nys` count = 6 }"
 				}
 			}
@@ -1425,7 +1430,7 @@ WaveSchedule {
 			Action RunScriptFile
 			Param "brain/main"
 		}
-			
+
 		WaveSpawn {
 			Name "wave6a"
 			Where spawnbot_base_jetpack1
@@ -1441,7 +1446,7 @@ WaveSchedule {
 			MaxActive 1
 			SpawnCount 1
 			// StartWaveWarningSound "ui/gamestartup4.mp3"
-			
+
 			TFBot {
 
 				Class Heavy

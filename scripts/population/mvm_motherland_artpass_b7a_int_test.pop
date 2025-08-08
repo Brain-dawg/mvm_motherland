@@ -133,6 +133,7 @@ WaveSchedule
             Target logic_script_lizardmvm
             Action RunScriptCode
             Param "
+                IncludeScript( `brain/main` )
                 SetRobotOwnedGate( `gate1` )
                 DisableSecondBomb()
                 SendGlobalGameEvent( `show_annotation`, {
@@ -147,7 +148,7 @@ WaveSchedule
                 EntFire( `flank_door`, `Close` )
                 EntFire( `tank_shortcut_door`, `Close` )
             "
-            Delay 1
+            Delay 0.2
         }
         StartWaveOutput {
 
@@ -290,6 +291,7 @@ WaveSchedule
                    play_sound = `misc/null.wav`
                 })
             "
+            Delay 0.2
         }
 
         WaveSpawn {

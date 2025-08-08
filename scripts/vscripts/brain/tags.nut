@@ -34,12 +34,30 @@ _MotherlandTags.Tags <- {
 
     function motherland_revertgatebot( bot, args ) {
 
-        if ( 
-            GetPropBool( _MotherlandMain.gateB, "m_bLocked" ) 
-            && bot.HasBotAttribute( AGGRESSIVE|IGNORE_FLAG ) 
-            && !bot.HasBotTag( "motherland_alwayspush" ) 
-        )
-        bot.RemoveBotAttribute( AGGRESSIVE|IGNORE_FLAG )
+        local gatebotattribs = AGGRESSIVE|IGNORE_FLAG|DISABLE_DODGE
+
+        local gateb_locked = _MotherlandMain.GetScriptScope()._IsCapped
+        local paint = "paint" in args ? args.paint : true
+        local color = "color" in args ? args.color : GATEBOT_YELLOW
+
+        if ( !gateb_locked ) {
+
+            if ( paint )
+                for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity); child = child.NextMovePeer() )
+                    child.AddAttribute( "set item tint RGB", color, -1 )
+
+            bot.AddBotAttribute( gatebotattribs )
+            return
+        }
+
+        if ( bot.HasBotAttribute( gatebotattribs ) && !bot.HasBotTag( "motherland_alwayspush" ) ) {
+
+            bot.RemoveBotAttribute( gatebotattribs )
+
+            for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity); child = child.NextMovePeer() )
+                if ( child.GetAttribute( "set item tint RGB", -1 ) == color )
+                    child.RemoveAttribute( "set item tint RGB" )
+        }
     }
 
     function motherland_altfire( bot, args ) {

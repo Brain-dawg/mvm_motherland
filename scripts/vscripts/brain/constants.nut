@@ -49,6 +49,8 @@ const STRING_NETPROP_COUNTS     = "m_nMannVsMachineWaveClassCounts"
 const STRING_NETPROP_ACTIVE     = "m_bMannVsMachineWaveClassActive"
 const STRING_NETPROP_ENEMYCOUNT = "m_nMannVsMachineWaveEnemyCount"
 
+const GATEBOT_YELLOW = 15335168
+
 const SINGLE_TICK = 0.015
 
 // redefine crit/uber conds so we don't end up using different conds all over the place

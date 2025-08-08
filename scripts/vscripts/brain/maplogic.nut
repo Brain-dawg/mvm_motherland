@@ -11,16 +11,6 @@ function _MotherlandMapLogic::_OnDestroy() {
     AddOutputs( null )
 }
 
-local str = @"
-
-    if ( 
-        self.IsBotOfType( TF_BOT_TYPE )
-        && self.HasBotAttribute( AGGRESSIVE|IGNORE_FLAG )
-        && !self.HasBotTag( `motherland_alwayspush` )
-    ) {
-        self.RemoveBotAttribute( AGGRESSIVE|IGNORE_FLAG )
-    }
-"
 local altbomb = FindByName( null, "gate2_bomb2" )
 altbomb.ValidateScriptScope()
 local altbomb_scope = altbomb.GetScriptScope()
@@ -38,59 +28,47 @@ function _MotherlandMapLogic::AddOutputs( outputs ) {
     if ( outputs == null ) {
 
         foreach ( ent, output_list in Outputs ) {
-            
-            local ents = []
-
-            for ( local e; e = FindByName( e, ent ); )
-                ents.append( e )
-            for ( local e; e = FindByClassname( e, ent ); )
-                ents.append( e )
-
-            foreach ( e in ents )
-                foreach ( output, args in output_list )
-                    foreach ( arg in args )
-                        RemoveOutput( e, output, arg.name, arg.action, "param" in arg ? arg.param : "" )
-        }
-
-        return
-    }
-
-    foreach ( ent, output_list in outputs ) {
-
-        local ents = []
-
-        for ( local e; e = FindByName( e, ent ); )
-            ents.append( e )
-        for ( local e; e = FindByClassname( e, ent ); )
-            ents.append( e )
-
-        foreach ( e in ents ) {
-
-            local scope = _MotherlandUtils.GetEntScope( e )
-
-            if ( "_MotherlandMapLogicOutputs" in scope )
-                continue
 
             foreach ( output, args in output_list ) {
 
                 foreach ( arg in args ) {
 
-                    // __DumpScope( 0, arg )
+                    local param = "param" in arg ? format(@"%s", arg.param) : ""
+
+                    EntFire( ent, "RunScriptCode", format( @"RemoveOutput( self, `%s`, `%s`, `%s`, `%s` )", output, arg.name, arg.action, param ))
+
+                    if ( "_MotherlandUtils" in ROOT && arg.param != "" )
+                        _MotherlandUtils.GameStrings[ param ] <- "AddOutputs"
+                }
+            }
+        }
+
+        Outputs.clear()
+        return
+    }
+
+    foreach ( ent, output_list in outputs ) {
+
+            foreach ( output, args in output_list ) {
+
+                foreach ( arg in args ) {
 
                     local param = "param" in arg ? arg.param : ""
                     local delay = "delay" in arg ? arg.delay : 0
                     local count = "count" in arg ? arg.count : -1
 
                     if ( arg.name == "!self" )
-                        arg.name = e.GetName()
+                        arg.name = ent
 
-                    AddOutput( e, output, arg.name, arg.action, param, delay.tofloat(), count.tointeger() )
+                    if ( arg.param != "" )
+                        _MotherlandUtils.GameStrings[ param ] <- "AddOutputs"
+                    
+                    EntFire( ent, "AddOutput", format( "%s %s:%s:%s:%.2f:%d\n", output, arg.name, arg.action, param, delay.tofloat(), count.tointeger() ))
 
                 }
             }
-            scope._MotherlandMapLogicOutputs <- output_list
-        }
-        _MotherlandMapLogic.Outputs[ ent ] <- output_list
+
+            _MotherlandMapLogic.Outputs[ ent ] <- output_list
     }
 }
 
@@ -135,32 +113,47 @@ altbomb_scope.FakeBomb <- _MotherlandMapLogic.FakeBomb
 
 _MotherlandMapLogic.AddOutputs({
 
-    gate2_door_trigger = {
+    gate1_main_door = {
 
-        OnCapTeam2 = [
+        OnFullyOpen = [
+
+            {
+                name = "point_populator_interface"
+                action = "ChangeBotAttributes"
+                param = "GateACapped"
+            }
+        ]
+    }
+
+    gate2_spawn_door = {
+
+        OnFullyOpen = [
 
             {
                 name = "player"
                 action = "RunScriptCode"
-                param = format( "%s; _MotherlandUtils.GameStrings[ `%s` ] <- `revertgatebot`", str, str )
-            },
+                param = "if (self.IsBotOfType(TF_BOT_TYPE)) _MotherlandTags.Tags.motherland_revertgatebot(self {})"
+            }
 
             {
                 name = "point_populator_interface"
                 action = "ChangeBotAttributes"
                 param = "GateBCapped"
             }
+
+            { 
+                name = "!self"
+                action = "RunScriptCode"
+                param = "self.ValidateScriptScope(); self.GetScriptScope()._IsCapped <- true"
+            }
         ]
-    }
 
-    gate1_door_trigger = {
-
-        OnCapTeam2 = [
+        OnFullyClosed = [
 
             {
-                name = "point_populator_interface"
-                action = "ChangeBotAttributes"
-                param = "GateACapped"
+                name = "!self"
+                action = "RunScriptCode"
+                param = "self.ValidateScriptScope(); self.GetScriptScope()._IsCapped <- false"
             }
         ]
     }
@@ -172,7 +165,7 @@ _MotherlandMapLogic.AddOutputs({
             {
                 name = "gate2_bomb2"
                 action = "RunScriptCode"
-                param = "FakeBomb( false, true )"
+                param = "FakeBomb( false true )"
             }
         ]   
 
@@ -181,7 +174,7 @@ _MotherlandMapLogic.AddOutputs({
             {
                 name = "gate2_bomb2"
                 action = "RunScriptCode"
-                param = "FakeBomb( true, true )"
+                param = "FakeBomb( true true )"
             }
         ]
 
@@ -190,7 +183,7 @@ _MotherlandMapLogic.AddOutputs({
             {
                 name = "gate2_bomb2"
                 action = "RunScriptCode"
-                param = "FakeBomb( false, true )"
+                param = "FakeBomb( false true )"
             }
         ]
     }

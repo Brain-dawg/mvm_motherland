@@ -102,3 +102,14 @@ function _MotherlandUtils::GetItemInSlot( player, slot ) {
     }
     return item
 }
+
+function _MotherlandUtils::GetAllOutputs( ent, output ) {
+
+	local outputs = []
+	for ( local i = GetNumElements( ent, output ); i >= 0; i-- ) {
+        local t = {}
+		GetOutputTable( ent, output, t, i )
+		outputs.append( t )
+	}
+	return outputs
+}
