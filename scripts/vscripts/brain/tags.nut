@@ -34,7 +34,7 @@ _MotherlandTags.Tags <- {
 
     function motherland_revertgatebot( bot, args ) {
 
-        local gateb_scope = _MotherlandMain.GateBDoor.GetScriptScope()
+        local gateb_scope = FindByName( null, "gate2_spawn_door" ).GetScriptScope()
         local gateb_locked = gateb_scope && "_IsCapped" in gateb_scope ? gateb_scope._IsCapped : false
 
         local paint = "paint" in args ? args.paint : true
@@ -43,7 +43,7 @@ _MotherlandTags.Tags <- {
         if ( !gateb_locked ) {
 
             if ( paint )
-                for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity); child = child.NextMovePeer() )
+                for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity && child.GetAttribute( "set item tint RGB", -1 ) != color); child = child.NextMovePeer() )
                     child.AddAttribute( "set item tint RGB", color, -1 )
 
             bot.AddBotAttribute( AGGRESSIVE ) // seemingly doesn't work
@@ -58,12 +58,12 @@ _MotherlandTags.Tags <- {
             bot.RemoveBotAttribute( IGNORE_FLAG )
             bot.RemoveBotAttribute( DISABLE_DODGE )
 
-            for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity); child = child.NextMovePeer() )
-                if ( child.GetAttribute( "set item tint RGB", -1 ) == color ) {
+            for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity && child.GetAttribute( "set item tint RGB", -1 ) == color); child = child.NextMovePeer() )
+                child.RemoveAttribute( "set item tint RGB" )
 
-                    child.RemoveAttribute( "set item tint RGB" )
-                    DispatchSpawn( child )
-                }
+            local bothp = bot.GetHealth()
+            bot.Regenerate( true )
+            bot.SetHealth( bothp )
         }
     }
 

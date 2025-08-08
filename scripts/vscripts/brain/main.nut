@@ -219,7 +219,7 @@ _EventWrapper("post_inventory_application", "MainPostInventoryApplication", func
 
             for ( local child = self.FirstMoveChild(); child != null; child = child.NextMovePeer() ) {
 
-                if ( GetPropInt( child, `m_AttributeManager.m_Item.m_iItemDefinitionIndex` ) == 998 ) {
+                if ( GetPropInt( child, STRING_NETPROP_ITEMDEF ) == 998 ) {
 
                     EntFireByHandle( GetPropEntity( child, `m_hExtraWearable` ), `Kill`, ``, -1, null, null )
                     break
