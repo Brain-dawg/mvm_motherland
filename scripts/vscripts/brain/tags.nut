@@ -57,8 +57,11 @@ _MotherlandTags.Tags <- {
             bot.RemoveBotAttribute( gatebotattribs )
 
             for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity); child = child.NextMovePeer() )
-                if ( child.GetAttribute( "set item tint RGB", -1 ) == color )
+                if ( child.GetAttribute( "set item tint RGB", -1 ) == color ) {
+
                     child.RemoveAttribute( "set item tint RGB" )
+                    DispatchSpawn( child )
+                }
         }
     }
 

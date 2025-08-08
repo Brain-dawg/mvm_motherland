@@ -6,7 +6,13 @@ if ( !("__active_scopes" in ROOT) )
 function __CREATE_SCOPE( name, scope_ref = null, entity_ref = null, think_func = null, preserved = true ) {
 
 	// empty vscripts kv will do ValidateScriptScope automatically
-	local ent = FindByName( null, name ) || CreateByClassname( preserved ? "entity_saucer" : "logic_autosave" )
+	local ent = FindByName( null, name ) 
+
+	if ( !ent || !ent.IsValid() ) {
+
+		ent = CreateByClassname( preserved ? "entity_saucer" : "logic_autosave" )
+		SetPropString( ent, "m_iName", name )
+	}
 
 	if ( ent.GetName() != name ) {
 		SetPropString( ent, "m_iName", name )
@@ -42,7 +48,7 @@ function __CREATE_SCOPE( name, scope_ref = null, entity_ref = null, think_func =
 		// Allows us to use any arbitrary string for the think function name
 		// scope.MyFunc <- function() { ... } creates an anonymous function
 		// won't show up in the performance counter
-		compilestring( format( @"
+		compilestring(format(@"
 
 			local ent = EntIndexToHScript( %d )
 			local func_name = %s
