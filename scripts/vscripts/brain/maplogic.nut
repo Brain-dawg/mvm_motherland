@@ -8,6 +8,11 @@ EntFire( "hologramrelay_mainbomb", "Trigger" )
 
 function _MotherlandMapLogic::_OnDestroy() {
 
+    local gateb_scope = FindByName( null, "gate2_spawn_door" ).GetScriptScope()
+
+    if ( gateb_scope && "_IsCapped" in gateb_scope )
+        delete gateb_scope._IsCapped
+
     AddOutputs( null )
 }
 
