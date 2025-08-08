@@ -28,6 +28,7 @@ WaveSchedule {
 
 			Template T_TFBot_SentryBuster
 			Attributes IgnoreEnemies
+			Attributes DisableDodge
 			Skill Easy
 		}
 	}

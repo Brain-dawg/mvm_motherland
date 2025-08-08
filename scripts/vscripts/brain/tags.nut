@@ -36,7 +36,9 @@ _MotherlandTags.Tags <- {
 
         local gatebotattribs = AGGRESSIVE|IGNORE_FLAG|DISABLE_DODGE
 
-        local gateb_locked = _MotherlandMain.GetScriptScope()._IsCapped
+        local gateb_scope = _MotherlandMain.GateBDoor.GetScriptScope()
+        local gateb_locked = gateb_scope && "_IsCapped" in gateb_scope ? gateb_scope._IsCapped : false
+
         local paint = "paint" in args ? args.paint : true
         local color = "color" in args ? args.color : GATEBOT_YELLOW
 
