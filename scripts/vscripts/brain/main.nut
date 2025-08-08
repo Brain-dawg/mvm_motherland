@@ -173,7 +173,9 @@ _EventWrapper("recalculate_holidays", "MainCleanup", function( params ) {
     if ( GetRoundState() != GR_STATE_PREROUND )
         return
 
-    for ( local i = 0, player; i <= MAX_CLIENTS; player = PlayerInstanceFromIndex( i ), i++ ) {
+    for ( local i = 1; i <= MAX_CLIENTS; i++ ) {
+
+        local player = PlayerInstanceFromIndex( i )
 
         if ( !player || !player.IsBotOfType( TF_BOT_TYPE ) )
             continue

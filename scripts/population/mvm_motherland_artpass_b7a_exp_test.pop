@@ -1423,8 +1423,8 @@ WaveSchedule {
 			Squad {
 
 				TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag bot_giant Attributes AlwaysCrit }
-				TFBot { Template T_TFBot_Giant_Medic Tag bot_giant Attributes AlwaysCrit }
-				TFBot { Template T_TFBot_Giant_Medic Tag bot_giant Attributes AlwaysCrit }
+				TFBot { Template T_TFBot_Giant_Medic Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic Tag bot_giant }
 			}
 		}
 	}
