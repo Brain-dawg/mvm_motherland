@@ -55,7 +55,7 @@ WaveSchedule
         Where spawnbot_gate1_battlements
         Where spawnbot_gate2_upper
         Where spawnbot_gate2_flank
-        Where spawnbot_gate2_battlementsr
+        Where spawnbot_gate2_battlements
         BeginAtWave 4
         RunForThisManyWaves 1
         DesiredCount 2

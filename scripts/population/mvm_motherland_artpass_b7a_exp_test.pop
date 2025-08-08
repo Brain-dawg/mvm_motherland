@@ -490,7 +490,7 @@ WaveSchedule {
 
 								ItemName "The Robo-Sandvich"
 								"force weapon switch" 1
-								"lunchbox healing decreased" 30
+								"lunchbox healing decreased" 20
 								"gesture speed increase" 1.2
 								"item_meter_charge_rate" 14
 							}
@@ -517,7 +517,6 @@ WaveSchedule {
 
 								ItemName "TF_WEAPON_MINIGUN"
 								"single wep holster time increased" 0.01
-								"spunup_damage_resistance" 0.8
 							}
 
 							ItemAttributes {
@@ -971,6 +970,7 @@ WaveSchedule {
 			TFBot {
 
 				Template T_TFBot_Motherland_Train
+				Health 25000
 				Tag "motherland_limitedsupport{ icon = `heavy_shotgun` count = 1 }"
 			}
 		}
@@ -1262,7 +1262,7 @@ WaveSchedule {
 				"
 			}
 
-			TFBot { Template T_TFBot_Motherland_Train Health 30000 }
+			TFBot { Template T_TFBot_Motherland_Train Health 40000 }
 		}
 
 		WaveSpawn {

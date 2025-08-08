@@ -61,9 +61,9 @@ _MotherlandTags.Tags <- {
             for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity && child.GetAttribute( "set item tint RGB", -1 ) == color); child = child.NextMovePeer() )
                 child.RemoveAttribute( "set item tint RGB" )
 
-            local bothp = bot.GetHealth()
-            bot.Regenerate( true )
-            bot.SetHealth( bothp )
+            // local bothp = bot.GetHealth()
+            // bot.Regenerate( true )
+            // bot.SetHealth( bothp )
         }
     }
 
