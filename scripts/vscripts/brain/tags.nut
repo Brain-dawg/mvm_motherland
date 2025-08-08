@@ -34,8 +34,6 @@ _MotherlandTags.Tags <- {
 
     function motherland_revertgatebot( bot, args ) {
 
-        local gatebotattribs = AGGRESSIVE|IGNORE_FLAG|DISABLE_DODGE
-
         local gateb_scope = _MotherlandMain.GateBDoor.GetScriptScope()
         local gateb_locked = gateb_scope && "_IsCapped" in gateb_scope ? gateb_scope._IsCapped : false
 
@@ -48,13 +46,17 @@ _MotherlandTags.Tags <- {
                 for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity); child = child.NextMovePeer() )
                     child.AddAttribute( "set item tint RGB", color, -1 )
 
-            bot.AddBotAttribute( gatebotattribs )
+            bot.AddBotAttribute( AGGRESSIVE ) // seemingly doesn't work
+            bot.AddBotAttribute( IGNORE_FLAG )
+            bot.AddBotAttribute( DISABLE_DODGE )
             return
         }
 
-        if ( bot.HasBotAttribute( gatebotattribs ) && !bot.HasBotTag( "motherland_alwayspush" ) ) {
+        if ( bot.HasBotAttribute( AGGRESSIVE ) && !bot.HasBotTag( "motherland_alwayspush" ) ) {
 
-            bot.RemoveBotAttribute( gatebotattribs )
+            bot.RemoveBotAttribute( AGGRESSIVE )
+            bot.RemoveBotAttribute( IGNORE_FLAG )
+            bot.RemoveBotAttribute( DISABLE_DODGE )
 
             for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity); child = child.NextMovePeer() )
                 if ( child.GetAttribute( "set item tint RGB", -1 ) == color ) {
