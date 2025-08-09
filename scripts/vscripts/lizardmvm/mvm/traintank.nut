@@ -38,6 +38,7 @@ function ConvertToTrainTank(bot)
             return TIMER_DELETE;
         this.Teleport(true, traintank_jail_target.GetOrigin(), false, QAngle(), true, Vector());
     }, bot);
+
     bot.AddCustomAttribute("cancel falling damage", 1, -1);
     SetPropInt(bot, "m_bloodColor", 3)
     bot.AddEFlags(EFL_NO_THINK_FUNCTION);
@@ -185,6 +186,10 @@ function TrainTankIsNearPoint(pointName, activator)
     if (activator != traintank_main)
         return;
 
+    local baseBoss = FindByClassname(null, "base_boss");
+    if (!IsValid(baseBoss))
+        return;
+
     AddTimer(0.1, function()
     {
         //EntFire("traintank_main", "SetSpeed")
@@ -195,7 +200,8 @@ function TrainTankIsNearPoint(pointName, activator)
             SetPropFloat(traintank_main, "m_flSpeed", speed - 5);
         else
             return TIMER_DELETE;
-    });
+    }, baseBoss);
+
     EntFire("train_wheels_vfx", "Start");
     for (local i = 0; i < 2; i++)
         EmitSoundEx({
