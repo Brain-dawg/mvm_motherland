@@ -475,6 +475,7 @@ WaveSchedule {
 							Item "The Sandvich Safe"
 							Item "The Wing Mann"
 							Tag bot_giant
+							Tag bot_no_radio_jump
 							Tag "motherland_suicidecounter{ attacker = _MotherlandMain.TriggerHurt, inflictor = _MotherlandMain.TriggerHurt, amount = 2 }"
 							Attributes UseBossHealthBar
 							Attributes AlwaysFireWeapon
@@ -509,6 +510,7 @@ WaveSchedule {
 							Item "The Sandvich Safe"
 							Item "The Wing Mann"
 							Tag bot_giant
+							Tag bot_no_radio_jump
 							Tag "motherland_suicidecounter{ attacker = _MotherlandMain.TriggerHurt, inflictor = _MotherlandMain.TriggerHurt, amount = 2 }"
 							Attributes UseBossHealthBar
 							Attributes AlwaysFireWeapon
@@ -542,6 +544,41 @@ WaveSchedule {
 							Item "The Sandvich Safe"
 							Item "The Wing Mann"
 							Tag bot_giant
+							Tag bot_no_radio_jump
+							Tag "motherland_suicidecounter{ attacker = _MotherlandMain.TriggerHurt, inflictor = _MotherlandMain.TriggerHurt, amount = 2 }"
+							Attributes UseBossHealthBar
+							Attributes AlwaysFireWeapon
+							Attributes MiniBoss
+							ItemAttributes {
+
+								ItemName "TF_WEAPON_MINIGUN"
+								"single wep holster time increased" 0.01
+							}
+
+							ItemAttributes {
+
+								ItemName "The Robo-Sandvich"
+								"force weapon switch" 1
+								"lunchbox healing decreased" 5
+								"gesture speed increase" 1.2
+								"item_meter_charge_rate" 35
+							}
+
+							CharacterAttributes {
+
+								"damage force reduction" 0
+								"airblast vulnerability multiplier" 0
+								"airblast vertical vulnerability multiplier" 0
+								"move speed penalty" 0.5
+							}
+						}
+						RevertGateBotsBehavior {
+
+							Item "The Robo-Sandvich"
+							Item "The Sandvich Safe"
+							Item "The Wing Mann"
+							Tag bot_giant
+							Tag bot_no_radio_jump
 							Tag "motherland_suicidecounter{ attacker = _MotherlandMain.TriggerHurt, inflictor = _MotherlandMain.TriggerHurt, amount = 2 }"
 							Attributes UseBossHealthBar
 							Attributes AlwaysFireWeapon
@@ -573,8 +610,10 @@ WaveSchedule {
 				}
 
 				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner ClassIcon soldier_banner_trio }
-				TFBot { Template T_TFBot_Soldier_Extended_Concheror ClassIcon soldier_banner_trio }
-				TFBot { Template T_TFBot_Soldier_Extended_Battalion ClassIcon soldier_banner_trio }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner ClassIcon soldier_banner_trio }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner ClassIcon soldier_banner_trio }
+				// TFBot { Template T_TFBot_Soldier_Extended_Concheror ClassIcon soldier_banner_trio }
+				// TFBot { Template T_TFBot_Soldier_Extended_Battalion ClassIcon soldier_banner_trio }
 			}
 		}
 
@@ -618,7 +657,7 @@ WaveSchedule {
 			Target __motherland_wavebar
 			Action RunScriptCode
 			Param "
-				RemoveWaveIcon( `soldier_mangler_v2`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+				RemoveWaveIcon( `soldier_mangler_v2`, ICON_SUPPORT )
 				EntFire(`logic_script_lizardmvm`, `CallScriptFunction`, `DisableSecondBomb`)
 			"
 		}
@@ -876,7 +915,7 @@ WaveSchedule {
 
 				Target __motherland_wavebar
 				Action RunScriptCode
-				Param "SetWaveIcon( `soldier_mangler_v2`, ICON_SUPPORT|ICON_SUPPORT_LIMITED, 1, false )"
+				Param "SetWaveIcon( `soldier_mangler_v2`, ICON_SUPPORT, 1, false )"
 			}
 
 			Tank {
@@ -1457,6 +1496,7 @@ WaveSchedule {
 				Attributes UseBossHealthBar
 				Attributes AlwaysFireWeapon
 				Tag jetpack_spawn
+				Tag bot_no_radio_jump
 				Name "B.E.A.R Mk.1"
 				Item "the buffalo steak sandvich"
 				Item "Warrior's Spirit"

@@ -15,17 +15,6 @@ WaveSchedule {
 			Where spawnbot_gate1_main
 			Where spawnbot_gate2_main
 
-			FirstSpawnOutput {
-
-				Target logic_script_lizardmvm
-				Action RunScriptCode
-				Param "
-					FindAndConvertTrainTank()
-					EntFire( `traintank_base_boss`, `RunScriptCode`, `SetPropInt( self, \`m_bloodColor\`, 3 )`, 1 )
-				"
-				Delay 0.1
-			}
-
 			TFBot { Template T_TFBot_Motherland_Train }
 		}
 
