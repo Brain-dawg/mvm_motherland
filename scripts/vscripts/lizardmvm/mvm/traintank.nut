@@ -1,373 +1,455 @@
-const GATE1_POINT_NAME = "gate1_point";
-const GATE2_POINT_NAME = "gate2_point";
-const TRAINTANK_MODEL = "models/motherland/traintank_placeholder.mdl";
-const TRAINTAIN_JAIL_TARGET = "traintank_jail_target";
-
-PrecacheModelWithGibs(TRAINTANK_MODEL);
 PrecacheSound("ambient/alarms/razortrain_horn1.wav");
 PrecacheSound("weapons/sentry_upgrading_steam1.wav");
 PrecacheSound("weapons/sentry_upgrading_steam2.wav");
+PrecacheSound("weapons/teleporter_ready.wav");
+PrecacheSound(")ambient/levels/citadel/zapper_ambient_loop1.wav");
+PrecacheSound("ambient/machines/station_train_squeel.wav");
+PrecacheSound("ambient/slow_train.wav");
+PrecacheSound("plats/ttrain_brake1.wav");
+PrecacheParticle("Motherland_train_antenna_parent");
 
-function FindAndConvertTrainTank()
+
+EntFire("spawnbot_traintank*", "Disable");
+EntFire("traintank_tracktrain", "TeleportToPathTrack", "peaceful_train_path_1");
+EntFire("convert_second_bomb_bots_to_trainbots", "Disable");
+EntFire("gate1_separator", "Enable");
+
+OnGameEvent("player_spawn_post", function(bot, params)
 {
-    OnNextTick(function()
-    {
-        foreach (bot in GetPlayers(TF_TEAM_PVE_INVADERS))
-            if (bot.HasBotTag("bot_tanktrain_hackbot"))
-                ConvertToTrainTank(bot);
-    })
-}
+    if (bot.HasBotTag("bot_tanktrain_hackbot"))
+        TrainTank(bot);
+});
 
-function ConvertToTrainTank(bot)
+class TrainTank
 {
-    local traintank_jail_target = FindByName(null, TRAINTAIN_JAIL_TARGET);
-    local traintank_model = FindByName(null, "traintank_main");
+    traintank_tracktrain = null;
+    traintank_hack_bot = null;
+    traintank_base_boss = null;
+    traintank_glow = null;
 
-    local traintank_main = FindByName(null, "traintank_main");
-    traintank_main.SetSolid(SOLID_NONE);
-    traintank_main.AddSolidFlags(FSOLID_NOT_SOLID);
-    traintank_main.SetCollisionGroup(COLLISION_GROUP_NONE);
+    maxSpeed = 500;
+    slowDownTimerHandle = null;
 
-    SetPropFloat(traintank_main, "m_flSpeed", 900);
-    EntFire("traintank_main", "StartForward");
-    SetPropFloat(traintank_main, "m_flSpeed", 900);
-
-    AddTimer(0.1, function()
+    constructor(bot)
     {
-        if (!this.IsAlive() || !this.HasBotTag("bot_tanktrain_hackbot"))
-            return TIMER_DELETE;
-        this.Teleport(true, traintank_jail_target.GetOrigin(), false, QAngle(), true, Vector());
-    }, bot);
+        traintank_hack_bot = bot;
+        traintank_tracktrain = FindByName(null, "traintank_tracktrain");
+        maxSpeed = GetPropFloat(traintank_tracktrain, "m_maxSpeed");
 
-    bot.AddCustomAttribute("cancel falling damage", 1, -1);
-    SetPropInt(bot, "m_bloodColor", 3)
-    bot.AddEFlags(EFL_NO_THINK_FUNCTION);
+        HideTrainHackBot(FindByName(null, "traintank_jail_target").GetOrigin());
 
-    local bossEnt = SpawnEntityFromTable("base_boss",
+        SpawnBaseBoss(traintank_tracktrain);
+
+        PlaySounds();
+
+        RunWithDelay(0.5, ShowAnnotation);
+
+        OnGameEvent("OnTakeDamageNonPlayer", ProcessDamage);
+
+        //AddTimer(2, EntFire, "traintank_navblocker", "BlockNav");
+
+        SetDestroyCallback(traintank_base_boss, OnCleanup)
+        OnGameEvent("stats_resetround", OnCleanup);
+
+        traintank_tracktrain.SetSolid(SOLID_NONE);
+        traintank_tracktrain.AddSolidFlags(FSOLID_NOT_SOLID);
+        traintank_tracktrain.SetCollisionGroup(COLLISION_GROUP_NONE);
+
+        StartJourney();
+    }
+
+    function HideTrainHackBot(hiddenLocation)
     {
-        targetname = "traintank_base_boss"
-        origin = traintank_model.GetOrigin(),
-        angles = traintank_model.GetAbsAngles(),
-        TeamNum = TF_TEAM_PVE_INVADERS
-    });
-    bossEnt.SetHealth(bot.GetMaxHealth() + 50000);
-    bossEnt.SetMaxHealth(bot.GetMaxHealth() + 50000);
-    //bossEnt.SetModelScale(1.3, -1)
-    //bossEnt.SetSize(traintank_model.GetBoundingMins(), traintank_model.GetBoundingMaxs());
-    bossEnt.SetModelSimple(traintank_model.GetModelName());
-    //bossEnt.SetSize(Vector(-200, -200, -200), Vector(200, 200, 200));
-    bossEnt.DisableDraw();
-    bossEnt.AddEFlags(EFL_NO_THINK_FUNCTION);
-    bossEnt.SetMoveType(MOVETYPE_NONE, MOVECOLLIDE_DEFAULT);
-    bossEnt.SetCollisionGroup(COLLISION_GROUP_NONE);
-    SetPropInt(bossEnt, "m_nNextThinkTick", 0x7FFFFFFF);
+        AddTimer(-1, function(hiddenLocation)
+        {
+            if (!traintank_hack_bot.IsAlive() || !traintank_hack_bot.HasBotTag("bot_tanktrain_hackbot"))
+                return TIMER_DELETE;
 
-    EmitSoundEx({
-        sound_name = ")ambient/levels/citadel/zapper_ambient_loop1.wav",
-        entity = bossEnt,
-        filter_type = RECIPIENT_FILTER_GLOBAL,
-        volume = 0.75,
-        sound_level = 150,
-        channel = CHAN_AUTO
-    });
+            traintank_hack_bot.Teleport(true, hiddenLocation, false, QAngle(), true, Vector());
 
-    SetDestroyCallback(bossEnt, function()
+            foreach (player in GetPlayers(TF_TEAM_PVE_DEFENDERS))
+                if (!player.IsAlive() && GetPropEntity(player, "m_hObserverTarget") == traintank_hack_bot)
+                    SetPropEntity(player, "m_hObserverTarget", null);
+        }, hiddenLocation);
+    }
+
+    function SpawnBaseBoss(traintank_tracktrain)
+    {
+        local traintank_model = FindByName(null, "traintank_model");
+
+        local bossEnt = SpawnEntityFromTable("base_boss",
+        {
+            targetname = "traintank_base_boss"
+            origin = traintank_model.GetOrigin(),
+            angles = traintank_model.GetAbsAngles(),
+            TeamNum = TF_TEAM_PVE_INVADERS
+        });
+        local utilHealth = traintank_hack_bot.GetMaxHealth() + 50000;
+        bossEnt.SetHealth(utilHealth);
+        bossEnt.SetMaxHealth(utilHealth);
+        bossEnt.SetModelSimple(traintank_model.GetModelName());
+        bossEnt.DisableDraw();
+        bossEnt.AddEFlags(EFL_NO_THINK_FUNCTION);
+        bossEnt.SetMoveType(MOVETYPE_NONE, MOVECOLLIDE_DEFAULT);
+        SetPropInt(bossEnt, "m_bloodColor", 3);
+        bossEnt.AcceptInput("SetParent", "traintank_tracktrain", null, null);
+        SetPropInt(bossEnt, "m_nNextThinkTick", 0x7FFFFFFF);
+        bossEnt.ValidateScriptScope();
+        bossEnt.GetScriptScope().trainBossScript <- this;
+
+        traintank_glow = SpawnEntityFromTable("tf_glow", {
+            target = "traintank_tracktrain",
+            StartDisabled = 0,
+            origin = bossEnt.GetCenter(),
+            GlowColor = "179 225 255 255"
+        });
+        traintank_glow.AcceptInput("SetParent", "traintank_tracktrain", null, null);
+
+        traintank_base_boss = bossEnt;
+
+        return bossEnt;
+    }
+
+    function PlaySounds()
     {
         EmitSoundEx({
-            sound_name = ")ambient/levels/citadel/zapper_ambient_loop1.wav",
-            flags = SND_STOP,
-            entity = self,
-            filter_type = RECIPIENT_FILTER_GLOBAL
-        })
-    })
-    OnGameEvent("stats_resetround", function()
-    {
+            sound_name = "ambient/alarms/razortrain_horn1.wav",
+            entity = traintank_base_boss,
+            filter_type = RECIPIENT_FILTER_GLOBAL,
+            sound_level = 150,
+            channel = CHAN_AUTO
+        });
+        EmitSoundEx({
+            sound_name = ")ambient/slow_train.wav",
+            entity = traintank_base_boss,
+            delay = 4,
+            filter_type = RECIPIENT_FILTER_GLOBAL,
+            sound_level = 150,
+            channel = CHAN_AUTO
+        });
+
         EmitSoundEx({
             sound_name = ")ambient/levels/citadel/zapper_ambient_loop1.wav",
-            flags = SND_STOP,
-            entity = bossEnt,
-            filter_type = RECIPIENT_FILTER_GLOBAL
-        })
-    });
+            entity = traintank_base_boss,
+            filter_type = RECIPIENT_FILTER_GLOBAL,
+            volume = 0.75,
+            sound_level = 150,
+            channel = CHAN_AUTO
+        });
+    }
 
-    RunWithDelay(0.5, function()
+    function ShowAnnotation()
     {
+        local myCenter = traintank_base_boss.GetCenter();
+
         SendGlobalGameEvent("show_annotation",
         {
-            worldPosX = this.GetCenter().x,
-            worldPosY = this.GetCenter().y,
-            worldPosZ = this.GetCenter().z,
+            worldPosX = myCenter.x,
+            worldPosY = myCenter.y,
+            worldPosZ = myCenter.z,
             id = 123,
             text = "Bot Carrier Train",
             lifetime = 7,
             visibilityBitfield = 0,
-            follow_entindex = this.entindex(),
+            follow_entindex = traintank_base_boss.entindex(),
             play_sound = "ui/hint.wav"
         });
-    }, bossEnt);
+    }
 
-    local tf_glow = SpawnEntityFromTable("tf_glow", {
-        target = "traintank_main",
-        StartDisabled = 0,
-        origin = bossEnt.GetCenter(),
-        GlowColor = "179 225 255 255"
-    });
-    tf_glow.AcceptInput("SetParent", "traintank_main", null, null);
-    bossEnt.AcceptInput("SetParent", "traintank_main", null, null);
-
-    OnGameEvent("OnTakeDamageNonPlayer", function(_, params)
+    function ProcessDamage(params)
     {
-        if (params.const_entity != bossEnt)
+        if (params.const_entity != traintank_base_boss)
             return;
+
         if (!IsValidPlayer(params.attacker))
         {
             params.early_out = true;
             return;
         }
-        if (IsValid(params.weapon) && params.weapon.GetClassname() == "tf_weapon_minigun")
+
+        if (GetClassname(params.weapon) == "tf_weapon_minigun")
             params.damage *= 0.25;
-        local hpLeft = bossEnt.GetHealth() - 50000;
-        bot.SetHealth(hpLeft);
+
+        params.damage_type = params.damage_type & ~DMG_USEDISTANCEMOD;
+
+        local hpLeft = traintank_base_boss.GetHealth() - 50000;
+        traintank_hack_bot.SetHealth(hpLeft);
+
         if (hpLeft <= 0)
+            OnDeath(params);
+    }
+
+    function OnDeath(params)
+    {
+        DispatchParticleEffect("mvm_tank_destroy", traintank_base_boss.GetCenter(), Vector());
+
+        traintank_base_boss.SetHealth(0);
+        EntFireByHandle(traintank_base_boss, "Kill", "", 0, null, null);
+
+        traintank_hack_bot.SetAbsOrigin(traintank_base_boss.GetCenter());
+        traintank_hack_bot.TakeDamageEx(
+            params.inflictor,
+            params.attacker,
+            params.weapon,
+            Vector(),
+            Vector(),
+            9999,
+            TF_DMG_CUSTOM_TELEFRAG);
+
+        traintank_tracktrain.AcceptInput("TeleportToPathTrack", "peaceful_train_path_1", null, null);
+        traintank_tracktrain.AcceptInput("Stop", "", null, null);
+        EntFire("spawnbot_traintank*", "Disable");
+        EntFire("traintank_navblocker", "UnBlockNav", 0.1);
+        KillIfValid(traintank_glow);
+
+        EntFire("train_doors*", "SetAnimation", "idle", 1);
+        EntFire("train_doors*", "SetDefaultAnimation", "idle", 1);
+        EntFire("train_teleporters*", "SetAnimation", "idle");
+        EntFire("train_teleporters*", "SetDefaultAnimation", "idle");
+        EntFire("train_teleporters_vfx*", "Stop");
+    }
+
+    function OnCleanup() //self = traintank_base_boss
+    {
+        local self = "self" in this ? self : traintank_base_boss;
+        EntFire("convert_second_bomb_bots_to_trainbots", "Disable");
+
+        delete self.GetScriptScope().trainBossScript;
+        EmitSoundEx({
+            sound_name = ")ambient/levels/citadel/zapper_ambient_loop1.wav",
+            flags = SND_STOP,
+            entity = self,
+            filter_type = RECIPIENT_FILTER_GLOBAL
+        });
+    }
+
+    function StartJourney()
+    {
+        traintank_tracktrain.AcceptInput("AddOutput", "startspeed " + maxSpeed, null, null);
+        traintank_tracktrain.AcceptInput("SetSpeedDir", "1", null, null);
+        traintank_tracktrain.AcceptInput("StartForward", "", null, null);
+    }
+
+    function TrainTankEnteredGameplaySpace()
+    {
+        slowDownTimerHandle = AddTimer(0.1, function()
         {
-            bot.SetAbsOrigin(bossEnt.GetCenter());
-            bot.TakeDamage(500, 0, params.attacker);
-            bossEnt.SetHealth(0);
-            tf_glow.Kill();
-            OnTrainTankDeath(bossEnt);
-        }
-    });
+            local speed = GetPropFloat(traintank_tracktrain, "m_flSpeed");
 
-    for (local i = 0; i < 2; i++)
-        EmitSoundEx({
-            sound_name = "ambient/alarms/razortrain_horn1.wav",
-            entity = traintank_main,
-            speaker_entity = traintank_main,
-            filter_type = RECIPIENT_FILTER_GLOBAL,
-            channel = CHAN_AUTO
+            EntFire("train_wheels*", "SetPlaybackRate", (speed / maxSpeed).tostring());
+
+            if (speed > 200)
+                SetPropFloat(traintank_tracktrain, "m_flSpeed", speed - 17);
+            else if (speed > 25)
+                SetPropFloat(traintank_tracktrain, "m_flSpeed", speed - 5);
+            else
+                return TIMER_DELETE;
         });
 
-    AddTimer(-1, function()
-    {
-        if (!this.IsAlive() || !this.HasBotTag("bot_tanktrain_hackbot"))
-            return TIMER_DELETE;
-        foreach (player in GetPlayers(TF_TEAM_PVE_DEFENDERS))
-            if (!player.IsAlive() && GetPropEntity(player, "m_hObserverTarget") == this)
-                SetPropEntity(player, "m_hObserverTarget", null);
-    }, bot)
+        EntFire("train_wheels_vfx", "Start");
 
-    EntFire("train_snow_vfx", "Start");
-
-    DoEntFire("train_warning", "Trigger", "", 0, null, null);
-    DoEntFire("train_warning_stop", "Trigger", "", 20, null, null);
-
-    AddTimer(2, function()
-    {
-        if (!this.IsAlive() || !this.HasBotTag("bot_tanktrain_hackbot"))
-            return TIMER_DELETE;
-        EntFire("traintank_navblocker", "BlockNav");
-    }, bot);
-}
-
-function OnTrainTankDeath(bossEnt)
-{
-    EntFire("traintank_main", "TeleportToPathTrack", "peaceful_train_path_1");
-    EntFire("traintank_main", "Stop");
-    DispatchParticleEffect("mvm_tank_destroy", bossEnt.GetCenter(), Vector());
-    EntFire("spawnbot_traintank*", "Disable");
-    EntFire("traintank_navblocker", "UnBlockNav", 0.1);
-}
-
-PrecacheSound("ambient/machines/station_train_squeel.wav");
-
-function TrainTankIsNearPoint(pointName, activator)
-{
-    local traintank_main = FindByName(null, "traintank_main");
-    if (activator != traintank_main)
-        return;
-
-    local baseBoss = FindByClassname(null, "base_boss");
-    if (!IsValid(baseBoss))
-        return;
-
-    AddTimer(0.1, function()
-    {
-        //EntFire("traintank_main", "SetSpeed")
-        local speed = GetPropFloat(traintank_main, "m_flSpeed");
-        if (speed > 200)
-            SetPropFloat(traintank_main, "m_flSpeed", speed - 17);
-        else if (speed > 25)
-            SetPropFloat(traintank_main, "m_flSpeed", speed - 5);
-        else
-            return TIMER_DELETE;
-    }, baseBoss);
-
-    EntFire("train_wheels_vfx", "Start");
-    for (local i = 0; i < 2; i++)
-        EmitSoundEx({
-            sound_name = "ambient/machines/station_train_squeel.wav",
-            entity = traintank_main,
-            filter_type = RECIPIENT_FILTER_GLOBAL,
-            volume = 1,
-            sound_level = 150,
-            channel = CHAN_AUTO
-        });
-}
-
-function TrainTankReachedPoint(pointName, activator)
-{
-    if (currentGatePointIndex == 2)
-        EntFire("convert_second_bomb_bots_to_trainbots", "Enable");
-    local traintank_main = FindByName(null, "traintank_main");
-    if (activator != traintank_main)
-        return;
-
-    local point = FindByName(null, pointName);
-    if (pointName != null && point.GetTeam() != TF_TEAM_PVE_DEFENDERS)
-        return;
-
-    TrainWakeUpSequence(pointName, activator);
-    RunWithDelay(5, ActivateTrain, pointName, activator);
-}
-
-PrecacheScriptSound("Building_Teleporter.Ready");
-PrecacheSound(")ambient/levels/citadel/zapper_ambient_loop1.wav");
-PrecacheSound("beams/beamstart5.wav");
-
-function TrainWakeUpSequence(pointName, activator)
-{
-    local traintank_main = FindByName(null, "traintank_main");
-    EntFire("traintank_main", "Stop");
-    EntFire("traintank_hurt", "Disable");
-    EntFire("train_wheels*", "SetAnimation", "idle");
-    EntFire("train_wheels*", "SetDefaultAnimation", "idle");
-
-    EntFire("traintank_navblocker", "BlockNav", 0.1);
-
-    EntFire("train_snow_vfx", "Stop");
-    EntFire("train_wheels_vfx", "Stop");
-
-    local addon = pointName == GATE2_POINT_NAME ? "" : "Right";
-    EntFire("train_doors*", "SetAnimation", "OpenDoors" + addon, 1.0);
-    EntFire("train_doors*", "SetDefaultAnimation", "stayopen" + addon, 1.0);
-    EntFire("train_teleporters*", "SetAnimation", "teleporterspin", 3.5);
-    EntFire("train_teleporters*", "SetDefaultAnimation", "teleporterspin", 3.5);
-
-    EntFire("tf_point_nav_interface", "RecomputeBlockers", 1);
-
-    for (local i = 0; i < 2; i++)
-        EmitSoundEx({
-            sound_name = "weapons/sentry_upgrading_steam1.wav",
-            entity = traintank_main,
-            filter_type = RECIPIENT_FILTER_GLOBAL,
-            volume = 1,
-            sound_level = 150,
-            channel = CHAN_AUTO
-        });
-
-    local addon = pointName == GATE2_POINT_NAME ? "*" : "Right";
-    EntFire("train_teleporters_vfx_" + addon, "Start", "", 4);
-
-    RunWithDelay(4.5, function()
-    {
         for (local i = 0; i < 2; i++)
+        {
             EmitSoundEx({
-                sound_name = "Building_Teleporter.Ready",
-                entity = traintank_main,
+                sound_name = "ambient/machines/station_train_squeel.wav",
+                entity = traintank_tracktrain,
                 filter_type = RECIPIENT_FILTER_GLOBAL,
                 volume = 1,
                 sound_level = 150,
                 channel = CHAN_AUTO
             });
-    });
-}
-
-function ActivateTrain(pointName, activator)
-{
-    local traintank_main = FindByName(null, "traintank_main");
-    EntFire("spawnbot_traintank", "Enable");
-    EntFire("traintank_navblocker", "BlockNav", 0.1);
-
-    if (pointName == GATE2_POINT_NAME)
-    {
-        local point = FindByName(null, pointName);
-        if (point.GetTeam() == TF_TEAM_PVE_DEFENDERS)
-            EntFire("spawnbot_traintank_b", "Enable");
+            EmitSoundEx({
+                sound_name = "plats/train_brake1.wav",
+                entity = traintank_tracktrain,
+                filter_type = RECIPIENT_FILTER_GLOBAL,
+                volume = 1,
+                sound_level = 150,
+                channel = CHAN_AUTO
+            });
+        }
     }
-    else
-        EntFire("spawnbot_traintank_b", "Disable");
 
-    for (local i = 0; i < 2; i++)
-        EmitSoundEx({
-            sound_name = "weapons/sentry_upgrading_steam1.wav",
-            entity = traintank_main,
-            filter_type = RECIPIENT_FILTER_GLOBAL,
-            volume = 1,
-            sound_level = 150,
-            channel = CHAN_AUTO
+    function TrainTankArrivedAtPoint()
+    {
+        DeleteTimer(slowDownTimerHandle);
+        RunWithDelay(5, ActivateTrain);
+
+        EntFire("traintank_tracktrain", "Stop");
+        EntFire("traintank_hurt", "Disable");
+
+        EntFire("train_wheels*", "SetAnimation", "idle");
+        EntFire("train_wheels*", "SetDefaultAnimation", "idle");
+
+        EntFire("train_snow_vfx", "Stop");
+        EntFire("train_wheels_vfx", "Stop");
+
+        EntFire("traintank_navblocker", "BlockNav", 0.1);
+        EntFire("gate1_separator", "Disable");
+
+        local addon = currentGatePointIndex == 1 ? "" : "Right";
+        EntFire("train_doors*", "SetAnimation", "OpenDoors" + addon, 1.0);
+        EntFire("train_doors*", "SetDefaultAnimation", "StayOpen" + addon, 1.0);
+        EntFire("train_teleporters*", "SetAnimation", "TeleporterSpin", 3.5);
+        EntFire("train_teleporters*", "SetDefaultAnimation", "TeleporterSpin", 3.5);
+
+        local vfxTarget = currentGatePointIndex == 1 ? "train_teleporters_vfx_*" : "train_teleporters_vfx_right";
+        EntFire(vfxTarget, "Start", "", 4);
+
+        for (local i = 0; i < 2; i++)
+            EmitSoundEx({
+                sound_name = "weapons/sentry_upgrading_steam1.wav",
+                entity = traintank_tracktrain,
+                filter_type = RECIPIENT_FILTER_GLOBAL,
+                sound_level = 150,
+                channel = CHAN_AUTO
+            });
+
+        RunWithDelay(3.8, function()
+        {
+            EmitSoundEx({
+                sound_name = "weapons/teleporter_ready.wav",
+                entity = traintank_tracktrain,
+                filter_type = RECIPIENT_FILTER_GLOBAL,
+                volume = 0.6,
+                sound_level = 150,
+                channel = CHAN_AUTO
+            });
         });
+    }
+
+    function ActivateTrain()
+    {
+        EntFire("spawnbot_traintank", "Enable");
+        //EntFire("traintank_navblocker", "BlockNav", 0.1);
+
+        if (currentGatePointIndex == 2)
+            EntFire("convert_second_bomb_bots_to_trainbots", "Enable");
+
+        for (local i = 0; i < 2; i++)
+            EmitSoundEx({
+                sound_name = "weapons/sentry_upgrading_steam1.wav",
+                entity = traintank_tracktrain,
+                filter_type = RECIPIENT_FILTER_GLOBAL,
+                sound_level = 150,
+                channel = CHAN_AUTO
+            });
+    }
+
+    function UndeployTrainBeforeMovingBetweenPoints()
+    {
+        RunWithDelay(4, StartJourneyBetweenPoints);
+
+        local doorAnimation = currentGatePointIndex == 1 ? "CloseDoors" : "CloseDoorsRight";
+
+        EntFire("train_doors*", "SetAnimation", doorAnimation, 1);
+        EntFire("train_doors*", "SetDefaultAnimation", "idle", 1);
+        EntFire("train_teleporters*", "SetAnimation", "idle");
+        EntFire("train_teleporters*", "SetDefaultAnimation", "idle");
+        EntFire("train_teleporters_vfx*", "Stop");
+
+        for (local i = 0; i < 2; i++)
+            EmitSoundEx({
+                sound_name = "weapons/sentry_upgrading_steam2.wav",
+                entity = FindByName(null, "traintank_tracktrain"),
+                filter_type = RECIPIENT_FILTER_GLOBAL,
+                volume = 1,
+                sound_level = 150,
+                channel = CHAN_AUTO
+            });
+    }
+
+    function StartJourneyBetweenPoints()
+    {
+        EntFire("spawnbot_traintank*", "Disable");
+
+        traintank_tracktrain.AcceptInput("AddOutput", "startspeed 5", null, null);
+        //EntFire("traintank_tracktrain", "SetSpeedDir", "1");
+        EntFire("traintank_tracktrain", "StartForward");
+        EntFire("traintank_hurt", "Enable");
+        EntFire("traintank_navblocker", "UnBlockNav", 0.1);
+
+        EntFire("train_wheels*", "SetAnimation", "forward");
+        EntFire("train_wheels*", "SetDefaultAnimation", "forward");
+
+        for (local i = 0; i < 2; i++)
+            EmitSoundEx({
+                sound_name = "weapons/sentry_upgrading_steam2.wav",
+                entity = FindByName(null, "traintank_tracktrain"),
+                filter_type = RECIPIENT_FILTER_GLOBAL,
+                volume = 1,
+                sound_level = 150,
+                channel = CHAN_AUTO
+            });
+
+        AddTimer(0.1, function()
+        {
+            local speed = GetPropFloat(traintank_tracktrain, "m_flSpeed");
+            if (speed < 200)
+                SetPropFloat(traintank_tracktrain, "m_flSpeed", speed + 5);
+            else
+                return TIMER_DELETE;
+        });
+    }
+
+    function SlowDownWhenMovingBetweenPoints()
+    {
+        AddTimer(0.1, function()
+        {
+            local speed = GetPropFloat(traintank_tracktrain, "m_flSpeed");
+            TempPrint("2 "+speed)
+            if (speed > 25)
+                SetPropFloat(traintank_tracktrain, "m_flSpeed", speed - 5);
+            else
+                return TIMER_DELETE;
+        });
+    }
 }
 
-function TrainTankMoveToNextPoint()
+::GetTrainTankScript <- function(activator = null)
 {
-    if (!IsValid(FindByName(null, "traintank_base_boss")))
+    if (activator && activator.GetName() != "traintank_tracktrain")
+        return null;
+
+    local traintank_base_boss = FindByName(null, "traintank_base_boss");
+    if (!traintank_base_boss)
+        return null;
+
+    return traintank_base_boss.GetScriptScope().trainBossScript;
+}
+
+::TrainTankEnteredGameplaySpace <- function(pointIndex)
+{
+    if (pointIndex != currentGatePointIndex)
         return;
 
-    TrainPackUpSequence();
-    RunWithDelay(4, MoveTrain);
+    local script = GetTrainTankScript(activator);
+    if (script)
+        script.TrainTankEnteredGameplaySpace();
 }
 
-function TrainPackUpSequence()
+::TrainTankArrivedAtPoint <- function(pointIndex)
 {
-    local addon = currentGatePointIndex == 1 ? "" : "Right";
+    if (pointIndex != currentGatePointIndex)
+        return;
 
-    local traintank_main = FindByName(null, "traintank_main");
-    //EntFire("train_snow_vfx", "Start", 4);
-    //EntFire("train_wheels_vfx", "Start", 4);
-    EntFire("train_doors*", "SetAnimation", "CloseDoors"+addon, 1);
-    EntFire("train_doors*", "SetDefaultAnimation", "idle", 1);
-    EntFire("train_teleporters*", "SetAnimation", "idle");
-    EntFire("train_teleporters*", "SetDefaultAnimation", "idle");
-    EntFire("train_teleporters_vfx*", "Stop", "");
-
-    for (local i = 0; i < 2; i++)
-        EmitSoundEx({
-            sound_name = "weapons/sentry_upgrading_steam2.wav",
-            entity = FindByName(null, "traintank_main"),
-            filter_type = RECIPIENT_FILTER_GLOBAL,
-            volume = 1,
-            sound_level = 150,
-            channel = CHAN_AUTO
-        });
+    local script = GetTrainTankScript(activator);
+    if (script)
+        script.TrainTankArrivedAtPoint();
 }
 
-function MoveTrain()
+::TrainTankOnGateCapture <- function()
 {
-    local traintank_main = FindByName(null, "traintank_main");
-    SetPropFloat(traintank_main, "m_flSpeed", 100);
-    EntFire("traintank_main", "AddOutput", "startspeed 100");
-    EntFire("traintank_main", "StartForward");
-    SetPropFloat(traintank_main, "m_flSpeed", 100);
-    EntFire("spawnbot_traintank*", "Disable");
-    EntFire("traintank_hurt", "Enable");
-    EntFire("traintank_navblocker", "UnBlockNav", 0.1);
-    EntFire("train_wheels*", "SetAnimation", "forward");
-    EntFire("train_wheels*", "SetDefaultAnimation", "forward");
-
-    for (local i = 0; i < 2; i++)
-        EmitSoundEx({
-            sound_name = "weapons/sentry_upgrading_steam2.wav",
-            entity = FindByName(null, "traintank_main"),
-            filter_type = RECIPIENT_FILTER_GLOBAL,
-            volume = 1,
-            sound_level = 150,
-            channel = CHAN_AUTO
-        });
-    EntFire("tf_point_nav_interface", "RecomputeBlockers", 10);
+    local script = GetTrainTankScript();
+    if (script)
+        script.UndeployTrainBeforeMovingBetweenPoints();
 }
 
-EntFire("spawnbot_traintank*", "Disable");
-EntFire("traintank_main", "TeleportToPathTrack", "peaceful_train_path_1");
-EntFire("convert_second_bomb_bots_to_trainbots", "Disable");
+::SlowDownWhenMovingBetweenPoints <- function(pointIndex)
+{
+    if (pointIndex != currentGatePointIndex)
+        return;
 
-PrecacheParticle("Motherland_train_antenna_parent");
+    local script = GetTrainTankScript();
+    if (script)
+        script.SlowDownWhenMovingBetweenPoints();
+}

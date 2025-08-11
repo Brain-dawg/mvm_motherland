@@ -2,6 +2,10 @@
 // Traintank Passengers
 //========================================================
 
+PrecacheSound("beams/beamstart5.wav");
+PrecacheParticle("Motherland_landing_smoke_parent_big");
+PrecacheParticle("Motherland_landing_smoke_parent_small");
+
 traintank_tepeports_a <- CollectByName("traintank_teleport_a");
 traintank_tepeports_giant_a <- CollectByName("traintank_teleport_giant_a");
 traintank_tepeports_b <- CollectByName("traintank_teleport_b");
@@ -12,7 +16,6 @@ traintank_tepeports_giant_c <- CollectByName("traintank_teleport_giant_c");
 traintank_tepeports_all <- [traintank_tepeports_a, traintank_tepeports_b, traintank_tepeports_c];
 traintank_tepeports_giant_all <- [traintank_tepeports_giant_a, traintank_tepeports_giant_b, traintank_tepeports_giant_c];
 
-//OnGameEvent("player_spawn_post", function(bot, params)
 function ConvertToTrainBot(bot)
 {
     local randomTeleport;
@@ -22,10 +25,7 @@ function ConvertToTrainBot(bot)
         randomTeleport = RandomElement(traintank_tepeports_all[currentGatePointIndex]);
 
     bot.Teleport(true, randomTeleport.GetOrigin(), true, randomTeleport.GetAbsAngles(), true, Vector());
-    RunWithDelay(0.1, function()
-    {
-        bot.AddCondEx(TF_COND_INVULNERABLE, 1.5, null);
-    })
+    RunWithDelay(0.1, bot.AddCondEx, TF_COND_INVULNERABLE, 1.5, null);
 
     local nearestParticle = FindByNameNearest("train_teleporters_vfx*", bot.GetCenter(), 500);
     if (nearestParticle)
@@ -43,7 +43,6 @@ function ConvertToTrainBot(bot)
     EmitSoundEx({
         sound_name = "beams/beamstart5.wav",
         entity = bot,
-        volume = 1,
         sound_level = 150,
         channel = CHAN_AUTO
     });
@@ -129,7 +128,35 @@ class CustomJetpackRobot extends CustomCharacter
             if (!almostLanded)
             {
                 almostLanded = true;
+
                 RunWithDelay(3, FinishJetpackSpawnSequence);
+
+                local landingLocation = myPos - Vector(0, 0, 350 * fraction);
+
+                if (player.IsMiniBoss())
+                {
+                    AddTimer(0.1, function(endTime)
+                    {
+                        if (Time() > endTime)
+                            return TIMER_DELETE;
+
+                        local myPos = player.GetOrigin();
+                        foreach (enemy in GetAlivePlayers(TF_TEAM_PVE_DEFENDERS))
+                        {
+                            local deltaVector = enemy.EyePosition() - myPos;
+                            local distance = deltaVector.Norm();
+                            if (distance < 150)
+                                enemy.Yeet(deltaVector * 200);
+                        }
+                    }, Time() + 3)
+                }
+
+                local particle = SpawnEntityFromTable("info_particle_system", {
+                    effect_name = player.IsMiniBoss() ? "Motherland_landing_smoke_parent_big" : "Motherland_landing_smoke_parent_small",
+                    origin = landingLocation,
+                    start_active = 1
+                })
+                EntFireByHandle(particle, "Kill", "", 3, null, null);
             }
         }
     }
@@ -177,6 +204,7 @@ class CustomJetpackRobot extends CustomCharacter
     }
 }
 
+
 //========================================================
 // Direct Hit Sentry Hunters from Wave 1
 //========================================================
@@ -208,6 +236,7 @@ function LookForSentry(sentry) //`this` is bot
     else
         this.ClearBehaviorFlag(TFBOT_IGNORE_ALL_EXCEPT_SENTRY);
 }
+
 
 //========================================================
 // Taunt Kill Holiday Punch Heavies from Wave 3
@@ -304,6 +333,7 @@ class BotHighNoonHeavy extends CustomCharacter
     }
 }
 
+
 //========================================================
 // Cleaner's Carbine / Bushwacka Push Snipers from Wave 2
 //========================================================
@@ -373,6 +403,7 @@ class BotCarbineSniper extends CustomCharacter
     }
 }
 
+
 //========================================================
 // Phlog Pyro Wave 2
 //========================================================
@@ -384,7 +415,7 @@ OnGameEvent("player_spawn_post", function(bot, params)
 
 	AddTimer(0.5, function()
 	{
-        if (!this.IsAlive() || !this.HasBotTag("bot_phlog_pyro"))
+        if (!IsValidClient(this) || !this.IsAlive() || !this.HasBotTag("bot_phlog_pyro"))
             return TIMER_DELETE;
 		if (this.GetRageMeter() > 15 && !this.IsRageDraining())
 		{

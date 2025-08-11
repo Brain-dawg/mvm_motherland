@@ -167,16 +167,36 @@ class MvMGatePoint
             });
         })
         TempPrint("mvm gate took " + EndBenchmark());
+
+        AddTimer(0.1, function() //todo temp fix against important bombs jumping into the "radio hatch"
+        {
+            if (!IsActive())
+                return;
+
+            foreach (player in GetAlivePlayers(TF_TEAM_PVE_INVADERS))
+            {
+                if (GetPropEntity(player, "m_hItem"))
+                {
+                    player.AddBotTag("actual_bomb_carrier");
+                    if (player.HasBotTag("bot_no_radio_jump") && prefix != "hatch_")
+                        func_capturezone.SetAbsOrigin(hFlagTarget.GetOrigin() + Vector(0, 0, 300));
+                    else
+                        func_capturezone.SetAbsOrigin(hFlagTarget.GetOrigin());
+                    return;
+                }
+            }
+        });
     }
 
     function OnGateOpening()
     {
         SetDoorState("Open");
-        EntFireByHandle(
-            RandomElement(GetPlayers(TF_TEAM_PVE_DEFENDERS)),
-            "SpeakResponseConcept",
-            "TLK_MANNHATTAN_GATE_ATK",
-            0, null, null);
+        for (local i = 0; i < 2; i++)
+            EntFireByHandle(
+                RandomElement(GetPlayers(TF_TEAM_PVE_DEFENDERS)),
+                "SpeakResponseConcept",
+                "TLK_MANNHATTAN_GATE_ATK",
+                0, null, null);
     }
 
     function OnGateAlarm() //activator, caller
@@ -329,14 +349,15 @@ function OnGateCapture()
         if (!bot.IsMiniBoss() && !bot.HasBotTag("bot_sentrybuster"))
             bot.AddCondEx(TF_COND_MVM_BOT_STUN_RADIOWAVE, GATE_BOT_STUN_TIME, -1);
 
-    TrainTankMoveToNextPoint();
+    TrainTankOnGateCapture();
 
     EmitSoundEx({ sound_name = "mvm.robo_stun_lp" });
-    EntFireByHandle(
-        RandomElement(GetPlayers(TF_TEAM_PVE_DEFENDERS)),
-        "SpeakResponseConcept",
-        "TLK_MANNHATTAN_GATE_TAKE",
-        0, null, null);
+    for (local i = 0; i < 2; i++)
+        EntFireByHandle(
+            RandomElement(GetPlayers(TF_TEAM_PVE_DEFENDERS)),
+            "SpeakResponseConcept",
+            "TLK_MANNHATTAN_GATE_TAKE",
+            0, null, null);
 }
 ::OnGateCapture <- OnGateCapture.bindenv(this);
 
@@ -399,15 +420,3 @@ SetActiveGatePoint(0, false);
     local arg = IndexOrPrefixToIndex(indexOrPrefix, gatePointPrefixes) + 1;
     SetActiveGatePoint(arg, alsoSetSpawnGroup);
 }.bindenv(this);
-
-AddTimer(1, function() //todo tmp
-{
-    foreach (player in GetAlivePlayers(TF_TEAM_PVE_INVADERS))
-    {
-        if (GetPropEntity(player, "m_hItem"))
-        {
-            player.AddBotTag("actual_bomb_carrier");
-            return;
-        }
-    }
-});

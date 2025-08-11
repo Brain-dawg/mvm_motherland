@@ -301,7 +301,6 @@
     return minKey;
 }
 
-
 ::DebugDrawSphere <- function( vCenter, flRadius, nTheta, nPhi, r, g, b, z, time )
 {
 	++nTheta;
@@ -336,4 +335,11 @@
             DebugDrawLine(pVerts[idx], pVerts[idx+1], r, g, b, z, time);
 		}
 	}
+}
+
+::GetClassname <- function(entity)
+{
+    if (!entity || !entity.IsValid())
+        return null;
+    return entity.GetClassname();
 }

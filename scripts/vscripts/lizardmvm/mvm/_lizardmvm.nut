@@ -36,7 +36,7 @@ function Mainload()
         Include("mvm/gate_fix.nut");
         Include("mvm/traintank.nut");
         Include("mvm/custom_bots.nut");
-        EntFire("tf_point_nav_interface", "RecomputeBlockers", 1);
+        //EntFire("tf_point_nav_interface", "RecomputeBlockers", 1);
 
         PlayWaveEndMusic();
         AddTimer(0.2, function()
@@ -55,4 +55,11 @@ IncludeScript(gamemode_name + "/__lizardcore/_core.nut");
 AddTimer(5, function()
 {
     Convars.SetValue("tf_mvm_respec_enabled", 1);
-})
+});
+
+OnDevCommand("bot_kill", function(caller, args)
+{
+    foreach (player in GetPlayers(TF_TEAM_PVE_INVADERS))
+        if (!player.HasBotTag("bot_tanktrain_hackbot"))
+            player.TakeDamage(99999, 0, null);
+});
