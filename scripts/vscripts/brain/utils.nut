@@ -1,7 +1,49 @@
-__CREATE_SCOPE( "__motherland_utils", "_MotherlandUtils" )
+__CREATE_SCOPE( "__motherland_utils", "_MotherlandUtils", null, "_MotherlandUtilsThink" )
 
 if ( !("GameStrings" in _MotherlandUtils) )
     _MotherlandUtils.GameStrings <- {}
+
+function _MotherlandUtils::_OnDestroy() {
+
+    foreach( str in GameStrings.keys() )
+        PurgeGameString( str )
+}
+
+function _MotherlandUtils::GameStringGenerator() {
+
+	local gamestrings_snapshot = clone GameStrings
+
+    // printl( gamestrings_snapshot.len() )
+
+	foreach( str in gamestrings_snapshot.keys() ) {
+
+		PurgeGameString( str )
+		delete GameStrings[str]
+        // printl( str )
+
+		yield str
+	}
+}
+
+local stringhandler_cooldown = 0.0
+local gen = null
+function _MotherlandUtils::ThinkTable::HandleGameStrings() {
+
+	if ( Time() < stringhandler_cooldown )
+		return
+
+	if ( !GameStrings.len() ) {
+		stringhandler_cooldown = Time() + 0.5
+		return
+	}
+
+	if ( !gen || gen.getstatus() == "dead" )
+		gen = GameStringGenerator()
+
+	resume gen
+
+	stringhandler_cooldown = Time() + 0.05
+}
 
 function _MotherlandUtils::GetEntScope( ent ) { return ent.GetScriptScope() || ( ent.ValidateScriptScope(), ent.GetScriptScope() ) }
 
@@ -70,7 +112,7 @@ function _MotherlandUtils::ScriptEntFireSafe( target, code, delay = -1, activato
 function _MotherlandUtils::PurgeGameString( str ) {
 
     local dummy = CreateByClassname( "logic_autosave" )
-    SetPropString( dummy, "m_iName", str )
+    SetPropString( dummy, STRING_NETPROP_NAME, str )
     SetPropBool( dummy, STRING_NETPROP_PURGESTRINGS, true )
     dummy.Kill()
 }
@@ -112,4 +154,11 @@ function _MotherlandUtils::GetAllOutputs( ent, output ) {
 		outputs.append( t )
 	}
 	return outputs
+}
+
+function _MotherlandUtils::WipeTanks() {
+
+    ScriptEntFireSafe( "tank_boss", "self.TakeDamage( INT_MAX, DMG_GENERIC, First() )" )
+
+    _MotherlandUtils.GameStrings[ "WipeTanks" ] <- null
 }

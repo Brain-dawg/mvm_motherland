@@ -1,14 +1,30 @@
 __CREATE_SCOPE( "__motherland_maplogic", "_MotherlandMapLogic" )
 
-// this messes with engi hints
-Convars.SetValue( "sig_etc_entity_limit_manager_convert_server_entity", 0 )
+// rafmod/potato server hack, this messes with engi hints
+for (local hint; hint = FindByClassname(hint, "bot_hint*");) {
+
+    if ( hint.entindex() ) break
+
+    SetValue( "sig_etc_entity_limit_manager_convert_server_entity", 0 )
+
+    ClientPrint( null, HUD_PRINTCENTER, "disabling sig_etc_entity_limit_manager_convert_server_entity" )
+
+    if ( GetPropBool ( _MotherlandMain.ObjRes, "m_bMannVsMachineBetweenWaves" ) )
+        SetValue( "mp_restartgame_immediate", true )
+    
+    _MotherlandUtils.ScriptEntFireSafe( hint, "SetValue( `mp_restartgame_immediate`, true )", 1 )
+    break
+}
 
 // Temporary until we start utilizing the flank bomb path more
 EntFire( "hologramrelay_mainbomb", "Trigger" )
 
 function _MotherlandMapLogic::_OnDestroy() {
 
-    local gateb_scope = FindByName( null, "gate2_spawn_door" ).GetScriptScope()
+    local gateb = FindByName( null, "gate2_spawn_door" )
+    if ( !gateb ) return
+
+    local gateb_scope = gateb.GetScriptScope()
 
     if ( gateb_scope && "_IsCapped" in gateb_scope )
         delete gateb_scope._IsCapped
@@ -40,10 +56,15 @@ function _MotherlandMapLogic::AddOutputs( outputs ) {
 
                     local param = "param" in arg ? format(@"%s", arg.param) : ""
 
-                    EntFire( ent, "RunScriptCode", format( @"RemoveOutput( self, `%s`, `%s`, `%s`, `%s` )", output, arg.name, arg.action, param ))
+                    local str = format("RemoveOutput( self, `%s`, `%s`, `%s`, `%s` )", output, arg.name, arg.action, param )
+                    EntFire( ent, "RunScriptCode", str )
 
-                    if ( "_MotherlandUtils" in ROOT && arg.param != "" )
+
+                    if ( "_MotherlandUtils" in ROOT ) {
+
+                        _MotherlandUtils.GameStrings[ str ] <- "AddOutputs"
                         _MotherlandUtils.GameStrings[ param ] <- "AddOutputs"
+                    }
                 }
             }
         }
@@ -65,11 +86,28 @@ function _MotherlandMapLogic::AddOutputs( outputs ) {
                     if ( arg.name == "!self" )
                         arg.name = ent
 
-                    if ( arg.param != "" )
-                        _MotherlandUtils.GameStrings[ param ] <- "AddOutputs"
-                    
-                    EntFire( ent, "AddOutput", format( "%s %s:%s:%s:%.2f:%d\n", output, arg.name, arg.action, param, delay.tofloat(), count.tointeger() ))
+                    local str = format( "%s %s:%s:%s:%.2f:%d\n", output, arg.name, arg.action, param, delay.tofloat(), count.tointeger() )
 
+                    EntFire( ent, "AddOutput", str )
+                    _MotherlandUtils.GameStrings[ str ] <- "AddOutputs"
+                    
+    
+                    if ( arg.action == "RunScriptCode" )
+                        _MotherlandUtils.ScriptEntFireSafe( ent, format( @"
+
+                            self.ValidateScriptScope()
+                            local scope = self.GetScriptScope()
+
+                            function InputRunScriptCode() {
+
+                                _MotherlandUtils.GameStrings[ ""%s"" ] <- null
+                                return true
+                            }
+                            scope.InputRunScriptCode <- InputRunScriptCode
+                            scope.Inputrunscriptcode <- scope.InputRunScriptCode
+
+                            SetPropBool( self, STRING_NETPROP_PURGESTRINGS, true )
+                        ", param ) )
                 }
             }
 
@@ -77,9 +115,10 @@ function _MotherlandMapLogic::AddOutputs( outputs ) {
     }
 }
 
-function _MotherlandMapLogic::FakeBomb( kill_only = false, switch_bomb_team = false, bomb_name = "gate2_bomb2" ) {
+function _MotherlandMapLogic::FakeBomb( kill_only = false, switch_bomb_team = false, bomb = altbomb ) {
 
-    local real_bomb = FindByName( null, bomb_name )
+    local real_bomb = typeof bomb == "string" ? FindByName( null, bomb ) : bomb
+    local bomb_name = real_bomb.GetName()
 
     if ( !real_bomb ) {
 
@@ -87,17 +126,33 @@ function _MotherlandMapLogic::FakeBomb( kill_only = false, switch_bomb_team = fa
         return
     }
 
-    for ( local child = real_bomb.FirstMoveChild(); child && child.GetClassname() == "item_teamflag"; child = child.NextMovePeer() )
-        EntFireByHandle( child, "Kill", "", -1, null, null )
+    for ( local child = real_bomb.FirstMoveChild(); child; child = child.NextMovePeer() )
+        if ( child.GetClassname() != "env_spritetrail" )
+            EntFireByHandle( child, "Kill", "", -1, null, null )
 
-    if ( switch_bomb_team )
+    if ( switch_bomb_team ) {
+
         real_bomb.SetTeam( TF_TEAM_PVE_DEFENDERS )
+        SetPropBool( real_bomb, "m_bGlowEnabled", false )
+        // real_bomb.AcceptInput( "DispatchEffect", "ParticleEffectStop", null, null )
+        // glowcolor = "179 225 255 255" * 0.76
+        local fakeglow = SpawnEntityFromTable( "tf_glow", {
+            targetname = "__motherland_fakebomb_glow"
+            GlowColor = "136 172 196 255"
+            target = bomb_name
+            origin = real_bomb.GetOrigin()
+        })
+        SetPropBool( fakeglow, STRING_NETPROP_PURGESTRINGS, true )
+        fakeglow.AcceptInput( "SetParent", "!activator", real_bomb, real_bomb )
+    }
 
     if ( kill_only ) return
 
     local fakebomb = CreateByClassname( "item_teamflag" )
+    local fakebomb_name = format( "%s_fake", bomb_name )
 
     fakebomb.SetTeam( TF_TEAM_PVE_DEFENDERS )
+    // fakebomb.AcceptInput( "DispatchEffect", "ParticleEffectStop", null, null )
 
     fakebomb.KeyValueFromInt( "trail_effect", 0 )
     fakebomb.KeyValueFromInt( "ReturnTime", 0 )
@@ -107,7 +162,9 @@ function _MotherlandMapLogic::FakeBomb( kill_only = false, switch_bomb_team = fa
 
     fakebomb.SetAbsOrigin( real_bomb.GetOrigin() )
     fakebomb.AcceptInput( "SetParent", bomb_name, null, null )
-    fakebomb.KeyValueFromString( "targetname", format( "%s_fake", bomb_name ) )
+    SetPropString( fakebomb, STRING_NETPROP_NAME, fakebomb_name )
+    SetPropBool( fakebomb, STRING_NETPROP_PURGESTRINGS, true )
+    _MotherlandUtils.GameStrings[ fakebomb_name ] <- null
     fakebomb.DisableDraw()
 
     if ( switch_bomb_team )

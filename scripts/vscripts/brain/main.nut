@@ -11,12 +11,12 @@ function __CREATE_SCOPE( name, scope_ref = null, entity_ref = null, think_func =
 	if ( !ent || !ent.IsValid() ) {
 
 		ent = CreateByClassname( preserved ? "entity_saucer" : "logic_autosave" )
-		SetPropString( ent, "m_iName", name )
+		SetPropString( ent, STRING_NETPROP_NAME, name )
 		ent.ValidateScriptScope()
 	}
 
 	if ( ent.GetName() != name ) {
-		SetPropString( ent, "m_iName", name )
+		SetPropString( ent, STRING_NETPROP_NAME, name )
 		ent.ValidateScriptScope()
 	}
 
@@ -53,7 +53,7 @@ function __CREATE_SCOPE( name, scope_ref = null, entity_ref = null, think_func =
 
 			local ent = EntIndexToHScript( %d )
 			local func_name = %s
-			local scope = ent.GetScriptScope()
+			local ent_scope = ent.GetScriptScope()
 
 			function %s() {
 
@@ -67,7 +67,7 @@ function __CREATE_SCOPE( name, scope_ref = null, entity_ref = null, think_func =
 		", ent.entindex(), format( "\"%s\"", think_func ), think_func, think_func ) )()
 
 		try { _AddThinkToEnt( ent, think_func ) } catch (_) { AddThinkToEnt( ent, think_func ) }
-		delete ROOT[ think_func ]
+		// delete ROOT[ think_func ]
 	}
 
 	ent_scope.setdelegate({
@@ -156,7 +156,6 @@ function _MotherlandMain::_OnDestroy() {
 
 function _MotherlandMain::PlayerCleanup( player ) {
 
-    player.ClearAllBotTags()
     AddThinkToEnt( player, null )
 
     local scope = player.GetScriptScope()
@@ -183,9 +182,6 @@ _EventWrapper("recalculate_holidays", "MainCleanup", function( params ) {
         _MotherlandMain.PlayerCleanup( player )
     }
 
-    foreach ( str in _MotherlandUtils.GameStrings.keys() )
-        _MotherlandUtils.PurgeGameString( str )
-
     if ( GetPropString( _MotherlandMain.ObjRes, "m_iszMvMPopfileName" ) != _MotherlandMain.popname ) {
 
         _MotherlandEvents.ClearEvents( "*" )
@@ -198,7 +194,6 @@ _EventWrapper("recalculate_holidays", "MainCleanup", function( params ) {
     }
 
     _MotherlandEvents.ClearEvents( EVENT_WRAPPER_TAGS )
-
 
 }, EVENT_WRAPPER_MAIN)
 
@@ -213,10 +208,10 @@ _EventWrapper("post_inventory_application", "MainPostInventoryApplication", func
 
     local player = GetPlayerFromUserID( params.userid )
     
-    if ( !player.IsBotOfType( TF_BOT_TYPE ) )
-        _MotherlandUtils.ScriptEntFireSafe( player, "self.AddCustomAttribute( `cannot pick up intelligence`, 1.0, -1 )", 0.1, null, null )
+    // if ( !player.IsBotOfType( TF_BOT_TYPE ) )
+        // _MotherlandUtils.ScriptEntFireSafe( player, "self.AddCustomAttribute( `cannot pick up intelligence`, 1.0, -1 )", 0.1, null, null )
 
-    else if (player.GetPlayerClass() == TF_CLASS_MEDIC )
+    /*else*/ if (player.GetPlayerClass() == TF_CLASS_MEDIC )
         _MotherlandUtils.ScriptEntFireSafe( player, @"
 
             for ( local child = self.FirstMoveChild(); child != null; child = child.NextMovePeer() ) {
@@ -239,18 +234,5 @@ _EventWrapper("OnTakeDamage", "MainOnTakeDamage", function( params ) {
         params.early_out = true
         return false
     }
-
-}, EVENT_WRAPPER_MAIN)
-
-_EventWrapper("player_death", "MainPlayerDeath", function( params ) {
-
-    local bot = GetPlayerFromUserID( params.userid )
-
-    local scope = _MotherlandUtils.GetEntScope( bot )
-
-    if ( !bot.IsBotOfType( TF_BOT_TYPE ) )
-        return
-
-    _MotherlandMain.PlayerCleanup( bot )
 
 }, EVENT_WRAPPER_MAIN)

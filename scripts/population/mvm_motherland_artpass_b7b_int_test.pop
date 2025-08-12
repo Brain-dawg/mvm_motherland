@@ -75,8 +75,8 @@ WaveSchedule
             Param "
                 SetRobotOwnedGate( `gate2` )
                 DisableSecondBomb()
-                IncludeScript(`brain/main`)
-                EntFire( `func_door`, `Close`, 1 )
+                IncludeScript( `brain/main` )
+                EntFire( `func_door`, `Close`, ``, 1 )
             "
         }
 

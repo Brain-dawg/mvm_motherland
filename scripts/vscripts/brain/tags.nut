@@ -77,25 +77,25 @@ _MotherlandTags.Tags <- {
         SetPropBool( bot, "m_bGlowEnabled", true )
     }
 
-    // function motherland_limitedsupport( bot, args ) {
+    function motherland_limitedsupport( bot, args ) {
 
-    //     local icon  = "icon" in args  ? args.icon : null
-    //     local count = "count" in args ? args.count : 1
-    //     local flags = "flags" in args ? args.flags : MVM_CLASS_FLAG_SUPPORT|MVM_CLASS_FLAG_SUPPORT_LIMITED
+        local icon  = "icon" in args  ? args.icon : null
+        local count = "count" in args ? args.count : 1
+        local flags = "flags" in args ? args.flags : MVM_CLASS_FLAG_SUPPORT|MVM_CLASS_FLAG_SUPPORT_LIMITED
 
-    //     if ( icon && !_MotherlandWavebar.GetWaveIcon( icon, flags ) )
-    //         _MotherlandWavebar.SetWaveIcon( icon, flags, count, false )
-        
-    //     _EventWrapper( "player_death", format( "LimitedSupport_%d", bot.entindex() ), function( params ) {
+        if ( icon && !_MotherlandWavebar.GetWaveIcon( icon, flags ) )
+            _MotherlandWavebar.SetWaveIcon( icon, flags, count, false )
 
-    //         local _bot = GetPlayerFromUserID( params.userid )
+        _EventWrapper( "player_death", format( "Tags_%d_LimitedSupport", bot.entindex() ), function( params ) {
 
-    //         if ( _bot != bot ) return
+            local _bot = GetPlayerFromUserID( params.userid )
 
-    //         _MotherlandWavebar.IncrementWaveIcon( icon, flags, -1 )
+            if ( _bot != bot ) return
+
+            _MotherlandWavebar.IncrementWaveIcon( icon, flags, -1 )
             
-    //     }, EVENT_WRAPPER_TAGS )
-    // }
+        }, EVENT_WRAPPER_TAGS )
+    }
 
     function motherland_fireweapon( bot, args ) {
 
@@ -142,7 +142,7 @@ _MotherlandTags.Tags <- {
 
     function motherland_minisentry( bot, args ) {
 
-        _EventWrapper( "player_builtobject", format( "MiniSentry_%d", bot.entindex() ), function( params ) {
+        _EventWrapper( "player_builtobject", format( "Tags_%d_MiniSentry", bot.entindex() ), function( params ) {
 
             local _bot = GetPlayerFromUserID( params.userid )
 
@@ -204,7 +204,7 @@ _MotherlandTags.Tags <- {
         }
         bot.GetScriptScope().BotThinkTable.DispenserOverrideThink <- DispenserOverrideThink
 
-        _EventWrapper( "player_builtobject", format( "DispenserOverride_%d", bot.entindex() ), function( params ) {
+        _EventWrapper( "player_builtobject", format( "Tags_%d_DispenserOverride", bot.entindex() ), function( params ) {
 
             local _bot = GetPlayerFromUserID( params.userid )
 
@@ -253,14 +253,14 @@ _MotherlandTags.Tags <- {
                 building.SetHealth( INT_MAX )
                 building.SetSolid( SOLID_NONE )
 
-                SetPropString( building, "m_iName", format( "building%d", building.entindex() ) )
+                SetPropString( building, STRING_NETPROP_NAME, format( "building%d", building.entindex() ) )
 
                 //create a dispenser
                 local dispenser = CreateByClassname( "obj_dispenser" )
 
                 SetPropEntity( dispenser, "m_hBuilder", _bot )
 
-                SetPropString( dispenser, "m_iName", format( "dispenser%d", dispenser.entindex() ) )
+                SetPropString( dispenser, STRING_NETPROP_NAME, format( "dispenser%d", dispenser.entindex() ) )
 
                 dispenser.SetTeam( _bot.GetTeam() )
                 dispenser.SetSkin( _bot.GetSkin() )
@@ -509,6 +509,21 @@ function _MotherlandTags::EvaluateTags( bot ) {
             _MotherlandTags.Tags[func].call( bot.GetScriptScope(), bot, args )
     }
 }
+
+_EventWrapper( "player_team", "TagsPlayerTeam", function( params ) {
+    
+    local bot = GetPlayerFromUserID( params.userid )
+
+    if ( !bot || !bot.IsValid() || !bot.IsBotOfType( TF_BOT_TYPE ) || params.team != TEAM_SPECTATOR ) 
+        return
+
+    _EventWrapper( "*", format("Tags_%d_*", bot.entindex()), null, EVENT_WRAPPER_TAGS )
+
+    bot.ClearAllBotTags()
+
+    _MotherlandMain.PlayerCleanup( bot )
+
+}, EVENT_WRAPPER_TAGS )
 
 _EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
 

@@ -2,13 +2,6 @@
 ::ROOT <- getroottable()
 CONST.MAX_CLIENTS <- MaxClients().tointeger()
 
-// these are defined multiple times in other classes, skip to avoid conflicts
-local foldblacklist = {
-
-	IsValid   = true
-	GetName   = true
-	GetCenter = true
-}
 // fold every pre-defined constant into the const table
 if ( !( "ConstantNamingConvention" in ROOT ) )
 	foreach( a, b in Constants )
@@ -21,7 +14,7 @@ if ( !( "ConstantNamingConvention" in ROOT ) )
 // fold every class into the root table
 foreach( _class in [ "NetProps", "Entities", "EntityOutputs", "NavMesh", "Convars" ] )
 	foreach( k, v in ROOT[_class].getclass() )
-		if ( !( k in foldblacklist ) && !( k in ROOT ) )
+		if ( !( k in ROOT ) && k != "IsValid" )
 			ROOT[k] <- ROOT[_class][k].bindenv( ROOT[_class] )
 
 // event wrapper call order limit per event
@@ -33,13 +26,16 @@ const EVENT_WRAPPER_MAIN = 0
 const EVENT_WRAPPER_TAGS = 1
 
 // String caches
-const STRING_NETPROP_ITEMDEF 	  = "m_AttributeManager.m_Item.m_iItemDefinitionIndex"
-const STRING_NETPROP_INIT 	 	  = "m_AttributeManager.m_Item.m_bInitialized"
-const STRING_NETPROP_ATTACH  	  = "m_bValidatedAttachedEntity"
-const STRING_NETPROP_PURGESTRINGS = "m_bForcePurgeFixedupStrings"
-const STRING_NETPROP_MYWEAPONS    = "m_hMyWeapons"
-const STRING_NETPROP_AMMO		  = "m_iAmmo"
-const STRING_NETPROP_MODELINDEX   = "m_nModelIndex"
+const STRING_NETPROP_ITEMDEF 	  	    = "m_AttributeManager.m_Item.m_iItemDefinitionIndex"
+const STRING_NETPROP_INIT 	 	  	    = "m_AttributeManager.m_Item.m_bInitialized"
+const STRING_NETPROP_ATTACH  	  	    = "m_bValidatedAttachedEntity"
+const STRING_NETPROP_PURGESTRINGS 	    = "m_bForcePurgeFixedupStrings"
+const STRING_NETPROP_MYWEAPONS    	    = "m_hMyWeapons"
+const STRING_NETPROP_AMMO		  	    = "m_iAmmo"
+const STRING_NETPROP_NAME		  	    = "m_iName"
+const STRING_NETPROP_MODELINDEX   	    = "m_nModelIndex"
+const STRING_NETPROP_POPNAME    		= "m_iszMvMPopfileName"
+const STRING_NETPROP_MDLINDEX_OVERRIDES = "m_nModelIndexOverrides"
 
 
 // Wavebar netprops

@@ -14,18 +14,17 @@ __CREATE_SCOPE( "__motherland_events", "_MotherlandEvents" )
 
 _MotherlandEvents.EventsPreCollect <- {}
 _MotherlandEvents.CollectedEvents  <- {}
-_MotherlandEvents.TableId          <- UniqueString( "_Compiled" )
+
+if ( !( "TableId" in _MotherlandEvents ) )
+    _MotherlandEvents.TableId <- UniqueString( "_Compiled" )
 
 function _MotherlandEvents::_OnDestroy() {
+
     if ("_EventWrapper" in ROOT)
         delete ::_EventWrapper
 }
 
 function _MotherlandEvents::AddRemoveEventHook( event, funcname, func = null, index = "unordered", manual_collect = false ) {
-
-    local EventsPreCollect = _MotherlandEvents.EventsPreCollect
-    local CollectedEvents  = _MotherlandEvents.CollectedEvents
-    local TableId          = _MotherlandEvents.TableId
 
     // remove hook
     if ( !func ) {
@@ -104,10 +103,6 @@ function _MotherlandEvents::AddRemoveEventHook( event, funcname, func = null, in
 
 function _MotherlandEvents::CollectEvents() {
 
-    local EventsPreCollect = _MotherlandEvents.EventsPreCollect
-    local CollectedEvents  = _MotherlandEvents.CollectedEvents
-    local TableId          = _MotherlandEvents.TableId
-
     local old_table = {}
     local old_table_name = format( "_Motherland_Events_%s", TableId )
 
@@ -185,7 +180,7 @@ function _MotherlandEvents::ClearEvents( index = "unordered" ) {
     _MotherlandEvents.AddRemoveEventHook( "*", "*", null, index )
 }
 
-::_EventWrapper <- _MotherlandEvents.AddRemoveEventHook
+::_EventWrapper <- _MotherlandEvents.AddRemoveEventHook.bindenv( _MotherlandEvents )
 
 //examples
 // _EventWrapper( "player_death", "FuncNameHereA", function( params ) {

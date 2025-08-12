@@ -9,6 +9,19 @@ WaveSchedule {
 	CanBotsAttackWhileInSpawnRoom No
 	Advanced 1
 
+	Templates {
+
+		T_TFBot_Pyro_Flare_Gate {
+
+			Template T_TFBot_Pyro_Flaregun 
+			Skill Hard 
+			Tag nav_flank 
+			Tag motherland_revertgatebot 
+			Attributes Aggressive
+			Item "Firebrand"
+		}
+	}
+
 	// Buster
 	Mission {
 
@@ -502,6 +515,7 @@ WaveSchedule {
 								"airblast vulnerability multiplier" 0
 								"airblast vertical vulnerability multiplier" 0
 								"move speed penalty" 0.5
+								"cannot pick up intelligence" 1
 							}
 						}
 						GateACapped {
@@ -536,6 +550,7 @@ WaveSchedule {
 								"airblast vulnerability multiplier" 0
 								"airblast vertical vulnerability multiplier" 0
 								"move speed penalty" 0.5
+								"cannot pick up intelligence" 1
 							}
 						}
 						GateBCapped {
@@ -570,6 +585,7 @@ WaveSchedule {
 								"airblast vulnerability multiplier" 0
 								"airblast vertical vulnerability multiplier" 0
 								"move speed penalty" 0.5
+								"cannot pick up intelligence" 1
 							}
 						}
 						RevertGateBotsBehavior {
@@ -604,6 +620,7 @@ WaveSchedule {
 								"airblast vulnerability multiplier" 0
 								"airblast vertical vulnerability multiplier" 0
 								"move speed penalty" 0.5
+								"cannot pick up intelligence" 1
 							}
 						}
 					}
@@ -667,7 +684,7 @@ WaveSchedule {
 			Name "wave2a"
 			Where spawnbot_base_battlements
 			TotalCount 5
-			MaxActive 2
+			MaxActive 3
 			SpawnCount 1
 			TotalCurrency 100
 			WaitBetweenSpawns 2
@@ -687,9 +704,9 @@ WaveSchedule {
 						"airblast disabled" 1
 					}
 				}
-				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
-				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
-				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank Tag motherland_revertgatebot Attributes Aggressive }
+				TFBot { Template T_TFBot_Pyro_Flare_Gate }
+				TFBot { Template T_TFBot_Pyro_Flare_Gate }
+				TFBot { Template T_TFBot_Pyro_Flare_Gate }
 			}
 		}
 
@@ -787,9 +804,9 @@ WaveSchedule {
 						"airblast disabled" 1
 					}
 				}
-				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
-				TFBot { Template T_TFBot_Pyro_Flaregun Skill Normal }
-				TFBot { Template T_TFBot_Pyro_Flaregun Skill Hard Tag nav_flank Tag motherland_revertgatebot Attributes Aggressive }
+				TFBot { Template T_TFBot_Pyro_Flare_Gate }
+				TFBot { Template T_TFBot_Pyro_Flare_Gate }
+				TFBot { Template T_TFBot_Pyro_Flare_Gate }
 			}
 		}
 
@@ -1201,8 +1218,8 @@ WaveSchedule {
 			DoneOutput {
 
 				Target __motherland_utils
-				Action RunScriptCode
-				Param "ScriptEntFireSafe( `tank_boss`, `self.TakeDamage( INT_MAX, DMG_GENERIC, First() )` )"
+				Action CallScriptFunction
+				Param WipeTanks
 			}
 
 			RandomChoice {

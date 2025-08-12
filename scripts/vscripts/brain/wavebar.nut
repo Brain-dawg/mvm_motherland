@@ -53,6 +53,8 @@ function _MotherlandWavebar::SetWaveIcon( name, flags, count, change_max_enemy_c
             }
         }
     }
+
+    // _MotherlandUtils.GameStrings[ format( "SetWaveIcon(`%s`, %d, %d, %s)", name, flags, count, change_max_enemy_count.tostring() ) ] <- null
 }
 
 // preserve wavebar ordering
@@ -247,10 +249,15 @@ function _MotherlandWavebar::GetAllWaveIconFlags( name ) {
 
 function _MotherlandWavebar::IncrementWaveIcon( name, flags, count = 1, change_max_enemy_count = true ) {
 
-    SetWaveIcon( name, flags, GetWaveIcon( name, flags ) + count, change_max_enemy_count )
+    local cur_count = GetWaveIcon( name, flags )
+    if ( cur_count + count >= 0 )
+        SetWaveIcon( name, flags, cur_count + count, change_max_enemy_count )
 }
 
 function _MotherlandWavebar::RemoveWaveIcon( name, flags ) {
 
-    SetWaveIcon( name, flags, 0 )
+    if ( GetWaveIcon( name, flags ) > 0 )
+        SetWaveIcon( name, flags, 0 )
+
+    // _MotherlandUtils.GameStrings[ format( "RemoveWaveIcon(`%s`, %d)", name, flags ) ] <- null
 }
