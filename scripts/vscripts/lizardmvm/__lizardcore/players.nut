@@ -80,8 +80,8 @@ OnGameEvent("player_disconnect", 1000, function(player, params)
         PrintWarning("GetTeam not found: " + player + " " + index);
         foreach(k, v in params)
             PrintWarning2(k+" -> "+v)
-        PrintWarning("client_cache:")
-        foreach(k, v in client_cache)
+        PrintWarning("userid_cache:")
+        foreach(k, v in userid_cache)
             PrintWarning2(k+" -> "+v)
     }
 

@@ -25,7 +25,6 @@ class TrainTank
     traintank_tracktrain = null;
     traintank_hack_bot = null;
     traintank_base_boss = null;
-    traintank_glow = null;
 
     maxSpeed = 500;
     slowDownTimerHandle = null;
@@ -97,13 +96,13 @@ class TrainTank
         bossEnt.ValidateScriptScope();
         bossEnt.GetScriptScope().trainBossScript <- this;
 
-        traintank_glow = SpawnEntityFromTable("tf_glow", {
+        SpawnEntityFromTable("tf_glow", {
+            targetname = "traintank_glow"
             target = "traintank_tracktrain",
             StartDisabled = 0,
             origin = bossEnt.GetCenter(),
             GlowColor = "179 225 255 255"
-        });
-        traintank_glow.AcceptInput("SetParent", "traintank_tracktrain", null, null);
+        }).AcceptInput("SetParent", "traintank_tracktrain", null, null);
 
         traintank_base_boss = bossEnt;
 
@@ -170,6 +169,9 @@ class TrainTank
         if (GetClassname(params.weapon) == "tf_weapon_minigun")
             params.damage *= 0.25;
 
+        if (GetClassname(params.weapon) == "tf_weapon_raygun")
+            params.damage = 2;
+
         params.damage_type = params.damage_type & ~DMG_USEDISTANCEMOD;
 
         local hpLeft = traintank_base_boss.GetHealth() - 50000;
@@ -200,7 +202,6 @@ class TrainTank
         traintank_tracktrain.AcceptInput("Stop", "", null, null);
         EntFire("spawnbot_traintank*", "Disable");
         EntFire("traintank_navblocker", "UnBlockNav", 0.1);
-        KillIfValid(traintank_glow);
 
         EntFire("train_doors*", "SetAnimation", "idle", 1);
         EntFire("train_doors*", "SetDefaultAnimation", "idle", 1);
@@ -213,6 +214,8 @@ class TrainTank
     {
         local self = "self" in this ? self : traintank_base_boss;
         EntFire("convert_second_bomb_bots_to_trainbots", "Disable");
+        EntFire("traintank_glow", "Disable");
+        EntFire("traintank_glow", "Kill", "", 1);
 
         delete self.GetScriptScope().trainBossScript;
         EmitSoundEx({

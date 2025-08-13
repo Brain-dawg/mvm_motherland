@@ -145,14 +145,6 @@ if (!("ScriptHookCallbacks" in ROOT))
             FireListeners(eventName, player, params);
         }
 
-    if (eventName == "player_disconnect")
-        return function(params)
-        {
-            local player = "userid" in params ? GetPlayerFromUserID(params.userid) : null;
-            PrintWarning2("player_disconnect "+player+" "+TableToString(params)+" "+Time());
-            FireListeners(eventName, player, params);
-        }
-
     return function(params)
     {
         local player = "userid" in params ? GetPlayerFromUserID(params.userid) : null;

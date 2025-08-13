@@ -155,7 +155,6 @@ class MvMGatePoint
         {
             OnGameEvent("mvm_wave_complete", -1, function(params)
             {
-                TempPrint("clear temp entities on wave complete")
                 foreach (ent in haDeleteOnSoftReset)
                 {
                     local index = haTriggers.find(ent);
@@ -277,7 +276,6 @@ class MvMGatePoint
 
     function OnGateCapture() //activator, caller
     {
-        TempPrint(">>>>OnGateCapture "+GetPropBool(hPointTrigger, "m_bDisabled"))
         if (!hPoint)    //Bots have exploded the Hatch.
         {
             EntFire("boss_deploy_relay", "Trigger");
@@ -337,6 +335,7 @@ function OnGateCapture()
 
     SetActiveGatePoint(currentGatePointIndex + 1);
     SetActiveSpawnGroup(currentSpawnGroupIndex + 1);
+    SetActiveNavBrushes(currentSpawnGroupIndex);
     nextAllowedCapTime <- Time() + 10;
 
     EntFire("item_teamflag", "ForceReset");
@@ -388,6 +387,33 @@ function SetActiveGatePoint(indexOrPrefix, alsoSetSpawnGroup = true)
 {
     RunWithDelay(0.2, function()
     {
+        if (indexOrPrefix > 0)
+        {
+            EntFire("tank_shortcut_door", "Close");
+            EntFire("flank_door", "Close");
+            EntFire("base_setup_arrow", "Disable");
+        }
+        if (InSetup())
+        {
+            if (indexOrPrefix == 0)
+            {
+                EntFire("gate1_blockers", "Disable");
+                EntFire("gate2_blockers", "Disable");
+            }
+            if (indexOrPrefix == 1)
+            {
+                EntFire("gate1_setup_arrow", "Enable");
+                EntFire("gate1_blockers", "Enable");
+                EntFire("gate2_blockers", "Disable");
+            }
+            else if (indexOrPrefix == 2)
+            {
+                EntFire("gate2_setup_arrow", "Enable");
+                EntFire("gate1_blockers", "Enable");
+                EntFire("gate2_blockers", "Enable");
+                EntFire("gate1_door", "Close", "", 1);
+            }
+        }
         currentGatePointIndex = IndexOrPrefixToIndex(indexOrPrefix, gatePointPrefixes);
         for (local i = 0, len = MvMGatePoints.len(); i < len; i++)
         {
@@ -402,6 +428,33 @@ function SetActiveGatePoint(indexOrPrefix, alsoSetSpawnGroup = true)
     });
 }
 ::SetActiveGatePoint <- SetActiveGatePoint.bindenv(this);
+
+function SetActiveNavBrushes(newSpawnIndex)
+{
+    if (newSpawnIndex == 1)
+    {
+        EntFire("base_to_gate1_navs", "Disable");
+        EntFire("gate1_to_gate2_navs", "Enable");
+    }
+    else
+    {
+        EntFire("gate1_to_gate2_navs", "Disable");
+        EntFire("gate2_to_hatch_navs", "Enable");
+        //todo not a great place
+
+        foreach (bot in GetAlivePlayers(TF_TEAM_PVE_INVADERS))
+        {
+            if (bot.HasBotAttribute(IGNORE_FLAG | AGGRESSIVE))
+            {
+                if (bEnableSecondBomb)
+                    bot.RemoveBotAttribute(IGNORE_FLAG | AGGRESSIVE);
+                foreach (econItem in bot.CollectWeaponsAndCosmetics())
+                    econItem.AddAttribute("item style override", "1", -1);
+            }
+        }
+    }
+}
+::SetActiveNavBrushes <- SetActiveNavBrushes.bindenv(this);
 
 function GetActiveGatePoint()
 {

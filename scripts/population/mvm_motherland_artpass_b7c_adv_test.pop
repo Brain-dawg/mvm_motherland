@@ -43,7 +43,7 @@ WaveSchedule
             Skill Normal
         }
 
-        Moterland_DirectHit
+        Moterland_Soldier_DirectHit
         {
             Class Soldier
             Item "The Direct Hit"
@@ -51,7 +51,17 @@ WaveSchedule
             ClassIcon soldier_directhit
         }
 
-        Moterland_PhlogGiant
+        Moterland_Pyro_Phlog
+        {
+			Class Pyro
+            Skill Normal
+			WeaponRestrictions PrimaryOnly
+            Item "The Phlogistinator"
+            Tag bot_phlog_pyro
+            ClassIcon pyro_phlog
+        }
+
+        Moterland_Pyro_PhlogGiant
         {
             Template T_TFBot_Giant_Pyro
             Item "The Phlogistinator"
@@ -65,7 +75,24 @@ WaveSchedule
             }
         }
 
-        Moterland_TrainBot_Heavy_HighNoon
+        Moterland_Sniper_Carbine_Bushwacka
+        {
+			Class Sniper
+			Skill Normal
+			ClassIcon sniper_carbine
+            //BehaviorModifiers Push
+            Tag bot_carbine
+			Item "The Cleaner's Carbine"
+            Item "The Bushwacka"
+            //WeaponRestrictions MeleeOnly
+			WeaponRestrictions SecondaryOnly
+			CharacterAttributes
+			{
+				"move speed bonus"	1.3
+			}
+        }
+
+        Moterland_Heavy_HighNoon
         {
             Class Heavyweapons
             Name "Heavy Mittens"
@@ -87,7 +114,7 @@ WaveSchedule
             }
         }
 
-        T_TFBot_Motherland_Train
+        Motherland_Train
         {
             Name "Carrier Train"
             Class Scout
@@ -108,11 +135,33 @@ WaveSchedule
                 "cancel falling damage" 1
             }
         }
+
+        Motherland_Chairmann
+        {
+            Name "The Chairmann"
+            Class Scout
+            Health 99999
+            ClassIcon heavy_chairmann
+            Attributes IgnoreFlag
+            Attributes IgnoreEnemies
+            Attributes UseBossHealthBar
+            Attributes MiniBoss
+            MaxVisionRange 1
+            Tag bot_chairmann
+
+            CharacterAttributes
+            {
+                "move speed penalty" 0.0001
+                "no_jump" 1
+                "no_duck" 1
+                "cancel falling damage" 1
+            }
+        }
     }
 
     Mission
     {
-        Objective Engineer
+        Objective Engineer //Pyro, actually
 
         BeginAtWave 2
         RunForThisManyWaves 1
@@ -137,7 +186,7 @@ WaveSchedule
 
     Mission
     {
-        Objective Spy
+        Objective Spy //Pyro, actually
 
         BeginAtWave 2
         RunForThisManyWaves 1
@@ -256,7 +305,7 @@ WaveSchedule
 
         WaveSpawn
         {
-            TotalCurrency 50
+            TotalCurrency 70
 
             TotalCount 15
             MaxActive  5
@@ -279,7 +328,7 @@ WaveSchedule
 
         WaveSpawn
         {
-            TotalCurrency 50
+            TotalCurrency 70
 
             TotalCount 15
             MaxActive  5
@@ -305,7 +354,7 @@ WaveSchedule
         WaveSpawn
         {
             Name "Wave1_Giant_Heavies_And_Sentry_Hunters"
-            TotalCurrency 45
+            TotalCurrency 60
 
             TotalCount 10
             MaxActive  4
@@ -330,7 +379,7 @@ WaveSchedule
         WaveSpawn
         {
             Name "Wave1_Giant_Heavies_And_Sentry_Hunters"
-            TotalCurrency 45
+            TotalCurrency 60
 
             TotalCount 10
             MaxActive  4
@@ -360,7 +409,7 @@ WaveSchedule
         WaveSpawn
         {
             Name "Wave1_Giant_Heavies_And_Sentry_Hunters"
-            TotalCurrency 25
+            TotalCurrency 50
 
             TotalCount 1
             MaxActive  1
@@ -389,7 +438,7 @@ WaveSchedule
         WaveSpawn
         {
             Name "Wave1_Giant_Heavies_And_Sentry_Hunters"
-            TotalCurrency 25
+            TotalCurrency 50
 
             TotalCount 1
             MaxActive  1
@@ -413,7 +462,7 @@ WaveSchedule
 
         WaveSpawn
         {
-            TotalCurrency 30
+            TotalCurrency 50
 
             TotalCount 10
             MaxActive  5
@@ -442,15 +491,15 @@ WaveSchedule
         WaveSpawn
         {
             Name "Wave1_Demomen_And_Heavies"
-            TotalCurrency 20
+            TotalCurrency 40
 
-            TotalCount 1
-            MaxActive  1
+            TotalCount 2
+            MaxActive  2
             SpawnCount 1
 
             WaitForAllDead "Wave1_Giant_Heavies_And_Sentry_Hunters"
             WaitBeforeStarting 5
-            WaitBetweenSpawns  5
+            WaitBetweenSpawns  10
 
             Where spawnbot_base_closet
             Where spawnbot_gate1_main
@@ -466,15 +515,15 @@ WaveSchedule
         WaveSpawn
         {
             Name "Wave1_Demomen_And_Heavies"
-            TotalCurrency 20
+            TotalCurrency 40
 
-            TotalCount 1
-            MaxActive  1
+            TotalCount 2
+            MaxActive  2
             SpawnCount 1
 
             WaitForAllDead "Wave1_Giant_Heavies_And_Sentry_Hunters"
             WaitBeforeStarting 5
-            WaitBetweenSpawns  5
+            WaitBetweenSpawns  10
 
             Where spawnbot_base_battlements
             Where spawnbot_gate1_upper //todo jetpack3
@@ -490,15 +539,15 @@ WaveSchedule
         WaveSpawn
         {
             Name "Wave1_Demomen_And_Heavies"
-            TotalCurrency 20
+            TotalCurrency 50
 
-            TotalCount 1
-            MaxActive  1
+            TotalCount 3
+            MaxActive  3
             SpawnCount 1
 
             WaitForAllDead "Wave1_Giant_Heavies_And_Sentry_Hunters"
             WaitBeforeStarting 0
-            WaitBetweenSpawns  5
+            WaitBetweenSpawns  10
 
             Where spawnbot_base_closet
             Where spawnbot_gate1_main
@@ -641,16 +690,13 @@ WaveSchedule
             {
                 TFBot
                 {
-                    Template Moterland_PhlogGiant
+                    Template Moterland_Pyro_PhlogGiant
                     Tag nav_main
                     Tag jetpack_spawn
                 }
-                TFBot
-                {
-                    Template T_TFBot_Giant_Medic_Regen
-                    Tag nav_main
-                    Tag jetpack_spawn
-                }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main Tag jetpack_spawn }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main Tag jetpack_spawn }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main Tag jetpack_spawn }
             }
         }
 
@@ -677,12 +723,9 @@ WaveSchedule
                     Tag nav_main
                     Tag jetpack_spawn
                 }
-                TFBot
-                {
-                    Template T_TFBot_Giant_Medic_Regen
-                    Tag nav_main
-                    Tag jetpack_spawn
-                }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main Tag jetpack_spawn }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main Tag jetpack_spawn }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main Tag jetpack_spawn }
             }
             
             FirstSpawnOutput
@@ -699,9 +742,10 @@ WaveSchedule
 
         WaveSpawn
         {
+            Name "Wave2_Tank_And_First_Giants"
             TotalCurrency 75
 
-            TotalCount 12
+            TotalCount 18
             MaxActive  6
             SpawnCount 6
 
@@ -714,25 +758,19 @@ WaveSchedule
 
             Squad
             {
-                TFBot
-                {
-                    Class Pyro
-                    Skill Hard
-                    Tag nav_main
-                }
-                TFBot
-                {
-                    Template T_TFBot_Medic_QuickFix
-                    Tag nav_main
-                }
+                TFBot { Template Moterland_Pyro_Phlog Tag nav_main }
+                TFBot { Template Moterland_Pyro_Phlog Tag nav_main }
+                TFBot { Template Moterland_Pyro_Phlog Tag nav_main }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
             }
         }
 
         WaveSpawn
         {
+            Name "Wave2_Tank_And_First_Giants"
             TotalCurrency 75
 
-            TotalCount 12
+            TotalCount 18
             MaxActive  6
             SpawnCount 6
 
@@ -755,6 +793,12 @@ WaveSchedule
                 }
                 TFBot
                 {
+                    Class Soldier
+                    Skill Hard
+                    Tag nav_main
+                }
+                TFBot
+                {
                     Template T_TFBot_Medic_QuickFix
                     Tag nav_main
                 }
@@ -763,7 +807,7 @@ WaveSchedule
 
         WaveSpawn
         {
-            Name "Wave2_Tank"
+            Name "Wave2_Tank_And_First_Giants"
 
             TotalCurrency 200
 
@@ -805,51 +849,51 @@ WaveSchedule
 
         WaveSpawn
         {
+            Name "Wave2_Second_Giants"
             TotalCurrency 75
 
             TotalCount 1
             MaxActive  1
             SpawnCount 1
 
-            WaitForAllDead "Wave2_Tank"
+            WaitForAllDead "Wave2_Tank_And_First_Giants"
             WaitBeforeStarting 0
             WaitBetweenSpawns  0
 
-            Where spawnbot_base_jetpack3
-            Where spawnbot_gate1_jetpack3
-            Where spawnbot_gate2_jetpack3
+            Where spawnbot_base_battlements
+            Where spawnbot_gate1_battlements
+            Where spawnbot_gate2_battlements
 
-            TFBot
+            Squad
             {
-                Template Moterland_PhlogGiant
-                Tag nav_main
-                Tag jetpack_spawn
+                TFBot
+                {
+                    Template Moterland_Pyro_PhlogGiant
+                    Tag nav_main
+                }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
             }
         }
 
         WaveSpawn
         {
+            Name "Wave2_Second_Giants"
             TotalCurrency 75
 
             TotalCount 1
             MaxActive  1
             SpawnCount 1
 
-            WaitForAllDead "Wave2_Tank"
+            WaitForAllDead "Wave2_Tank_And_First_Giants"
             WaitBeforeStarting 0
             WaitBetweenSpawns  0
 
-            Where spawnbot_base_jetpack1
-            Where spawnbot_gate1_jetpack1
-            Where spawnbot_gate2_jetpack1
+            Where spawnbot_base_main
+            Where spawnbot_gate1_main
+            Where spawnbot_gate2_main
 
-            TFBot
-            {
-                Template T_TFBot_Giant_Soldier_Spammer
-                Tag nav_main
-                Tag jetpack_spawn
-            }
-            
             FirstSpawnOutput
             {
                 Target logic_script_lizardmvm
@@ -860,197 +904,98 @@ WaveSchedule
                     EntFire(`block_default_main_path`, `UnBlockNav`, ``, 25);
                 "
             }
+
+            Squad
+            {
+                TFBot
+                {
+                    Template T_TFBot_Giant_Soldier_Spammer
+                    Tag nav_main
+                }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
+            }
         }
 
         WaveSpawn
         {
             TotalCurrency 75
 
-            TotalCount 2
-            MaxActive  2
-            SpawnCount 2
+            TotalCount 18
+            MaxActive  6
+            SpawnCount 6
 
-            WaitForAllDead "Wave2_Tank"
+            WaitForAllDead "Wave2_Second_Giants"
             WaitBeforeStarting 0
-            WaitBetweenSpawns  0
+            WaitBetweenSpawns  6
 
-            Where spawnbot_base_jetpack1
-            Where spawnbot_gate1_jetpack3
-            Where spawnbot_gate2_jetpack1
+            Where spawnbot_base_closet
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate2_main
 
             TFBot
             {
-                Template T_TFBot_Giant_Medic_Regen
+                Template Moterland_Pyro_Phlog
                 Tag nav_main
-                Tag jetpack_spawn
+                Tag nav_gate1_battlements
             }
-        }
-    }
-
-    Wave //Wave 3
-    {
-        WaitWhenDone 65
-        Checkpoint Yes
-
-        InitWaveOutput
-        {
-            Target logic_script_lizardmvm
-            Action RunScriptCode
-            Param "
-                EntFire(`hologramrelay_mainbomb`, `Trigger`);
-                DisablePeacefulTrain();
-            "
         }
 
         WaveSpawn
         {
-            TotalCurrency 400
+            TotalCurrency 100
 
-            TotalCount 25
+            TotalCount 24
             MaxActive  8
-            SpawnCount 5
-
-            WaitBeforeStarting 0
-            WaitBetweenSpawns  10
-
-            Where spawnbot_base_battlements
-            Where spawnbot_base_main
-            Where spawnbot_base_upper
-            Where spawnbot_base_closet
-            Where spawnbot_gate1_main
-            Where spawnbot_gate1_upper
-            Where spawnbot_gate1_flank
-            Where spawnbot_gate2_main
-            Where spawnbot_gate2_upper
-            Where spawnbot_gate2_flank
-
-            Squad
-            {
-                TFBot
-                {
-                    Template T_TFBot_Pyro
-                    Tag nav_main
-                }
-                TFBot
-                {
-                    Template T_TFBot_Pyro
-                    Tag nav_flank
-                }
-            }
-        }
-
-        WaveSpawn
-        {
-            TotalCurrency 0
-
-            Support 1
-            TotalCount 9999
-            MaxActive  4
             SpawnCount 4
 
+            WaitForAllDead "Wave2_Second_Giants"
             WaitBeforeStarting 0
-            WaitBetweenSpawns  10
+            WaitBetweenSpawns  6
 
-            Where spawnbot_base_battlements
             Where spawnbot_base_main
-            Where spawnbot_base_upper
-            Where spawnbot_base_closet
-            Where spawnbot_gate1_main
             Where spawnbot_gate1_upper
-            Where spawnbot_gate1_flank
             Where spawnbot_gate2_main
-            Where spawnbot_gate2_upper
-            Where spawnbot_gate2_flank
 
             Squad
             {
                 TFBot
                 {
-                    Template Moterland_TrainBot_Heavy_HighNoon
-                    Tag nav_flank
-                }
-                TFBot
-                {
-                    Template Moterland_TrainBot_Heavy_HighNoon
+                    Template Motherland_Demo_HybridKnight
                     Tag nav_main
                 }
+                TFBot { Class Demoman Skill Normal Tag nav_main }
+                TFBot { Class Demoman Skill Normal Tag nav_main }
+                TFBot { Class Demoman Skill Normal Tag nav_main }
             }
         }
 
         WaveSpawn
         {
-            Name "Wave3_TrainTank"
+            TotalCurrency 100
 
-            TotalCurrency 300
+            TotalCount 18
+            MaxActive  6
+            SpawnCount 3
 
-            TotalCount 1
-            MaxActive  1
-            SpawnCount 1
+            WaitForAllDead "Wave2_Second_Giants"
+            WaitBeforeStarting 2
+            WaitBetweenSpawns  6
 
-            WaitBeforeStarting 0
-
-            FirstSpawnWarningSound "ambient/alarms/train_horn2.wav"
-
-            Where spawnbot_base_battlements
-            Where spawnbot_base_main
-            Where spawnbot_base_upper
+            RandomSpawn 1
             Where spawnbot_base_closet
+            Where spawnbot_base_main
+            Where spawnbot_base_battlements
             Where spawnbot_gate1_main
             Where spawnbot_gate1_upper
-            Where spawnbot_gate1_flank
-            Where spawnbot_gate2_main
+            Where spawnbot_gate1_main
             Where spawnbot_gate2_upper
-            Where spawnbot_gate2_flank
-
-            FirstSpawnOutput
-            {
-                Target logic_script_lizardmvm
-                Action CallScriptFunction
-                Param FindAndConvertTrainTank
-            }
 
             TFBot
             {
-                Template T_TFBot_Motherland_Train
-                Health 20000
-            }
-        }
-
-        WaveSpawn
-        {
-            Name "Wave3_TrainTank_Support"
-
-            Support 1
-            TotalCount 9999
-            MaxActive 3
-            SpawnCount 1
-
-            WaitForAllSpawned "Wave3_TrainTank"
-            WaitBetweenSpawns  3
-            WaitBeforeStarting 0
-
-            Where spawnbot_traintank
-
-            Squad
-            {
-                TFBot
-                {
-                    Template Moterland_TrainBot_Heavy_HighNoon
-                    Tag nav_main
-                    Tag traintank_spawn
-                }
-                TFBot
-                {
-                    Template Moterland_TrainBot_Heavy_HighNoon
-                    Tag nav_main
-                    Tag traintank_spawn
-                }
-                TFBot
-                {
-                    Template T_TFBot_Pyro
-                    Tag nav_main
-                    Tag traintank_spawn
-                }
+                Template Moterland_Sniper_Carbine_Bushwacka
+                Tag nav_main
             }
         }
     }

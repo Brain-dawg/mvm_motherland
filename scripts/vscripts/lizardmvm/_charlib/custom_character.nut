@@ -78,7 +78,8 @@
     customRagdoll = true;
     model = null;
     scale = null;
-    useCustomLoadout = false;
+    deleteStockWeapons = false;
+    deleteStockCosmetics = false;
     mute = false;
     keepAfterDeath = false;
     keepAfterClassChange = false;
@@ -146,7 +147,7 @@
             else
             {
                 ClearCustomCharacter();
-                if (useCustomLoadout)
+                if (deleteStockWeapons || deleteStockCosmetics)
                 {
                     OnTickEnd(function(player) {
                         DebugPrint("player = "+player)
@@ -172,14 +173,15 @@
     function ApplyCharacterInternal()
     {
         wasEngineer = player.GetPlayerClass() == TF_CLASS_ENGINEER;
-        local asd = this; //todo tmp what is this
         if (playerClass)
             player.SetPlayerClass(playerClass);
-        if (useCustomLoadout)
-        {
+
+        if (deleteStockWeapons)
             FixWeaponSwitch();
+
+        if (deleteStockWeapons || deleteStockCosmetics)
             DeleteStockItems();
-        }
+
         if (model) player.SetCustomModelWithClassAnimations(model);
         if (scale) player.SetModelScale(scale, 0);
         if (mute) player.AddCustomAttribute("voice pitch scale", 0, -1);
@@ -193,7 +195,7 @@
                 player.SetMaxHealth(maxHealth);
                 player.RemoveCustomAttribute("max health additive bonus");
                 player.AddCustomAttribute("max health additive bonus", maxHealth - baseClassHP, -1);
-            }, asd)
+            })
 
             if (GetPropInt(player, "m_Shared.m_nNumHealers") > 0)
             {
@@ -239,6 +241,20 @@
         "tf_weapon_sniperrifle"
     ]
 
+    wearableWeaponIds = [
+        133,  //Gunboats
+        444,  //Mantreads
+        405,  //Wee Booties
+        608,  //Bootlegger
+        131,  //Targe
+        406,  //Splendid Screen
+        1099, //Tide Turner
+        1144, //Festive Targe
+        57,   //Razorback
+        231,  //Darwin's Danger Shield
+        642,  //Cozy Camper
+    ]
+
     attachmentsToPreserve = [ //todo these weapons have something odd about them
         "tf_weapon_invis",
         "tf_weapon_medigun",
@@ -267,14 +283,37 @@
     {
         foreach(item in player.CollectAttachments())
         {
-            if (item.GetClassname() == "tf_weapon_medigun")
+            if (deleteStockWeapons && item.GetClassname() == "tf_weapon_medigun")
             {
                 SetPropBool(item, "m_bLowered", true);
                 OnTickEnd(KillIfValid, item);
+                continue;
             }
-            else
+
+            if (deleteStockWeapons && item.GetClassname() == "tf_wearable_vm")
+            {
                 KillIfValid(item);
+                continue;
+            }
+
+            if (deleteStockWeapons && deleteStockCosmetics)
+            {
+                KillIfValid(item);
+                continue;
+            }
+
+            local isWeapon = IsWeapon(item);
+            if ((deleteStockWeapons && isWeapon) || (deleteStockCosmetics && !isWeapon))
+            {
+                KillIfValid(item);
+            }
         }
+    }
+
+    function IsWeapon(econItem)
+    {
+        return startswith(econItem.GetClassname(), "tf_weapon")
+            || wearableWeaponIds.find(GetItemId(econItem)) != null;
     }
 
     function ProcessTaunting()
@@ -311,7 +350,6 @@
 
     function ClearCustomCharacter(onDeath = false)
     {
-        TempPrint(">>>>>>>>>>>ClearCustomCharacter " + player);
         if (!player || !player.IsValid())
             PrintWarning("player is null: "+player+" "+this)
 

@@ -19,11 +19,18 @@ traintank_tepeports_giant_all <- [traintank_tepeports_giant_a, traintank_tepepor
 function ConvertToTrainBot(bot)
 {
     local randomTeleport;
-    if (bot.IsMiniBoss())
-        randomTeleport = RandomElement(traintank_tepeports_giant_all[currentGatePointIndex]);
-    else
-        randomTeleport = RandomElement(traintank_tepeports_all[currentGatePointIndex]);
+    for (local i = 0; i < 10; i++)
+    {
+        if (bot.IsMiniBoss())
+            randomTeleport = RandomElement(traintank_tepeports_giant_all[currentGatePointIndex]);
+        else
+            randomTeleport = RandomElement(traintank_tepeports_all[currentGatePointIndex]);
 
+        if (IsSpaceFree(randomTeleport, bot))
+            break;
+    }
+
+    bot.AddBotTag("nav_trainbot");
     bot.Teleport(true, randomTeleport.GetOrigin(), true, randomTeleport.GetAbsAngles(), true, Vector());
     RunWithDelay(0.1, bot.AddCondEx, TF_COND_INVULNERABLE, 1.5, null);
 
@@ -66,12 +73,12 @@ OnGameEvent("player_spawn_post", function(bot, params)
 class CustomJetpackRobot extends CustomCharacter
 {
     //Definitions
-    useCustomLoadout = false;
     mute = false;
     keepAfterDeath = false;
     keepAfterClassChange = false;
     deleteAttachmentsOnCleanup = true;
 
+    //Variables
     jetpackWearable = null;
     jetpackParticle1 = null;
     jetpackParticle2 = null;
@@ -206,7 +213,7 @@ class CustomJetpackRobot extends CustomCharacter
 
 
 //========================================================
-// Direct Hit Sentry Hunters from Wave 1
+// Sentry Hunter Soldiers from Lizard's Wave 1
 //========================================================
 
 OnGameEvent("player_spawn_post", function(bot, params)
@@ -239,7 +246,7 @@ function LookForSentry(sentry) //`this` is bot
 
 
 //========================================================
-// Taunt Kill Holiday Punch Heavies from Wave 3
+// Taunt Kill Holiday Punch Heavies from Lizard's Wave 3
 //========================================================
 
 OnGameEvent("player_spawn_post", function(bot, params)
@@ -251,12 +258,12 @@ OnGameEvent("player_spawn_post", function(bot, params)
 class BotHighNoonHeavy extends CustomCharacter
 {
     //Definitions
-    useCustomLoadout = false;
     mute = false;
     keepAfterDeath = false;
     keepAfterClassChange = false;
     deleteAttachmentsOnCleanup = true;
 
+    //Variables
     totalTaunters = [0];
     nextTauntTime = 0;
     botModel = null;
@@ -335,7 +342,7 @@ class BotHighNoonHeavy extends CustomCharacter
 
 
 //========================================================
-// Cleaner's Carbine / Bushwacka Push Snipers from Wave 2
+// Cleaner's Carbine / Bushwacka Push Snipers from Lizard's Wave 3
 //========================================================
 
 OnGameEvent("player_spawn_post", function(bot, params)
@@ -347,12 +354,12 @@ OnGameEvent("player_spawn_post", function(bot, params)
 class BotCarbineSniper extends CustomCharacter
 {
     //Definitions
-    useCustomLoadout = false;
     mute = false;
     keepAfterDeath = false;
     keepAfterClassChange = false;
     deleteAttachmentsOnCleanup = true;
 
+    //Variables
     hSecondary = null;
     hMelee = null;
     charge = 0;

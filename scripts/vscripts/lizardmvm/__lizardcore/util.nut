@@ -343,3 +343,16 @@
         return null;
     return entity.GetClassname();
 }
+
+::IsSpaceFree <- function(location, player)
+{
+    local traceTable = {
+        start = location,
+        end = location,
+        hullmin = player.GetPlayerMins(),
+        hullmax = player.GetPlayerMaxs(),
+        ignore = player
+    }
+    TraceHull(traceTable);
+    return !("enthit" in traceTable);
+}

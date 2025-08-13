@@ -237,3 +237,46 @@ function PlayWaveEndMusic()
         channel = CHAN_AUTO
     });
 }
+
+
+//===============================================================
+// Converting Gatebots into Second Bomb Bots if it's present
+//===============================================================
+
+OnGameEvent("player_spawn_post", -9, function(bot, params)
+{
+    if (bot.GetTeam() != TF_TEAM_PVE_INVADERS)
+        return;
+
+    if (bot.HasBotAttribute(IGNORE_FLAG | AGGRESSIVE))
+    {
+        if (bEnableSecondBomb)
+            bot.RemoveBotAttribute(IGNORE_FLAG | AGGRESSIVE);
+        foreach (econItem in bot.CollectWeaponsAndCosmetics())
+            econItem.AddAttribute("item style override", 1, -1);
+    }
+});
+
+
+//===============================================================
+// Fixing bots taking damage in spawn
+//===============================================================
+
+EntFire("uber_fix", "Kill");
+RunWithDelay(1, function()
+{
+    for (local spawnTrigger; spawnTrigger = FindByClassname(spawnTrigger, "func_respawnroom");)
+    {
+        local trigger = SpawnEntityFromTable("trigger_add_tf_player_condition", {
+            targetname = "uber_fix",
+            condition = 5,
+            spawnflags = 1,
+            filtername = "filter_blueteam",
+            origin = spawnTrigger.GetOrigin(),
+            angles = spawnTrigger.GetAbsAngles(),
+            model = spawnTrigger.GetModelName(),
+            StartDisabled = 0,
+            duration = -1
+        });
+    }
+});

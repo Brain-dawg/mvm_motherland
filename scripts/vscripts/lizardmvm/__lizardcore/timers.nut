@@ -113,6 +113,8 @@ CONST.TIMER_DELETE <- INT_MAX;
 
 //The timer run mechanism
 
+//todo 32 bits
+
 ::timerGenerator <- null;
 
 ::Timer_InitLoopForThisTick <- function()
@@ -131,6 +133,7 @@ CONST.TIMER_DELETE <- INT_MAX;
 ::Timer_IterationStep <- function()
 {
     local time = Time();
+
     for (local i = 0; i < ::lizardTimersLen; i++)
     {
         local entry = ::lizardTimers[i];
