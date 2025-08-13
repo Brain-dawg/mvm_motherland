@@ -449,7 +449,7 @@ function SetActiveNavBrushes(newSpawnIndex)
                 if (bEnableSecondBomb)
                     bot.RemoveBotAttribute(IGNORE_FLAG | AGGRESSIVE);
                 foreach (econItem in bot.CollectWeaponsAndCosmetics())
-                    econItem.AddAttribute("item style override", "1", -1);
+                    econItem.AddAttribute("item style override", 1, -1);
             }
         }
     }
