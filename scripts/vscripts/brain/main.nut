@@ -5,7 +5,6 @@ if ( !("__active_scopes" in ROOT) )
 
 function __CREATE_SCOPE( name, scope_ref = null, entity_ref = null, think_func = null, preserved = true ) {
 
-	// empty vscripts kv will do ValidateScriptScope automatically
 	local ent = FindByName( null, name ) 
 
 	if ( !ent || !ent.IsValid() ) {
@@ -227,12 +226,12 @@ _EventWrapper("post_inventory_application", "MainPostInventoryApplication", func
 
 }, EVENT_WRAPPER_MAIN)
 
-_EventWrapper("OnTakeDamage", "MainOnTakeDamage", function( params ) {
+// _EventWrapper("OnTakeDamage", "MainOnTakeDamage", function( params ) {
 
-    if ( params.const_entity.GetClassname() == "base_boss" && params.attacker && params.attacker.GetName() == "traintank_hurt" ) {
+//     if ( params.const_entity.GetClassname() == "base_boss" && params.attacker && params.attacker.GetName() == "traintank_hurt" ) {
         
-        params.early_out = true
-        return false
-    }
+//         params.early_out = true
+//         return false
+//     }
 
-}, EVENT_WRAPPER_MAIN)
+// }, EVENT_WRAPPER_MAIN)

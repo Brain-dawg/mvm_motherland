@@ -9,7 +9,7 @@
 
 // TODO: Performance benchmarks.
 // We use this to dynamically add/remove events at potentially critical times (large piles of bot spawns mostly)
-// So far I haven't seen any PERF WARNINGS in console using this, some bot tags/custom attributes may yell on bot/player spawn.
+// So far I haven't seen any PERF WARNINGS in console using this, some bot tags may yell on bot/player spawn.
 __CREATE_SCOPE( "__motherland_events", "_MotherlandEvents" )
 
 _MotherlandEvents.EventsPreCollect <- {}

@@ -364,6 +364,8 @@ _MotherlandTags.Tags <- {
 
     function motherland_usebestweapon( bot, args ) {
 
+        // TODO: expensive findbyclassnamewithin calls, optimize this
+        // this is only used sparingly on a handful of bots
         function BestWeaponThink() {
 
             switch( bot.GetPlayerClass() ) {
