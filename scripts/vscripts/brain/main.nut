@@ -207,8 +207,8 @@ _EventWrapper("post_inventory_application", "MainPostInventoryApplication", func
 
     local player = GetPlayerFromUserID( params.userid )
     
-    // if ( !player.IsBotOfType( TF_BOT_TYPE ) )
-        // _MotherlandUtils.ScriptEntFireSafe( player, "self.AddCustomAttribute( `cannot pick up intelligence`, 1.0, -1 )", 0.1, null, null )
+    if ( !player.IsBotOfType( TF_BOT_TYPE ) )
+        _MotherlandUtils.ScriptEntFireSafe( player, "self.AddCustomAttribute( `cannot pick up intelligence`, 1.0, -1 )", 0.1, null, null )
 
     /*else*/ if (player.GetPlayerClass() == TF_CLASS_MEDIC )
         _MotherlandUtils.ScriptEntFireSafe( player, @"
