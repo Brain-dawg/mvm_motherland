@@ -964,7 +964,7 @@ WaveSchedule {
 			Tank {
 
 				Name Tank
-				Health 26500
+				Health 25000
 				StartingPathTrackNode "tank_path_0"
 				OnBombDroppedOutput
 				{
