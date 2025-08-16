@@ -1,11 +1,11 @@
 __CREATE_SCOPE( "__motherland_maplogic", "_MotherlandMapLogic" )
 
 // rafmod/potato server hack, this messes with engi hints
-for (local hint; hint = FindByClassname(hint, "bot_hint*");) {
+SetValue( "sig_etc_entity_limit_manager_convert_server_entity", 0 )
+
+for (local hint; hint = FindByClassname(hint, "bot_hint_sentrygun");) {
 
     if ( hint.entindex() ) break
-
-    SetValue( "sig_etc_entity_limit_manager_convert_server_entity", 0 )
 
     ClientPrint( null, HUD_PRINTCENTER, "disabling sig_etc_entity_limit_manager_convert_server_entity" )
 

@@ -158,7 +158,47 @@ function _MotherlandUtils::GetAllOutputs( ent, output ) {
 
 function _MotherlandUtils::WipeTanks() {
 
-    ScriptEntFireSafe( "tank_boss", "self.TakeDamage( INT_MAX, DMG_GENERIC, First() )" )
+    ScriptEntFireSafe( "tank_boss", "self.TakeDamage( INT_MAX, DMG_GENERIC, First() ); StopSoundOn( `MVM.TankExplodes`, First() )" )
 
     _MotherlandUtils.GameStrings[ "WipeTanks" ] <- null
+}
+
+function _MotherlandUtils::GiveWearableItem( player, item_id, attrs = {}, model = null ) {
+
+	local dummy = CreateByClassname( "tf_weapon_parachute" )
+	SetPropInt( dummy, STRING_NETPROP_ITEMDEF, 1101 ) // base jumper
+	SetPropBool( dummy, STRING_NETPROP_INIT, true )
+	dummy.SetTeam( player.GetTeam() )
+	DispatchSpawn( dummy )
+	player.Weapon_Equip( dummy )
+
+	local wearable = GetPropEntity( dummy, "m_hExtraWearable" )
+	dummy.Kill()
+
+	SetPropInt( wearable, STRING_NETPROP_ITEMDEF, item_id )
+	SetPropBool( wearable, STRING_NETPROP_INIT, true )
+	SetPropBool( wearable, STRING_NETPROP_ATTACH, true )
+    SetPropString( wearable, STRING_NETPROP_NAME, format( "__motherland_fakewearable_%d", wearable.entindex() ) )
+	DispatchSpawn( wearable )
+
+    foreach ( attr, value in attrs )
+        wearable.AddAttribute( attr, value, -1 )
+
+    wearable.ReapplyProvision()
+
+	if ( model ) 
+        wearable.SetModelSimple( model )
+
+	// avoid infinite loops
+	player.AddEFlags( EFL_NO_PHYSCANNON_INTERACTION )
+	SendGlobalGameEvent( "post_inventory_application",  { userid = userid_cache[ player ] } )
+	player.RemoveEFlags( EFL_NO_PHYSCANNON_INTERACTION )
+
+	local scope = player.GetScriptScope()
+
+    if (!("wearables_to_kill" in scope))
+        scope.wearables_to_kill <- []
+	scope.wearables_to_kill.append( wearable )
+
+	return wearable
 }

@@ -18,6 +18,12 @@ WaveSchedule {
 			Attributes Aggressive
 			Tag nav_flank
 			Tag motherland_revertgatebot
+			// halloween restricted cosmetic, fake it
+			Tag "motherland_fakewearable{
+				item_id = 9911
+				model = `models/workshop/player/items/pyro/sf14_hw2014_robot_arm/sf14_hw2014_robot_arm.mdl`
+				attrs = { `set item tint RGB` : 15335168 }
+			}"
 			Item "Firebrand"
 		}
 		
@@ -1330,11 +1336,7 @@ WaveSchedule {
 
 				Target __motherland_wavebar
 				Action RunScriptCode
-				Param "
-					RemoveWaveIcon( `sniper_bow`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT )
-					RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-					RemoveWaveIcon( `heavy_champ_giant`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS )
-				"
+				Param "RemoveWaveIcon( `sniper_bow`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT )"
 			}
 
 			TFBot { Template T_TFBot_Motherland_Train Health 32000 }
@@ -1366,15 +1368,15 @@ WaveSchedule {
 			WaitForAllSpawned "wave5traintank"
 			Support Limited
 			RandomSpawn 1
-			// DoneOutput {
+			DoneOutput {
 
-			// 	Target __motherland_wavebar
-			// 	Action RunScriptCode
-			// 	Param "
-			// 		RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-			// 		RemoveWaveIcon( `heavy_champ_giant`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS )
-			// 	"
-			// }
+				Target __motherland_wavebar
+				Action RunScriptCode
+				Param "
+					RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+					RemoveWaveIcon( `heavy_champ_giant`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS )
+				"
+			}
 
 			Squad {
 
@@ -1384,28 +1386,24 @@ WaveSchedule {
 					Tag bot_giant
 					Tag nav_main
 					// Tag traintank_spawn
-					Tag "motherland_limitedsupport{ icon = `heavy_champ_giant` count = 2 flags = ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT|ICON_MINIBOSS }"
 				}
 				TFBot {
 					Template T_TFBot_Medic_Vacc_Bullet_Full
 					ClassIcon medic_vac_trio_nys
 					Tag nav_main
 					// Tag traintank_spawn
-					Tag "motherland_limitedsupport{ icon = `medic_vac_trio_nys` count = 6 }"
 				}
 				TFBot {
 					Template T_TFBot_Medic_Vacc_Blast_Full
 					ClassIcon medic_vac_trio_nys
 					Tag nav_main
 					// Tag traintank_spawn
-					Tag "motherland_limitedsupport{ icon = `medic_vac_trio_nys` count = 6 }"
 				}
 				TFBot {
 					Template T_TFBot_Medic_Vacc_Fire_Full
 					ClassIcon medic_vac_trio_nys
 					Tag nav_main
 					// Tag traintank_spawn
-					Tag "motherland_limitedsupport{ icon = `medic_vac_trio_nys` count = 6 }"
 				}
 			}
 		}
@@ -1429,38 +1427,37 @@ WaveSchedule {
 			}
 		}
 
-		WaveSpawn {
+		// WaveSpawn {
 
-			Name "wave5a"
-			Where spawnbot_base_battlements
-			TotalCurrency 100
-			WaitBetweenSpawns 3
-			WaitBeforeStarting 10
-			TotalCount 24
-			MaxActive 6
-			SpawnCount 3
-			WaitForAllSpawned "wave5traintank"
-			WaitBeforeStarting 6
-			Support Limited
-			RandomSpawn 1
-			// DoneOutput {
+		// 	Name "wave5a"
+		// 	Where spawnbot_base_battlements
+		// 	TotalCurrency 100
+		// 	WaitBetweenSpawns 3
+		// 	TotalCount 24
+		// 	MaxActive 6
+		// 	SpawnCount 3
+		// 	WaitForAllSpawned "wave5traintank"
+		// 	WaitBeforeStarting 6
+		// 	Support Limited
+		// 	RandomSpawn 1
+		// 	// DoneOutput {
 
-			// 	Target __motherland_wavebar
-			// 	Action RunScriptCode
-			// 	Param "
+		// 	// 	Target __motherland_wavebar
+		// 	// 	Action RunScriptCode
+		// 	// 	Param "
 
-			// 		RemoveWaveIcon( `scout`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-			// 		RemoveWaveIcon( `soldier`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-			// 	"
-			// }
+		// 	// 		RemoveWaveIcon( `scout`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+		// 	// 		RemoveWaveIcon( `soldier`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+		// 	// 	"
+		// 	// }
 
-			Squad {
+		// 	Squad {
 
-				TFBot { Class Soldier Skill Expert Tag nav_flank Tag "motherland_limitedsupport{ icon = `soldier` count = 8 }" }
-				TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag nav_flank Tag "motherland_limitedsupport{ icon = `scout` count = 16 }" }
-				TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag nav_flank Tag "motherland_limitedsupport{ icon = `scout` count = 16 }" }
-			}
-		}
+		// 		TFBot { Class Soldier Skill Expert Tag nav_flank Tag "motherland_limitedsupport{ icon = `soldier` count = 8 }" }
+		// 		TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag nav_flank Tag "motherland_limitedsupport{ icon = `scout` count = 16 }" }
+		// 		TFBot { Class Scout Skill Expert Attributes AlwaysCrit Tag nav_flank Tag "motherland_limitedsupport{ icon = `scout` count = 16 }" }
+		// 	}
+		// }
 
 		WaveSpawn {
 
@@ -1642,7 +1639,7 @@ WaveSchedule {
 			Where spawnbot_gate2_main
 			Where spawnbot_gate2_upper
 			TotalCount 30
-			MaxActive 8
+			MaxActive 6
 			SpawnCount 2
 			WaitBetweenSpawns 1
 			WaitBeforeStarting 3
@@ -1708,10 +1705,11 @@ WaveSchedule {
 			Where spawnbot_base_main
 			Where spawnbot_gate1_main
 			Where spawnbot_gate2_main
-			TotalCount 12
+			Support 1
 			MaxActive 8
 			SpawnCount 4
-			WaitBetweenSpawns 10
+			WaitBetweenSpawns 3
+			WaitForAllSpawned "wave6b"
 
 			Squad {
 

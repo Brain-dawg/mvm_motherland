@@ -158,6 +158,12 @@ function _MotherlandMain::PlayerCleanup( player ) {
     AddThinkToEnt( player, null )
 
     local scope = player.GetScriptScope()
+
+	if ( "wearables_to_kill" in scope )
+		foreach ( wearable in scope.wearables_to_kill )
+			if ( wearable && wearable.IsValid() )
+				wearable.Kill()
+
     local scope_keys = scope.keys()
 
     if ( scope_keys.len() > ignore_table.len() )
@@ -171,9 +177,7 @@ _EventWrapper("recalculate_holidays", "MainCleanup", function( params ) {
     if ( GetRoundState() != GR_STATE_PREROUND )
         return
 
-    for ( local i = 1; i <= MAX_CLIENTS; i++ ) {
-
-        local player = PlayerInstanceFromIndex( i )
+    for ( local i = 1, player; i <= MAX_CLIENTS; player = PlayerInstanceFromIndex( i ), i++ ) {
 
         if ( !player || !player.IsBotOfType( TF_BOT_TYPE ) )
             continue
@@ -206,6 +210,9 @@ _EventWrapper("mvm_wave_complete", "MainWaveComplete", function( params ) {
 _EventWrapper("post_inventory_application", "MainPostInventoryApplication", function( params ) {
 
     local player = GetPlayerFromUserID( params.userid )
+
+	if ( player.IsEFlagSet( EFL_NO_PHYSCANNON_INTERACTION ) )
+		return
     
     if ( !player.IsBotOfType( TF_BOT_TYPE ) )
         _MotherlandUtils.ScriptEntFireSafe( player, "self.AddCustomAttribute( `cannot pick up intelligence`, 1.0, -1 )", 0.1, null, null )

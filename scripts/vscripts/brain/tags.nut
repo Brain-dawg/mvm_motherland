@@ -454,6 +454,15 @@ _MotherlandTags.Tags <- {
                 child.AddAttribute( "set item tint RGB 2", args.color2, -1 )
         }
     }
+
+    function motherland_fakewearable( bot, args ) {
+
+        local item_id = "item_id" in args ? args.item_id : -1
+        local model = "model" in args ? args.model : null
+        local attrs = "attrs" in args ? args.attrs : {}
+
+        _MotherlandUtils.GiveWearableItem( bot, item_id, attrs, model )
+    }
 }
 
 function _MotherlandTags::ParseTagArguments( bot, tag ) {

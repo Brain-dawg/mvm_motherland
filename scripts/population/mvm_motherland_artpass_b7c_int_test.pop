@@ -222,7 +222,7 @@ WaveSchedule
             Name "wave2b1"
             Where spawnbot_gate1_upper
             Where spawnbot_gate2_upper
-            TotalCount 60
+            TotalCount 75
             MaxActive 6
             SpawnCount 1
             WaitForAllDead "wave2a1"
