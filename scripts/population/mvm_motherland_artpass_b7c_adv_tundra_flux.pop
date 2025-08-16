@@ -147,12 +147,12 @@ WaveSchedule
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Motherland Advanced (Tundra Flux)
-	// Cash given at start: $400
+	// Cash given at start: $600
 	// Wave payouts:
 	// W1: $700 W2: $700 W3: $700
 	// W4: $900 W5: $900 W6: $800
-	// Max amount of money: $6600
-	// Max Amount without bonus: $6000
+	// Max amount of money: $6700
+	// Max Amount without bonus: $6200
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//WAVE 1 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -168,14 +168,15 @@ WaveSchedule
 			Target wave_finished_relay
 			Action trigger
 		}
-	//	InitWaveOutput	// abbreviate the name by A LOT
-    //    {
-    //        Target bignet
-    //        Action RunScriptCode
-    //        Param " local resource = Entities.FindByClassname(null, `tf_objective_resource`)
-	//				NetProps.SetPropString(resource, `m_iszMvMPopfileName`, `tundra flux (advanced)`)	// it'll be allcaps either way
-    //        "
-    //    }
+		InitWaveOutput
+		{
+			Target bignet
+			Action RunScriptCode
+			Param "
+			SetRobotOwnedGate(`gate1`)
+			DisableSecondBomb()
+			"
+		}
 		WaveSpawn
 		{
 			Name "wave01a"
@@ -187,7 +188,7 @@ WaveSchedule
 			MaxActive 12
 			SpawnCount 1
 			WaitBeforeStarting 0
-			WaitBetweenSpawns 0.32
+			WaitBetweenSpawns 0.45
 			TotalCurrency 200
 
 			TFBot
@@ -207,7 +208,7 @@ WaveSchedule
 			MaxActive 4
 			SpawnCount 1
 			WaitBeforeStarting 0
-			WaitBetweenSpawns 8
+			WaitBetweenSpawns 10
 			WaitForAllSpawned "wave01a"
 			TotalCurrency 50
 
@@ -246,7 +247,7 @@ WaveSchedule
 			Where spawnbot_base_closet
 			Where spawnbot_base_main
 			Where spawnbot_gate1_main
-			Where spawnbot_gate2_main
+			Where spawnbot_gate2_flank
 			TotalCount 21
 			MaxActive 7
 			SpawnCount 1
@@ -266,7 +267,7 @@ WaveSchedule
 			Where spawnbot_base_upper
 			Where spawnbot_base_battlements
 			Where spawnbot_gate1_flank
-			Where spawnbot_gate2_main
+			Where spawnbot_gate2_upper
 			TotalCount 2
 			MaxActive 2
 			SpawnCount 1
@@ -285,7 +286,7 @@ WaveSchedule
 			Name "wave01d"
 			Where spawnbot_base_main
 			Where spawnbot_gate1_main
-			Where spawnbot_gate2_main
+			Where spawnbot_gate2_flank
 			TotalCount 1
 			MaxActive 1
 			SpawnCount 1
