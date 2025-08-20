@@ -5,6 +5,8 @@
 ::alive_player_cache <- [ [], [], [], [] ];
 ::userid_cache <- {};
 
+::isMannVsMachineMode <- IsMannVsMachineMode();
+
 for (local i = 1; i <= MAX_CLIENTS; i++)
 {
     local player = PlayerInstanceFromIndex(i);
@@ -192,18 +194,22 @@ OnGameEvent("player_disconnect", 1000, function(player, params)
 ::CTFBot.Yeet <- CTFPlayer.Yeet;
 
 //Normal ForceChangeTeam will not work if the player is dueling. This is a workaround.
+::CTFPlayer.SwitchTeam <- function(team)
+{
+    if (isMannVsMachineMode)
+        SetPropBool(tf_gamerules, "m_bPlayingMannVsMachine", false);
+    SetPropInt(this, "m_bIsCoaching", 1);
+    this.ForceChangeTeam(team, true);
+    SetPropInt(this, "m_bIsCoaching", 0);
+    if (isMannVsMachineMode)
+        SetPropBool(tf_gamerules, "m_bPlayingMannVsMachine", true);
+}
+
+//Bots have their own edge-cases
 ::CTFBot.SwitchTeam <- function(team)
 {
     this.ForceChangeTeam(team, true);
     SetPropInt(this, "m_iTeamNum", team);
-}
-
-//Normal ForceChangeTeam will not work if the player is dueling. This is a workaround.
-::CTFPlayer.SwitchTeam <- function(team)
-{
-    SetPropInt(this, "m_bIsCoaching", 1);
-    this.ForceChangeTeam(team, true);
-    SetPropInt(this, "m_bIsCoaching", 0);
 }
 
 ::CTFPlayer.CollectWeaponsAndCosmetics <- function()
@@ -366,4 +372,19 @@ OnGameEvent("player_disconnect", 1000, function(player, params)
 ::CTFPlayer.HasBotTag <- function(tag)
 {
     return false;
+}
+
+function GiveWearable(player, wmIndex)
+{
+    local hWorldModel = CreateByClassname("tf_wearable");
+    hWorldModel.Teleport(true, player.GetOrigin(), true, player.GetAbsAngles(), false, Vector());
+    SetPropInt(hWorldModel, "m_nModelIndex", wmIndex);
+    SetPropBool(hWorldModel, "m_bValidatedAttachedEntity", true);
+    SetPropBool(hWorldModel, "m_AttributeManager.m_Item.m_bInitialized", true);
+    SetPropEntity(hWorldModel, "m_hOwnerEntity", player);
+    hWorldModel.SetOwner(player);
+    hWorldModel.DispatchSpawn();
+    hWorldModel.AcceptInput("SetParent", "!activator", player, player);
+    SetPropInt(hWorldModel, "m_fEffects", EF_BONEMERGE | EF_BONEMERGE_FASTCULL);
+    return hWorldModel;
 }

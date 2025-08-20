@@ -78,6 +78,14 @@
   "wave"       "*motherland_t2/mvm_end_last_wave.mp3"
 }
 
+"motherland.mvm_boss"
+{
+  "channel"    "CHAN_STATIC"
+  "soundlevel" "SNDLVL_NONE"
+  "volume"     "1"
+  "wave"       "*motherland_t2/mvm_start_last_wave.mp3"
+}
+
 "music.mvm_start_wave"
 {
   "channel"    "CHAN_STATIC"
