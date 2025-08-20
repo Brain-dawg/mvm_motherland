@@ -36,6 +36,7 @@ PrecacheSound("misc/null.wav");
     mute = false;
     soundBankClass = null;
 
+    hideBase = true;
     viewModels = [];
     worldModels = [];
     playerModel = null;
@@ -109,8 +110,11 @@ PrecacheSound("misc/null.wav");
         {
             CreateViewModels();
             CreateWorldModels();
-		    SetPropInt(weapon, "m_nRenderMode", kRenderTransColor);
-		    SetPropInt(weapon, "m_clrRender", 0);
+            if (hideBase)
+            {
+		        SetPropInt(weapon, "m_nRenderMode", kRenderTransColor);
+		        SetPropInt(weapon, "m_clrRender", 0);
+            }
         }
 
         if (clip != null)
@@ -162,7 +166,7 @@ PrecacheSound("misc/null.wav");
         weapon.SetModelSimple(viewModels[0]);
         weapon.SetCustomViewModelModelIndex(vmIndices[0]);
         SetPropInt(weapon, "m_iViewModelIndex", vmIndices[0]);
-        SetPropBool(weapon, "m_bBeingRepurposedForTaunt", true);
+        SetPropBool(weapon, "m_bBeingRepurposedForTaunt", hideBase);
 
         for (local i = 1, len = vmIndices.len(); i < len; i++)
             CreateViewModel(vmIndices[i]);
@@ -269,7 +273,7 @@ PrecacheSound("misc/null.wav");
             isTauntingPrevTick = false;
             foreach (weapon in player.CollectWeapons())
                 if (GetCustomWeapon(weapon))
-                    SetPropBool(weapon, "m_bBeingRepurposedForTaunt", true);
+                    SetPropBool(weapon, "m_bBeingRepurposedForTaunt", hideBase);
             OnTauntStop();
         }
 
@@ -295,7 +299,7 @@ PrecacheSound("misc/null.wav");
 
     function OnSwitchToInternal()
     {
-        SetPropBool(weapon, "m_bBeingRepurposedForTaunt", true);
+        SetPropBool(weapon, "m_bBeingRepurposedForTaunt", hideBase);
         foreach (hViewModel in hViewModels)
             hViewModel.EnableDraw();
         foreach (hWorldModel in hWorldModels)

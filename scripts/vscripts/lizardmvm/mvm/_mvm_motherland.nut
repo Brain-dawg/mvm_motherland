@@ -2,21 +2,25 @@
 //!CompilePal::IncludeDirectory("models/motherland")
 
 gamemode_name <- "lizardmvm";
-::useDebugReload <- true;
+::useDebugReload <- false;
 
 function Mainload()
 {
-    DebugPrint(">>>>>>>>>>>Mainload");
-
     IncludeIfNot("_charlib/custom_character.nut", "CustomCharacter" in ROOT);
     InitCustomCharacterSystem();
 
+    Include("mvm/gates.nut");
+    Include("mvm/flags.nut");
     Include("mvm/motherland_misc.nut");
-    Include("mvm/spawns.nut");
-    Include("mvm/gate_fix.nut");
-    Include("mvm/traintank.nut");
     Include("mvm/custom_bots.nut");
-    //Include("mvm/mvm_state_reset.nut");
+    Include("mvm/chairmann.nut");
+    Include("mvm/backwards_compat.nut");
+
+    Include("mvm/traintank.nut");
+    OnGameEvent("player_spawn_post", CheckBotForTrainTank);
+
+    SetRobotSpawnAtBase();
+
     RunWithDelay(RandomInt(10, 15), RunSetupTrain); //todo find better place
 
     AddTimer(0.2, function()
@@ -30,13 +34,19 @@ function Mainload()
 
     OnGameEvent("mvm_wave_complete", function(params)
     {
-        DebugPrint(">>>>>>>>>>>mvm_wave_complete");
+        SetRobotSpawnAtBase();
+        RunWithDelay(RandomInt(10, 15), RunSetupTrain); //todo find better place
+
+        Include("mvm/gates.nut");
+        Include("mvm/flags.nut");
         Include("mvm/motherland_misc.nut");
-        Include("mvm/spawns.nut");
-        Include("mvm/gate_fix.nut");
-        Include("mvm/traintank.nut");
         Include("mvm/custom_bots.nut");
-        //EntFire("tf_point_nav_interface", "RecomputeBlockers", 1);
+        Include("mvm/chairmann.nut");
+        Include("mvm/backwards_compat.nut");
+
+        Include("mvm/traintank.nut");
+        OnGameEvent("player_spawn_post", CheckBotForTrainTank);
+
 
         PlayWaveEndMusic();
         AddTimer(0.2, function()
@@ -60,6 +70,6 @@ AddTimer(5, function()
 OnDevCommand("bot_kill", function(caller, args)
 {
     foreach (player in GetPlayers(TF_TEAM_PVE_INVADERS))
-        if (!player.HasBotTag("bot_tanktrain_hackbot"))
+        if (!player.HasBotTag("bot_traintank_hackbot"))
             player.TakeDamage(99999, 0, null);
 });

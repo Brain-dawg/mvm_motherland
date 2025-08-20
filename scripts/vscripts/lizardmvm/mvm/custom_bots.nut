@@ -22,9 +22,9 @@ function ConvertToTrainBot(bot)
     for (local i = 0; i < 10; i++)
     {
         if (bot.IsMiniBoss())
-            randomTeleport = RandomElement(traintank_tepeports_giant_all[currentGatePointIndex]);
+            randomTeleport = RandomElement(traintank_tepeports_giant_all[currentGateIndex]);
         else
-            randomTeleport = RandomElement(traintank_tepeports_all[currentGatePointIndex]);
+            randomTeleport = RandomElement(traintank_tepeports_all[currentGateIndex]);
 
         if (IsSpaceFree(randomTeleport, bot))
             break;
@@ -55,6 +55,21 @@ function ConvertToTrainBot(bot)
     });
 }
 
+
+//========================================================
+// Bots with `cant_spawn_with_bomb` can pick up the bomb
+// but can't spawn with it. For train passenger bots.
+//========================================================
+
+OnGameEvent("player_spawn_post", function(bot, params)
+{
+    if (bot.HasBotTag("cant_spawn_with_bomb"))
+    {
+        local myFlag = GetPropEntity(bot, "m_hItem");
+        if (myFlag)
+            myFlag.AcceptInput("ForceResetSilent", "", null, null);
+    }
+});
 
 //========================================================
 // Jetpack Bots
@@ -358,6 +373,7 @@ class BotCarbineSniper extends CustomCharacter
     keepAfterDeath = false;
     keepAfterClassChange = false;
     deleteAttachmentsOnCleanup = true;
+    maxCharge = 25;
 
     //Variables
     hSecondary = null;
@@ -400,9 +416,7 @@ class BotCarbineSniper extends CustomCharacter
             }
         }
 
-        TempPrint(charge + " for " + player);
-
-        if (charge > 25)
+        if (charge > maxCharge)
         {
             charge = 0;
             player.AddCondEx(TF_COND_ENERGY_BUFF, 8.2, player);
@@ -412,7 +426,7 @@ class BotCarbineSniper extends CustomCharacter
 
 
 //========================================================
-// Phlog Pyro Wave 2
+// Phlog Pyro From Lizard's Wave 2
 //========================================================
 
 OnGameEvent("player_spawn_post", function(bot, params)
@@ -426,10 +440,95 @@ OnGameEvent("player_spawn_post", function(bot, params)
             return TIMER_DELETE;
 		if (this.GetRageMeter() > 15 && !this.IsRageDraining())
 		{
+            bot.Weapon_Switch(bot.GetWeaponBySlot(0));
 			SetPropFloat(this, "m_Shared.m_flRageMeter", 100);
+            bot.RemoveWeaponRestriction(4);
+            bot.AddWeaponRestriction(2);
 			this.Taunt(TAUNT_BASE_WEAPON, 0);
+
+            if (bot.IsMiniBoss())
+            {
+                RunWithDelay(10, bot.RemoveWeaponRestriction, 2);
+                RunWithDelay(10, bot.AddWeaponRestriction, 4);
+                AddCondEx(TF_COND_SPEED_BOOST, 10, null);
+                bot.AddCustomAttribute("move speed penalty", 1.25, 10);
+            }
 		}
 
 	}, bot);
 
 });
+
+
+//========================================================
+// Phlog / Scorch Shot Pyro Boss from Lizard's Wave 2
+//========================================================
+
+OnGameEvent("player_spawn_post", function(bot, params)
+{
+    if (bot.HasBotTag("bot_phlog_scorch"))
+        ConvertToCustomCharacter(bot, BotPhlogScorchPyro, false);
+});
+
+class BotPhlogScorchPyro extends CustomCharacter
+{
+    //Definitions
+    mute = false;
+    keepAfterDeath = false;
+    keepAfterClassChange = false;
+    deleteAttachmentsOnCleanup = true;
+    maxCharge = 200;
+
+    //Variables
+    hSecondary = null;
+    hMelee = null;
+    charge = 0;
+
+    function ApplyCharacter()
+    {
+        KillIfValid(player.GetWeaponBySlot(0));
+        hSecondary = player.GetWeaponBySlot(1);
+        hMelee = player.GetWeaponBySlot(2);
+        if (hMelee == null) //Scorch/Phlog Pyro
+        {
+            hMelee = player.GetWeaponBySlot(0);
+            chargeMax = 200;
+        }
+        AddTimer(0.75, ProcessWeaponDecisions);
+        OnGameEvent("player_hurt", IncreaseRageBar);
+    }
+
+    function IncreaseRageBar(params)
+    {
+        if (params.attacker == player.GetUserID())
+            charge += params.damageamount;
+    }
+
+    function ProcessWeaponDecisions()
+    {
+        local activeWeapon = player.GetActiveWeapon();
+        if (player.InCond(TF_COND_ENERGY_BUFF))
+        {
+            if (activeWeapon != hMelee)
+            {
+                player.Weapon_Switch(hMelee);
+                player.AddCond(TF_COND_CANNOT_SWITCH_FROM_MELEE);
+            }
+            return;
+        }
+        else
+        {
+            if (activeWeapon != hSecondary)
+            {
+                player.Weapon_Switch(hSecondary);
+                player.RemoveCond(TF_COND_CANNOT_SWITCH_FROM_MELEE);
+            }
+        }
+
+        if (charge > maxCharge)
+        {
+            charge = 0;
+            player.AddCondEx(tf_cond, 8.2, player);
+        }
+    }
+}

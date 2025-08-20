@@ -1,81 +1,47 @@
-const GATE2_POINT_NAME = "gate2_point";
-
 CreateByClassname("point_populator_interface");
-CreateByClassname("tf_point_nav_interface");
+
+//===============================================================
+// Making doors call RecomputeBlockers and restoring
+// active nav blockers' blocks after RecomputeBlockers
+//===============================================================
+
+EntFire("func_door", "AddOutput", "OnFullyOpen tf_point_nav_interface:RecomputeBlockers::0:-1");
+EntFire("func_door", "AddOutput", "OnFullyClosed tf_point_nav_interface:RecomputeBlockers::0:-1");
+//EntFire("block_default_main_path", "UnBlockNav");
 EntFire("tf_point_nav_interface", "RecomputeBlockers");
-//EntFire("func_door", "AddOutput", "OnFullyOpen tf_point_nav_interface:RecomputeBlockers::0:-1");
-//EntFire("func_door", "AddOutput", "OnFullyClosed tf_point_nav_interface:RecomputeBlockers::0:-1");
-EntFire("base_bomb", "RunScriptCode", "self.SetSkin(0)");
-EntFire("gate1_bomb", "RunScriptCode", "self.SetSkin(1)");
-EntFire("holograms_bomb_shared", "Enable");
-EntFire("block_default_main_path", "UnBlockNav");
 
-//===============================================================
-// Temporary flag model swap
-//===============================================================
+::activeNavBlockers <- {};
 
-PrecacheModel("models/props_soviet/radioflag/mvmradioflag_ground.mdl");
-PrecacheModel("models/props_soviet/radioflag/mvmradioflag.mdl");
-
-PrecacheParticle("Motherland_floor_radio_flag_top_parent")
-PrecacheParticle("Motherland_floor_radio_flag_bottom_parent")
-
-EntFire("base_bomb", "AddOutput", "OnDrop !self:SetModel:models/props_soviet/radioflag/mvmradioflag_ground.mdl:0:-1");
-EntFire("base_bomb", "AddOutput", "OnDrop !self:RunScriptCode:AsdAsd():0:-1");
-EntFire("base_bomb", "AddOutput", "OnPickup !self:SetModel:models/props_soviet/radioflag/mvmradioflag.mdl:0:-1");
-EntFire("base_bomb", "AddOutput", "OnPickup !self:RunScriptCode:AsdAsd2():0:-1");
-
-EntFire("gate1_bomb", "AddOutput", "OnDrop !self:SetModel:models/props_soviet/radioflag/mvmradioflag_ground.mdl:0:-1");
-EntFire("gate1_bomb", "AddOutput", "OnDrop !self:RunScriptCode:AsdAsd():0:-1");
-EntFire("gate1_bomb", "AddOutput", "OnPickup !self:SetModel:models/props_soviet/radioflag/mvmradioflag.mdl:0:-1");
-EntFire("gate1_bomb", "AddOutput", "OnPickup !self:RunScriptCode:AsdAsd2():0:-1");
-
-::AsdAsd <- function()
+for(local ent = null; ent = FindByClassname(ent, "func_nav_blocker");)
 {
-    local particle = SpawnEntityFromTable("info_particle_system", {
-        effect_name = "Motherland_floor_radio_flag_bottom_parent",
-        start_active = 1
-    });
-    EntFireByHandle(particle, "SetParent", "!activator", 0, self, self);
-    EntFireByHandle(particle, "SetParentAttachment", "cube", 0, null, null);
+    ent.ValidateScriptScope();
+    local scope = ent.GetScriptScope();
+    scope.InputBlockNav <- @() activeNavBlockers[self] <- 1;
+    scope.Inputblocknav <- scope.InputBlockNav;
+    scope.InputUnblockNav <- @() activeNavBlockers[self] <- 0;
+    scope.Inputunblocknav <- scope.InputUnblockNav;
 }
 
-::AsdAsd2 <- function()
+function RestoreActiveBlockers()
 {
-    for (local ent = self.FirstMoveChild(); ent != null; ent = ent.NextMovePeer())
-    {
-        SetPropBool(ent, "m_bForcePurgeFixedupStrings", true);
-        if (ent && ent.IsValid() && ent.GetClassname() == "info_particle_system")
-        {
-            KillIfValid(ent);
-            break;
-        }
-    }
+    foreach(blocker, status in activeNavBlockers)
+        if (status)
+            EntFireByHandle(blocker, "BlockNav", "", 3, null, null);
+    return true;
 }
 
-//===============================================================
-// Temporary fix for the shortcut doors nav
-//===============================================================
-
-/*EntFire("flank_door", "AddOutput", "OnFullyOpen logic_script_lizardmvm:RunScriptCode:flank_door_open=true:0:-1");
-EntFire("flank_door", "AddOutput", "OnFullyClosed logic_script_lizardmvm:RunScriptCode:flank_door_open=false:0:-1");
-
-EntFire("func_door", "AddOutput", "OnFullyOpen logic_script_lizardmvm:CallScriptFunction:RecomputeBlockersFix:10:-1");
-EntFire("func_door", "AddOutput", "OnFullyClosed logic_script_lizardmvm:CallScriptFunction:RecomputeBlockersFix:10:-1");
-
-flank_door_open <- true;
-
-function RecomputeBlockersFix()
-{
-    EntFire("flank_door_blocker", flank_door_open ? "UnBlockNav" : "BlockNav");
-}*/
+tf_point_nav_interface <- CreateByClassname("tf_point_nav_interface");
+tf_point_nav_interface.ValidateScriptScope();
+tf_point_nav_interface.GetScriptScope().InputRecomputeBlockers <- RestoreActiveBlockers;
+tf_point_nav_interface.GetScriptScope().Inputrecomputeblockers <- RestoreActiveBlockers;
 
 //===============================================================
 // A [normal] tank that stops when reaching the shortcut gate
-//   that goes straight to the Hatch from Robot Base
+// that goes straight to the Hatch from Robot Base
 //===============================================================
 
 const TANK_SHORTCUT_DOOR_NAME = "tank_shortcut_door";
+
 function TankReachedShortcutGate(hTank)
 {
     EntFire("tf_gamerules", "PlayVO", "Announcer.MVM_Tank_Alert_Near_Hatch");
@@ -117,51 +83,8 @@ function RunSetupTrain()
     DoEntFire("train_warning", "Trigger", "", 0, null, null);
     DoEntFire("train_warning_stop", "Trigger", "", 20, null, null);
 }
-//RunWithDelay(RandomInt(10, 15), RunSetupTrain); //todo find better place
+RunWithDelay(RandomInt(10, 15), RunSetupTrain); //todo find better place
 DoEntFire("train_warning_stop", "Trigger", "", 0.1, null, null);
-
-
-//===============================================================
-// Second Bomb logic (todo: second bomb on hud)
-//===============================================================
-
-firstBombVoiceLines <- [
-    "vo/mvm_bomb_alerts01.mp3",
-    "vo/mvm_bomb_alerts02.mp3",
-]
-
-secondBombVoiceLines <- [
-    "vo/mvm_another_bomb04.mp3",
-    "vo/mvm_another_bomb05.mp3",
-    "vo/mvm_another_bomb07.mp3",
-    "vo/mvm_another_bomb08.mp3",
-]
-
-foreach (sound in secondBombVoiceLines)
-    PrecacheSound(sound);
-foreach (sound in firstBombVoiceLines)
-    PrecacheSound(sound);
-PrecacheSound("vo/announcer_sd_rocket_warnings09.mp3");
-
-function SecondBombInPlay()
-{
-    EmitSoundEx({
-        sound_name = RandomElement(firstBombVoiceLines),
-        filter_type = RECIPIENT_FILTER_GLOBAL,
-        volume = 1,
-        channel = CHAN_ANNOUNCER
-    });
-
-    RunWithDelay(5, function()
-    {
-        EmitSoundEx({
-            sound_name = RandomElement(secondBombVoiceLines),
-            filter_type = RECIPIENT_FILTER_GLOBAL,
-            volume = 1,
-            channel = CHAN_ANNOUNCER
-        });
-    });
-}
 
 
 //===============================================================
@@ -192,6 +115,8 @@ function PlayWaveStartMusic()
             music = "motherland.mvm_start_wave";
         else if (waveNum == 3 || waveNum == 5)
             music = "motherland.mvm_start_train_wave";
+        //else if (waveNum >= waveMax)
+        //    music = "motherland.mvm_boss";
         else if (waveNum >= waveMax - 1)
             music = "motherland.mvm_start_last_wave";
         else
@@ -240,43 +165,41 @@ function PlayWaveEndMusic()
 
 
 //===============================================================
-// Converting Gatebots into Second Bomb Bots if it's present
+// Hats of GateBots that aren't using EventChangeAttributes
+// Also, convering them to Flank Bomb bots if the second bomb is present
 //===============================================================
 
-OnGameEvent("player_spawn_post", -9, function(bot, params)
-{
-    if (bot.GetTeam() != TF_TEAM_PVE_INVADERS)
-        return;
+local gatebotLightsHats = {
+    "models/bots/gameplay_cosmetic/light_scout_on.mdl": "models/bots/gameplay_cosmetic/light_scout_off.mdl",
+    "models/bots/gameplay_cosmetic/light_sniper_on.mdl": "models/bots/gameplay_cosmetic/light_sniper_off.mdl",
+    "models/bots/gameplay_cosmetic/light_soldier_on.mdl": "models/bots/gameplay_cosmetic/light_soldier_off.mdl",
+    "models/bots/gameplay_cosmetic/light_demo_on.mdl": "models/bots/gameplay_cosmetic/light_demo_off.mdl",
+    "models/bots/gameplay_cosmetic/light_medic_on.mdl": "models/bots/gameplay_cosmetic/light_medic_off.mdl",
+    "models/bots/gameplay_cosmetic/light_heavy_on.mdl": "models/bots/gameplay_cosmetic/light_heavy_off.mdl",
+    "models/bots/gameplay_cosmetic/light_pyro_on.mdl": "models/bots/gameplay_cosmetic/light_pyro_off.mdl",
+    "models/bots/gameplay_cosmetic/light_spy_on.mdl": "models/bots/gameplay_cosmetic/light_spy_off.mdl",
+    "models/bots/gameplay_cosmetic/light_engineer_on.mdl": "models/bots/gameplay_cosmetic/light_engineer_off.mdl"
+};
 
-    if (bot.HasBotAttribute(IGNORE_FLAG | AGGRESSIVE))
+foreach (model in gatebotLightsHats)
+    PrecacheModel(model);
+
+function TryConvertFromGateBot(bot, params = null)
+{
+    if (currentGateIndex == 2 && bot.IsBotOfType(TF_BOT_TYPE) && bot.HasBotAttribute(IGNORE_FLAG | AGGRESSIVE))
     {
         if (bEnableSecondBomb)
             bot.RemoveBotAttribute(IGNORE_FLAG | AGGRESSIVE);
         foreach (econItem in bot.CollectWeaponsAndCosmetics())
-            econItem.AddAttribute("item style override", 1, -1);
+        {
+            local name = econItem.GetModelName();
+            if (name in gatebotLightsHats)
+            {
+                econItem.Kill();
+                GiveWearable(bot, GetModelIndex(gatebotLightsHats[name]));
+            }
+        }
     }
-});
+}
 
-
-//===============================================================
-// Fixing bots taking damage in spawn
-//===============================================================
-
-EntFire("uber_fix", "Kill");
-RunWithDelay(1, function()
-{
-    for (local spawnTrigger; spawnTrigger = FindByClassname(spawnTrigger, "func_respawnroom");)
-    {
-        local trigger = SpawnEntityFromTable("trigger_add_tf_player_condition", {
-            targetname = "uber_fix",
-            condition = 5,
-            spawnflags = 1,
-            filtername = "filter_blueteam",
-            origin = spawnTrigger.GetOrigin(),
-            angles = spawnTrigger.GetAbsAngles(),
-            model = spawnTrigger.GetModelName(),
-            StartDisabled = 0,
-            duration = -1
-        });
-    }
-});
+OnGameEvent("player_spawn_post", -9, TryConvertFromGateBot);
