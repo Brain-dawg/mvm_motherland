@@ -188,6 +188,7 @@ function _MotherlandUtils::GiveWearableItem( player, item_id, attrs = {}, model 
 	SetPropBool( wearable, STRING_NETPROP_ATTACH, true )
     SetPropString( wearable, STRING_NETPROP_NAME, format( "__motherland_fakewearable_%d", wearable.entindex() ) )
 	DispatchSpawn( wearable )
+    SetPropBool( wearable, STRING_NETPROP_PURGESTRINGS, true )
 
     foreach ( attr, value in attrs )
         wearable.AddAttribute( attr, value, -1 )

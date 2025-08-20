@@ -1034,7 +1034,13 @@ WaveSchedule {
 
 				Template T_TFBot_Motherland_Train
 				Health 25000
-				Tag "motherland_limitedsupport{ icon = `heavy_shotgun` count = 1 }"
+			}
+
+			DoneOutput {
+
+				Target __motherland_wavebar
+				Action RunScriptCode
+				Param "RemoveWaveIcon( `heavy_shotgun`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )"
 			}
 		}
 
@@ -1186,13 +1192,13 @@ WaveSchedule {
 			TFBot {
 
 				Template T_TFBot_Heavyweapons_Fist
+				Item "Siberian Sweater"
+				Item "Officer's Ushanka"
 				Tag bot_giant
 				Tag nav_main
 				Tag motherland_revertgatebot
 				Attributes AlwaysCrit
 				Attributes Aggressive
-				Item "Siberian Sweater"
-				Item "Officer's Ushanka"
 			}
 		}
 
@@ -1323,6 +1329,7 @@ WaveSchedule {
 
 				Template T_TFBot_Pyro_NoAirblast
 				Attributes AlwaysCrit
+				Attributes Aggressive
 				Item "Firebrand"
 				Tag motherland_revertgatebot
 			}
@@ -1344,6 +1351,8 @@ WaveSchedule {
 			Name "wave5traintank"
 			TotalCurrency	400
 
+			TFBot { Template T_TFBot_Motherland_Train Health 32000 }
+
 			DoneOutput {
 
 				Target __motherland_wavebar
@@ -1351,7 +1360,6 @@ WaveSchedule {
 				Param "RemoveWaveIcon( `sniper_bow`, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT )"
 			}
 
-			TFBot { Template T_TFBot_Motherland_Train Health 32000 }
 		}
 
 		WaveSpawn {
