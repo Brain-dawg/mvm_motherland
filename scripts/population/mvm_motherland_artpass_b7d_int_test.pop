@@ -84,7 +84,7 @@ WaveSchedule
             
             Target __motherland_utils
             Action RunScriptCode
-            Param "EntFire( `gate2_spawn_door`, `Open` )"
+            Param "EntFire( `gate2_door`, `Open` )"
         }
 
         // Subwave description here

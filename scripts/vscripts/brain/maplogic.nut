@@ -21,8 +21,7 @@ EntFire( "hologramrelay_mainbomb", "Trigger" )
 
 function _MotherlandMapLogic::_OnDestroy() {
 
-    local gateb = FindByName( null, "gate2_spawn_door" )
-    if ( !gateb ) return
+    local gateb = _MotherlandMain.GateBDoor
 
     local gateb_scope = gateb.GetScriptScope()
 
@@ -175,7 +174,7 @@ altbomb_scope.FakeBomb <- _MotherlandMapLogic.FakeBomb
 
 _MotherlandMapLogic.AddOutputs({
 
-    gate1_main_door = {
+    gate1_door = {
 
         OnFullyOpen = [
 
@@ -187,7 +186,7 @@ _MotherlandMapLogic.AddOutputs({
         ]
     }
 
-    gate2_spawn_door = {
+    gate2_door = {
 
         OnFullyOpen = [
 

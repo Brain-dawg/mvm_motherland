@@ -34,7 +34,7 @@ _MotherlandTags.Tags <- {
 
     function motherland_revertgatebot( bot, args ) {
 
-        local gateb_scope = FindByName( null, "gate2_spawn_door" ).GetScriptScope()
+        local gateb_scope = _MotherlandMain.GateBDoor.GetScriptScope()
         local gateb_locked = gateb_scope && "_IsCapped" in gateb_scope ? gateb_scope._IsCapped : false
 
         local paint = "paint" in args ? args.paint : true
