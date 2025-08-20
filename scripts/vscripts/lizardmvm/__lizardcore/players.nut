@@ -77,16 +77,6 @@ OnGameEvent("player_disconnect", 1000, function(player, params)
     local index = client_cache.find(player);
     if (index != null) client_cache.remove(index);
 
-    if (!player || !("GetTeam" in player))
-    {
-        PrintWarning("GetTeam not found: " + player + " " + index);
-        foreach(k, v in params)
-            PrintWarning2(k+" -> "+v)
-        PrintWarning("userid_cache:")
-        foreach(k, v in userid_cache)
-            PrintWarning2(k+" -> "+v)
-    }
-
     delete userid_cache[player];
     foreach(team in [0, player.GetTeam()])
     {
