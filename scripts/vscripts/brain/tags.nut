@@ -517,7 +517,7 @@ function _MotherlandTags::EvaluateTags( bot ) {
         local args = ParseTagArguments( bot, tag )
 
         if ( func in _MotherlandTags.Tags )
-            _MotherlandTags.Tags[func].call( bot.GetScriptScope(), bot, args )
+            _MotherlandTags.Tags[func].call( bot.GetScriptScope() || (bot.ValidateScriptScope(), bot.GetScriptScope()), bot, args )
     }
 }
 
