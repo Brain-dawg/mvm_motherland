@@ -13,8 +13,8 @@ WaveSchedule {
 
 		T_TFBot_Pyro_Flare_Gate {
 
-			Template T_TFBot_Pyro_Flaregun 
-			Skill Hard 
+			Template T_TFBot_Pyro_Flaregun
+			Skill Hard
 			Attributes Aggressive
 			Tag nav_flank
 			Tag motherland_revertgatebot
@@ -26,7 +26,7 @@ WaveSchedule {
 			}"
 			Item "Firebrand"
 		}
-		
+
 
 		T_TFBot_Engineer_Gate_Battle {
 
@@ -183,60 +183,60 @@ WaveSchedule {
 		}
 	}
 
-	Mission {
+	// Mission {
 
-		Objective Sniper
+	// 	Objective Sniper
 
-		InitialCooldown 120
-		Where spawnbot_base_upper
-		Where spawnbot_base_battlements
-		Where spawnbot_gate1_upper
-		// Where spawnbot_gate1_upper
-		Where spawnbot_gate2_upper
-		BeginAtWave 2
-		RunForThisManyWaves 1
-		CooldownTime 20
-		DesiredCount 4
+	// 	InitialCooldown 120
+	// 	Where spawnbot_base_upper
+	// 	Where spawnbot_base_battlements
+	// 	Where spawnbot_gate1_upper
+	// 	// Where spawnbot_gate1_upper
+	// 	Where spawnbot_gate2_upper
+	// 	BeginAtWave 2
+	// 	RunForThisManyWaves 1
+	// 	CooldownTime 20
+	// 	DesiredCount 4
 
-		TFBot {
+	// 	TFBot {
 
-			Class Demoman
-			Skill Expert
-			Name "Hybrid Samurai"
-			Attributes HoldFireUntilFullReload
-			ClassIcon demoknight_samurai
-			MaxVisionRange 1500
-			Item "The Loch-N-Load"
-			Item "The Splendid Screen"
-			Item "The Half-Zatoichi"
-			Item "Demo Kabuto"
-			// Item "Bushi-Dou"
-		//	Item "Shin Shredders"
+	// 		Class Demoman
+	// 		Skill Expert
+	// 		Name "Hybrid Samurai"
+	// 		Attributes HoldFireUntilFullReload
+	// 		ClassIcon demoknight_samurai
+	// 		MaxVisionRange 1500
+	// 		Item "The Loch-N-Load"
+	// 		Item "The Splendid Screen"
+	// 		Item "The Half-Zatoichi"
+	// 		Item "Demo Kabuto"
+	// 		// Item "Bushi-Dou"
+	// 	//	Item "Shin Shredders"
 
-			CharacterAttributes {
+	// 		CharacterAttributes {
 
-				"charge recharge rate increased" 1.5
-				"deploy time decreased" 0.1
-				"gesture speed increase" 2
-				"full charge turn control" 50
-			}
+	// 			"charge recharge rate increased" 1.5
+	// 			"deploy time decreased" 0.1
+	// 			"gesture speed increase" 2
+	// 			"full charge turn control" 50
+	// 		}
 
-			ItemAttributes {
+	// 		ItemAttributes {
 
-				ItemName "The Half-Zatoichi"
-				"critboost on kill" 6
-				"honorbound" 0
-				"Attack not cancel charge" 1
-			}
+	// 			ItemName "The Half-Zatoichi"
+	// 			"critboost on kill" 6
+	// 			"honorbound" 0
+	// 			"Attack not cancel charge" 1
+	// 		}
 
-			ItemAttributes {
+	// 		ItemAttributes {
 
-				ItemName "The Loch-N-Load"
-				"Projectile speed increased" 1
-				"no self blast dmg" 2
-			}
-		}
-	}
+	// 			ItemName "The Loch-N-Load"
+	// 			"Projectile speed increased" 1
+	// 			"no self blast dmg" 2
+	// 		}
+	// 	}
+	// }
 
 	// W4
 	Mission {
@@ -724,18 +724,7 @@ WaveSchedule {
 
 			RandomChoice {
 
-				TFBot {
-					Class Pyro
-					Skill Expert
-
-					Item "The Nostromo Napalmer"
-					ItemAttributes {
-
-						ItemName "The Nostromo Napalmer"
-						"lunchbox adds minicrits" 2
-						"airblast disabled" 1
-					}
-				}
+				TFBot { Template T_TFBot_Pyro_NoAirblast }
 				TFBot { Template T_TFBot_Pyro_Flare_Gate }
 				TFBot { Template T_TFBot_Pyro_Flare_Gate }
 				TFBot { Template T_TFBot_Pyro_Flare_Gate }
@@ -824,18 +813,7 @@ WaveSchedule {
 
 			RandomChoice {
 
-				TFBot {
-					Class Pyro
-					Skill Expert
-					Item "The Nostromo Napalmer"
-
-					ItemAttributes {
-
-						ItemName "The Nostromo Napalmer"
-						"lunchbox adds minicrits" 2
-						"airblast disabled" 1
-					}
-				}
+				TFBot { Template T_TFBot_Pyro_NoAirblast }
 				TFBot { Template T_TFBot_Pyro_Flare_Gate }
 				TFBot { Template T_TFBot_Pyro_Flare_Gate }
 				TFBot { Template T_TFBot_Pyro_Flare_Gate }
@@ -860,6 +838,8 @@ WaveSchedule {
 
 				Template T_TFBot_Giant_Scout_Fast
 				Skill Expert
+				Item "EOTL_thermal_sleeves"
+				Item "Transparent Trousers"
 				Item "Sun-on-a-Stick"
 				ClassIcon scout_sunstick_swordstone
 				Tag bot_giant
@@ -896,6 +876,7 @@ WaveSchedule {
 					Tag motherland_revertgatebot
 					Attributes Aggressive
 					Item "The Bunsen Brave"
+					Item "Weight Room Warmer"
 				}
 				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn Tag motherland_revertgatebot Attributes Aggressive }
 				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn Tag motherland_revertgatebot Attributes Aggressive }
@@ -1201,7 +1182,17 @@ WaveSchedule {
 			WaitForAllDead "wave3train1"
 			RandomSpawn 1
 
-			TFBot { Template T_TFBot_Heavyweapons_Fist Attributes AlwaysCrit Tag bot_giant Tag nav_main }
+			TFBot {
+
+				Template T_TFBot_Heavyweapons_Fist
+				Tag bot_giant
+				Tag nav_main
+				Tag motherland_revertgatebot
+				Attributes AlwaysCrit
+				Attributes Aggressive
+				Item "Siberian Sweater"
+				Item "Officer's Ushanka"
+			}
 		}
 
 		WaveSpawn {
@@ -1314,6 +1305,26 @@ WaveSchedule {
 			Support 1
 			RandomSpawn 1
 			TFBot { Template T_TFBot_Medic_QuickUber }
+		}
+
+		WaveSpawn {
+			Name "wave4support"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			MaxActive 4
+			SpawnCount 2
+			WaitBetweenSpawns 4
+			Support 1
+			RandomSpawn 1
+
+			TFBot {
+
+				Template T_TFBot_Pyro_NoAirblast
+				Attributes AlwaysCrit
+				Item "Firebrand"
+				Tag motherland_revertgatebot
+			}
 		}
 	}
 

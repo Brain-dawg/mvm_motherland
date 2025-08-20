@@ -298,5 +298,18 @@ WaveSchedule {
                 "max pipebombs decreased" -7
             }
         }
+
+		T_TFBot_Pyro_NoAirblast {
+
+			Class Pyro
+			Skill Expert
+			Item "The Nostromo Napalmer"
+			ItemAttributes {
+
+				ItemName "The Nostromo Napalmer"
+				"lunchbox adds minicrits" 2 // unused bot flame particles
+				"airblast disabled" 1
+			}
+		}
 	}
 }
