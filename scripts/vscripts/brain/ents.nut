@@ -51,11 +51,11 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
                     id       = entity.GetScriptId()
                     index    = entity.entindex()
                     callback = callback
-                    _get = function( k ) {
+                    function _get ( k ) {
 
                         return parent[k]
                     }
-                    _delslot = function( k ) {
+                    function _delslot ( k ) {
 
                         if ( k == id ) {
 
@@ -71,27 +71,27 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
         }
         Precache = {
             //mini-sentry spawnflag
-            obj_sentrygun = function( ent, spawnflags ) {
+            function obj_sentrygun ( ent, spawnflags ) {
                 if ( spawnflags & 64 )
                     SetPropBool( ent, "m_bMiniBuilding", true )
             }
         }
         OnPostSpawn = {
             //non-solid spawnflag
-            func_button = function( ent, spawnflags ) {
+            function func_button ( ent, spawnflags ) {
                 if ( spawnflags & 16384 ) {
 
                     ent.AddEFlags( EFL_USE_PARTITION_WHEN_NOT_SOLID )
                     ent.AddSolidFlags( FSOLID_NOT_SOLID )
                 }
             }
-            func_rot_button = function( ent, spawnflags ) {
+            function func_rot_button ( ent, spawnflags ) {
                 //fix broken locked spawnflag
                 if ( spawnflags & SF_BUTTON_LOCKED )
                     SetPropBool( ent, "m_bLocked", true )
             }
             //mini-sentry spawnflag
-            obj_sentrygun = function( ent, spawnflags ) {
+            function obj_sentrygun ( ent, spawnflags ) {
                 if ( spawnflags & 64 ) {
 
                     ent.SetModelScale( 0.75, 0.0 )
@@ -99,18 +99,18 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
                 }
             }
             //fix invulnerable flag not working
-            obj_dispenser = function( ent, spawnflags ) {
+            function obj_dispenser ( ent, spawnflags ) {
                 if ( spawnflags & 2 )
                     SetPropInt( ent, "m_takedamage", 0 )
             }
             //start disabled spawnflag
-            light_dynamic = function( ent, spawnflags ) {
+            function light_dynamic ( ent, spawnflags ) {
                 if ( spawnflags & 16 )
                     ent.AcceptInput( "TurnOff", "", null, null )
             }
             //fix func_rotating capping at 360,000 degrees
             //fix killing func_rotating before stopping sound causing sound to play forever
-            func_rotating = function( ent, spawnflags ) {
+            function func_rotating ( ent, spawnflags ) {
 
                 local maxangle = 350000.0 //max angle is actually 360,000.0, reset it a bit earlier just in case
                 local xyz = array( 3, 0.0 )
@@ -139,7 +139,7 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
             // add spawnflag to allow for taking damage
             // fix not being able to disable on dead players
             // fix persisting between map/round changes
-            point_viewcontrol = function( ent, spawnflags ) {
+            function point_viewcontrol ( ent, spawnflags ) {
 
                 function InputEnable() {
 
@@ -213,7 +213,7 @@ if ( !( "_Motherland_EntAdditions" in ROOT ) ) {
             //fix TeamNum not working
             //fix FireSound not working, added volume setting ( example: "sound_name_here.wav|40" )
             //fix ModelScale not working on arrows/rockets
-            tf_point_weapon_mimic = function( ent, spawnflags ) {
+            function tf_point_weapon_mimic ( ent, spawnflags ) {
 
                 local particle = CreateByClassname( "trigger_particle" )
                 local scope = ent.GetScriptScope() || ( ent.ValidateScriptScope(), ent.GetScriptScope() )
