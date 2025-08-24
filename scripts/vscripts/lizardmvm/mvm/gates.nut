@@ -29,8 +29,8 @@ function SetCSpawns(state)
 }
 ::SetBSpawns <- SetCSpawns.bindenv(this);
 
-::DisableSecondBomb <- function() { bEnableSecondBomb = false; }
-::EnableSecondBomb <- function() { bEnableSecondBomb = true; }
+::DisableSecondBomb <- function() { bEnableSecondBomb = false; }.bindenv(this);
+::EnableSecondBomb <- function() { bEnableSecondBomb = true; }.bindenv(this);
 
 ::SetRobotSpawnAtBase <- function() { SetRobotSpawnGate(0); }
 ::SetRobotSpawnAtGateA <- function() { SetRobotSpawnGate(1); }
