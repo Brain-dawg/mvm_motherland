@@ -153,7 +153,7 @@ function SetRobotSpawnGate(newSpawnGateIndex)
         EntFire("tank_shortcut_door", "Close");
         EntFire("flank_door", "Close");
         EntFire("gate1_door", "Open");
-        EntFire("gate1_spawn_door", "Open");
+        EntFire("gate1_main_door", "Open");
 
         if (InSetup())
         {
@@ -206,6 +206,7 @@ function SetRobotSpawnGate(newSpawnGateIndex)
             EntFire("gate2_blockers", "Enable");
 
             EntFire("gate1_door", "Close");
+            EntFire("gate1_main_door", "Close");
 
             EntFire("holograms_bomb_base_to_gate1", "Disable");
             EntFire("holograms_bomb_gate1_to_gate2", "Disable");
