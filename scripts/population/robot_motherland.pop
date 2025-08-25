@@ -40,21 +40,73 @@ WaveSchedule {
 			}
 		}
 
-		T_TFBot_Sniper_Sydney_Jarate {
+		T_TFBot_Scout_Fan_NoPush {
 
-			Template T_TFBot_Sniper_Sydney_Sleeper
-			Name "Jarate Sniper"
-			Item "Jarate"
-			Item "The Bushwacka"
-			Item "Down Tundra Coat"
-			Item "The Cammy Jammies"
-			Tag motherland_usebestweapon
+			Class Scout 
+			Item "The Force-A-Nature" 
+			Skill Expert 
+			ClassIcon scout_fan 
+		}
 
+		T_TFBot_Pyro_NoAirblast {
+
+			Class Pyro
+			Skill Expert
+			Item "The Nostromo Napalmer"
 			ItemAttributes {
 
-				ItemName "Jarate"
-				"effect bar recharge rate increased" 0.4
+				ItemName "The Nostromo Napalmer"
+				"lunchbox adds minicrits" 2 // unused bot flame particles
+				"airblast disabled" 1
 			}
+		}
+
+        T_TFBot_Demo_Sticky {
+
+            Class Demoman
+            Skill Normal
+            Health 200
+            ClassIcon demo_sticky_daan
+            WeaponRestrictions SecondaryOnly
+            Item "Upgradeable TF_WEAPON_PIPEBOMBLAUNCHER"
+
+            ItemAttributes {
+
+                ItemName "TF_WEAPON_GRENADELAUNCHER"
+                "is_passive_weapon" 1 // force grenade launcher anims
+                "override projectile type" 27 // don't shoot
+				"fire rate penalty" 9999 // don't shoot
+                "faster reload rate" 0.01 // no reload anim
+            }
+
+            ItemAttributes {
+
+                ItemName "Upgradeable TF_WEAPON_PIPEBOMBLAUNCHER"
+                "Projectile range increased" 0.35 // bots always fire fullcharge stickies
+                "faster reload rate" 0.5
+                "stickybomb charge rate" 0.01 // instant charge
+                "max pipebombs decreased" -7
+            }
+        }
+
+		T_TFBot_Engineer_MiniSentry {
+
+			Template T_TFBot_Engineer_Sentry_Teleporter
+			Tag motherland_minisentry
+			Item "The Gunslinger"
+			Item "Packable Provisions"
+			Item "Hazard Handler"
+			Item "Delldozer"
+		}
+
+		T_TFBot_Engineer_MiniSentry_Battle {
+
+			Template T_TFBot_Engineer_Sentry_Battle
+			Tag motherland_minisentry
+			Item "The Gunslinger"
+			Item "Packable Provisions"
+			Item "Hazard Handler"
+			Item "Delldozer"
 		}
 
 		T_TFBot_Medic_Kritz {
@@ -271,44 +323,20 @@ WaveSchedule {
 			}
 		}
 
-        T_TFBot_Demo_Sticky {
+		T_TFBot_Sniper_Sydney_Jarate {
 
-            Class Demoman
-            Skill Normal
-            Health 200
-            ClassIcon demo_sticky_daan
-            WeaponRestrictions SecondaryOnly
-            Item "Upgradeable TF_WEAPON_PIPEBOMBLAUNCHER"
+			Template T_TFBot_Sniper_Sydney_Sleeper
+			Name "Jarate Sniper"
+			Item "Jarate"
+			Item "The Bushwacka"
+			Item "Down Tundra Coat"
+			Item "The Cammy Jammies"
+			Tag motherland_usebestweapon
 
-            ItemAttributes {
-
-                ItemName "TF_WEAPON_GRENADELAUNCHER"
-                "is_passive_weapon" 1 // force grenade launcher anims
-                "override projectile type" 27 // don't shoot
-				"fire rate penalty" 9999 // don't shoot
-                "faster reload rate" 0.01 // no reload anim
-            }
-
-            ItemAttributes {
-
-                ItemName "Upgradeable TF_WEAPON_PIPEBOMBLAUNCHER"
-                "Projectile range increased" 0.35 // bots always fire fullcharge stickies
-                "faster reload rate" 0.5
-                "stickybomb charge rate" 0.01 // instant charge
-                "max pipebombs decreased" -7
-            }
-        }
-
-		T_TFBot_Pyro_NoAirblast {
-
-			Class Pyro
-			Skill Expert
-			Item "The Nostromo Napalmer"
 			ItemAttributes {
 
-				ItemName "The Nostromo Napalmer"
-				"lunchbox adds minicrits" 2 // unused bot flame particles
-				"airblast disabled" 1
+				ItemName "Jarate"
+				"effect bar recharge rate increased" 0.4
 			}
 		}
 	}

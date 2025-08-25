@@ -32,8 +32,7 @@ function _MotherlandMapLogic::_OnDestroy() {
 }
 
 local altbomb = FindByName( null, "gate2_bomb2" )
-altbomb.ValidateScriptScope()
-local altbomb_scope = altbomb.GetScriptScope()
+altbomb_scope <- _MotherlandUtils.GetEntScope( altbomb )
 
 altbomb_scope.InputEnable  <- function() { FakeBomb(); return true }
 altbomb_scope.InputDisable <- function() { FakeBomb( true ); return true }
@@ -94,8 +93,7 @@ function _MotherlandMapLogic::AddOutputs( outputs ) {
                     if ( arg.action == "RunScriptCode" )
                         _MotherlandUtils.ScriptEntFireSafe( ent, format( @"
 
-                            self.ValidateScriptScope()
-                            local scope = self.GetScriptScope()
+                            local scope = _MotherlandUtils.GetEntScope( self )
 
                             function InputRunScriptCode() {
 
@@ -193,7 +191,7 @@ _MotherlandMapLogic.AddOutputs({
             {
                 name = "player"
                 action = "RunScriptCode"
-                param = "if (self.IsBotOfType(TF_BOT_TYPE)) _MotherlandTags.Tags.motherland_revertgatebot(self {})"
+                param = "if (self.IsBotOfType(TF_BOT_TYPE)) { _MotherlandTags.Tags.motherland_revertgatebot(self {}); _MotherlandTags.EvaluateTags(self) }"
             }
 
             {
@@ -205,7 +203,7 @@ _MotherlandMapLogic.AddOutputs({
             { 
                 name = "!self"
                 action = "RunScriptCode"
-                param = "self.ValidateScriptScope(); self.GetScriptScope()._IsCapped <- true"
+                param = "_MotherlandUtils.GetEntScope( self )._IsCapped <- true"
             }
         ]
 
@@ -214,7 +212,7 @@ _MotherlandMapLogic.AddOutputs({
             {
                 name = "!self"
                 action = "RunScriptCode"
-                param = "self.ValidateScriptScope(); self.GetScriptScope()._IsCapped <- false"
+                param = "_MotherlandUtils.GetEntScope( self )._IsCapped <- false"
             }
         ]
     }
