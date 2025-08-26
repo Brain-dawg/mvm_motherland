@@ -18,7 +18,9 @@ _MotherlandTags.Tags <- {
 
         local cooldowntime = 0.0
 
-        function SuicideCounterThink() {
+        BotScope <- bot.GetScriptScope()
+
+        function BotScope::BotThinkTable::SuicideCounterThink() {
 
             if ( cooldowntime > Time() ) return
 
@@ -26,10 +28,9 @@ _MotherlandTags.Tags <- {
 
             cooldowntime = Time() + interval
         }
-        bot.GetScriptScope().BotThinkTable.SuicideCounterThink <- SuicideCounterThink
 
         if ( duration )
-            Utils.ScriptEntFireSafe( bot, "delete BotThinkTable.SuicideCounterThink", duration )
+            _MotherlandUtils.ScriptEntFireSafe( bot, "delete BotThinkTable.SuicideCounterThink", duration )
     }
 
     function motherland_revertgatebot( bot, args ) {
@@ -131,13 +132,13 @@ _MotherlandTags.Tags <- {
 
             maxrepeats++
 
-            Utils.ScriptEntFireSafe( bot, format( "PressButton( self, %d, %d )", button, duration ), delay )
+            _MotherlandUtils.ScriptEntFireSafe( bot, format( "PressButton( self, %d, %d )", button, duration ), delay )
             cooldowntime = Time() + cooldown
         }
         bot.GetScriptScope().BotThinkTable.FireWeaponThink <- FireWeaponThink
 
         if ( duration )
-            Utils.ScriptEntFireSafe( bot, "delete BotThinkTable.FireWeaponThink", duration )
+            _MotherlandUtils.ScriptEntFireSafe( bot, "delete BotThinkTable.FireWeaponThink", duration )
     }
 
     function motherland_minisentry( bot, args ) {
@@ -156,9 +157,9 @@ _MotherlandTags.Tags <- {
 
                 if ( !nearest_hint ) return
 
-                sentry.ValidateScriptScope()
+               SentryScope <- _MotherlandUtils.GetEntScope( sentry )
 
-                function CheckBuiltThink() {
+                function SentryScope::CheckBuiltThink() {
 
                     if ( GetPropBool( self, "m_bBuilding" ) ) return -1
 
@@ -179,9 +180,6 @@ _MotherlandTags.Tags <- {
                     nearest_hint.SetOwner( minisentry )
                     self.Kill()
                 }
-
-                sentry.GetScriptScope().CheckBuiltThink <- CheckBuiltThink
-
                 AddThinkToEnt( sentry, "CheckBuiltThink" )
             }
         }, EVENT_WRAPPER_TAGS )
@@ -511,13 +509,17 @@ function _MotherlandTags::EvaluateTags( bot ) {
     // bot has no tags
     if ( !bot_tags.len() ) return
 
-    foreach( i, tag in bot_tags ) {
+    local scope = _MotherlandUtils.GetEntScope( bot )
+
+    foreach( tag in bot_tags ) {
 
         local func = split( tag, "{" )[0]
         local args = ParseTagArguments( bot, tag )
 
-        if ( func in _MotherlandTags.Tags )
-            _MotherlandTags.Tags[func].call( bot.GetScriptScope() || (bot.ValidateScriptScope(), bot.GetScriptScope()), bot, args )
+        if ( func in _MotherlandTags.Tags ) {
+
+            _MotherlandTags.Tags[func].call( scope, bot, args )
+        }
     }
 }
 
@@ -546,13 +548,7 @@ _EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
 
     local bot = player
 
-    local scope = bot.GetScriptScope()
-
-    if ( !scope ) {
-
-        bot.ValidateScriptScope()
-        scope = bot.GetScriptScope()
-    }
+    local scope = _MotherlandUtils.GetEntScope( bot )
 
     if ( !( "BotThinkTable" in scope ) )
         scope.BotThinkTable <- {}
