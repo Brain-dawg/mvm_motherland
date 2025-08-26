@@ -140,20 +140,20 @@
                 nextCustomChar[player.entindex()] = this.getclass();
         });
 
-        OnSelfEvent("post_inventory_application", function(params)
+        OnSelfEvent("post_inventory_application", function(player, params)
         {
             if (keepAfterClassChange)
                 nextCustomChar[player.entindex()] = this.getclass();
             else
             {
-                ClearCustomCharacter();
-                if (deleteStockWeapons || deleteStockCosmetics)
+                //ClearCustomCharacter();
+                /*if (deleteStockWeapons || deleteStockCosmetics)
                 {
                     OnTickEnd(function(player) {
                         DebugPrint("player = "+player)
                         player.ForceRegenerateAndRespawnInPlace();
                     }, player, main_script);
-                }
+                }*/ //todo fix me
             }
         });
         OnSelfEvent("player_disconnect", ClearCustomCharacter);
@@ -283,27 +283,29 @@
     {
         foreach(item in player.CollectAttachments())
         {
-            if (deleteStockWeapons && item.GetClassname() == "tf_weapon_medigun")
-            {
-                SetPropBool(item, "m_bLowered", true);
-                OnTickEnd(KillIfValid, item);
+            if (!IsValid(item))
                 continue;
-            }
-
-            if (deleteStockWeapons && item.GetClassname() == "tf_wearable_vm")
-            {
-                KillIfValid(item);
-                continue;
-            }
-
-            if (deleteStockWeapons && deleteStockCosmetics)
-            {
-                KillIfValid(item);
-                continue;
-            }
 
             local isWeapon = IsWeapon(item);
-            if ((deleteStockWeapons && isWeapon) || (deleteStockCosmetics && !isWeapon))
+
+            if (deleteStockWeapons)
+            {
+                if (item.GetClassname() == "tf_weapon_medigun")
+                {
+                    SetPropBool(item, "m_bLowered", true);
+                    KillIfValid(GetPropEntity(item, "m_hExtraWearable"));
+                    KillIfValid(GetPropEntity(item, "m_hExtraWearableViewModel"));
+                    OnTickEnd(KillIfValid, item);
+                }
+                else if (isWeapon)
+                {
+                    KillIfValid(item);
+                    KillIfValid(GetPropEntity(item, "m_hExtraWearable"));
+                    KillIfValid(GetPropEntity(item, "m_hExtraWearableViewModel"));
+                }
+            }
+
+            if (deleteStockCosmetics && !isWeapon)
             {
                 KillIfValid(item);
             }

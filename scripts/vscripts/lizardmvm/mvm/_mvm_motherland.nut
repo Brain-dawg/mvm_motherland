@@ -2,7 +2,7 @@
 //!CompilePal::IncludeDirectory("models/motherland")
 
 gamemode_name <- "lizardmvm";
-::useDebugReload <- false;
+::useDebugReload <- developer();
 
 function Mainload()
 {
@@ -21,8 +21,6 @@ function Mainload()
 
     SetRobotSpawnAtBase();
 
-    RunWithDelay(RandomInt(10, 15), RunSetupTrain); //todo find better place
-
     AddTimer(0.2, function()
     {
         local rrt = GetPropFloat(tf_gamerules, "m_flRestartRoundTime");
@@ -35,7 +33,6 @@ function Mainload()
     OnGameEvent("mvm_wave_complete", function(params)
     {
         SetRobotSpawnAtBase();
-        RunWithDelay(RandomInt(10, 15), RunSetupTrain); //todo find better place
 
         Include("mvm/gates.nut");
         Include("mvm/flags.nut");

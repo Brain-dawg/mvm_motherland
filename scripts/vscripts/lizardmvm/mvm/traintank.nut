@@ -263,6 +263,7 @@ function TrainTankArrivedAtPoint()
     EntFire("train_snow_vfx", "Stop");
     EntFire("train_wheels_vfx", "Stop");
 
+    EntFire("tf_point_nav_interface", "RecomputeBlockers");
     EntFire("traintank_navblocker", "BlockNav");
     EntFire("gate1_separator", "Disable");
 

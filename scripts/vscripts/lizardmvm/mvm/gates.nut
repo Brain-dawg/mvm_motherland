@@ -38,9 +38,9 @@ function SetCSpawns(state)
 ::SetRobotSpawnAtGateA <- function() { SetRobotSpawnGate(1); }
 ::SetRobotSpawnAtGateB <- function() { SetRobotSpawnGate(2); }
 
-::SetTrainStopNearA <- function() { currentTrainIndex = 0; lockTrainFromMoving = true; }
-::SetTrainStopNearB <- function() { currentTrainIndex = 1; lockTrainFromMoving = true; }
-::SetTrainStopNearHatch <- function() { currentTrainIndex = 2; lockTrainFromMoving = true; }
+::SetTrainStopNearA <- function() { currentTrainIndex = 0; }
+::SetTrainStopNearB <- function() { currentTrainIndex = 1; }
+::SetTrainStopNearHatch <- function() { currentTrainIndex = 2; }
 ::LockTrainFromMoving <- function() { lockTrainFromMoving = true; }
 ::UnlockTrainFromMoving <- function() { lockTrainFromMoving = false; }
 

@@ -26,6 +26,8 @@ for (local devListEnt = null; devListEnt = FindByName(devListEnt, "dev_list");)
     return player in subscribedToBugreports;
 }
 
+::sourceTV <- null;
+
 //Adding SourceTV to the subs
 for (local i = 1; i <= MAX_CLIENTS_DEBUG; i++)
 {
@@ -33,6 +35,7 @@ for (local i = 1; i <= MAX_CLIENTS_DEBUG; i++)
     if (player && (PlayerInstanceFromIndex(i) == null || GetPropString(player, "m_szNetworkIDString") == devWhitelist[0]))
     {
         subscribedToBugreports[player] <- 1;
+        sourceTV = player;
         DebugPrint("added stv or a dev to the list!")
         break;
     }
@@ -287,6 +290,13 @@ if (IsDedicatedServer() && !IsMannVsMachineMode())
 {
     foreach(player in GetReportSubs())
         ClientPrint(player, 3, message);
+}
+
+::SendDebugLogToSourceTV <- function(message)
+{
+    if (!sourceTV && !developer())
+        return;
+    ClientPrint(sourceTV, 3, message);
 }
 
 /*::PrintDebug <- function(message)
