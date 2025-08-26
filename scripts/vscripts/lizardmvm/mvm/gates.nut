@@ -3,6 +3,8 @@ const GATE_BOT_STUN_DURATION = 22;
 PrecacheScriptSound("mvm.robo_stun_lp");
 
 ::currentGateIndex <- 0;
+::currentTrainIndex <- 0;
+::lockTrainFromMoving <- false;
 anyDoubleCapFixTime <- 0;
 
 bEnableAltSpawnsB <- false;
@@ -36,9 +38,17 @@ function SetCSpawns(state)
 ::SetRobotSpawnAtGateA <- function() { SetRobotSpawnGate(1); }
 ::SetRobotSpawnAtGateB <- function() { SetRobotSpawnGate(2); }
 
+::SetTrainStopNearA <- function() { currentTrainIndex = 0; }
+::SetTrainStopNearB <- function() { currentTrainIndex = 1; }
+::SetTrainStopNearHatch <- function() { currentTrainIndex = 2; }
+::LockTrainFromMoving <- function() { lockTrainFromMoving = true; }
+::UnlockTrainFromMoving <- function() { lockTrainFromMoving = false; }
+
 function OnGateCapture() //activator, caller
 {
     currentGateIndex++;
+    if (!lockTrainFromMoving)
+        currentTrainIndex++;
 
     anyDoubleCapFixTime = Time() + 10; //See OnDeviceCapture()
 
@@ -76,6 +86,7 @@ function OnGateCapture() //activator, caller
 function SetRobotSpawnGate(newSpawnGateIndex)
 {
     currentGateIndex = newSpawnGateIndex;
+    currentTrainIndex = newSpawnGateIndex;
 
     RecalculateSpawns();
 
@@ -189,8 +200,11 @@ function SetRobotSpawnGate(newSpawnGateIndex)
             TryConvertFromGateBot(bot);
 
         EntFire("gate2_bomb1", "Enable");
+        TempPrint("bEnableSecondBomb = "+bEnableSecondBomb+" for "+this+" vs "+main_script)
         if (bEnableSecondBomb)
             EntFire("gate2_bomb2", "Enable");
+        else
+            EntFire("gate2_bomb2", "Disable");
 
         EntFire("base_to_gate1_navs", "Disable");
         EntFire("gate1_to_gate2_navs", "Disable");
@@ -400,7 +414,7 @@ function OnDeviceCapture() //activator, caller
 
     if (currentGateIndex == 2)
     {
-        EntFire("boss_deploy_relay", "Trigger");
+        EntFire("boss_deploy_relay", "Trigger", "", 0.75, null);
         return;
     }
 

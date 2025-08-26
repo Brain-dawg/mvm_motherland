@@ -22,9 +22,9 @@ function ConvertToTrainBot(bot)
     for (local i = 0; i < 10; i++)
     {
         if (bot.IsMiniBoss())
-            randomTeleport = RandomElement(traintank_tepeports_giant_all[currentGateIndex]);
+            randomTeleport = RandomElement(traintank_tepeports_giant_all[currentTrainIndex]);
         else
-            randomTeleport = RandomElement(traintank_tepeports_all[currentGateIndex]);
+            randomTeleport = RandomElement(traintank_tepeports_all[currentTrainIndex]);
 
         if (IsSpaceFree(randomTeleport, bot))
             break;
