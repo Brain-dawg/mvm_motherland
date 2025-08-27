@@ -34,8 +34,11 @@ WaveSchedule
         Objective Spy
 
         Where spawnbot_base_main
+        Where spawnbot_base_main_c
         Where spawnbot_gate1_main
+        Where spawnbot_gate1_main_c
         Where spawnbot_gate2_main
+        Where spawnbot_gate2_main_c
         BeginAtWave 4
         RunForThisManyWaves 1
         DesiredCount 1
@@ -76,7 +79,7 @@ WaveSchedule
                 SetRobotSpawnAtGateB()
                 DisableSecondBomb()
                 IncludeScript( `brain/main` )
-                EntFire( `func_door`, `Close`, ``, 1 )
+                EntFire( `func_door*`, `Close`, ``, 1 )
             "
         }
 
@@ -91,7 +94,9 @@ WaveSchedule
         WaveSpawn {
 
             Name "wave1a" // The name of this WaveSpawn
+            Where spawnbot_gate2_main_c
             Where spawnbot_gate2_main
+            Where spawnbot_gate2_main_c
             Where spawnbot_gate2_upper
             TotalCount 75
             MaxActive 8 // How many bots from this WaveSpawn can be spawned at once.
@@ -106,7 +111,9 @@ WaveSchedule
         WaveSpawn {
 
             Name "wave1b"
+            Where spawnbot_gate2_main_c
             Where spawnbot_gate2_main
+            Where spawnbot_gate2_main_c
             Where spawnbot_gate2_upper
             TotalCount 5
             MaxActive 1 // How many bots from this WaveSpawn can be spawned at once.
@@ -186,7 +193,11 @@ WaveSchedule
             Name "wave2a1"
             Where spawnbot_gate1_battlements
             Where spawnbot_gate1_main
+            Where spawnbot_gate1_upper_c
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate2_main_c
             Where spawnbot_gate2_main
+            Where spawnbot_gate2_upper_c
             Where spawnbot_gate2_upper
             TotalCount 20
             MaxActive 6
@@ -200,8 +211,10 @@ WaveSchedule
         WaveSpawn {
 
             Name "wave2b"
+            Where spawnbot_gate1_main_c
             Where spawnbot_gate1_main
-            Where spawnbot_gate2_main
+            Where spawnbot_gate1_main_c
+            Where spawnbot_gate2_main_c
             TotalCount 4
             MaxActive 2
             SpawnCount 2
@@ -220,7 +233,9 @@ WaveSchedule
         WaveSpawn {
 
             Name "wave2b1"
+            Where spawnbot_gate1_upper_c
             Where spawnbot_gate1_upper
+            Where spawnbot_gate2_upper_c
             Where spawnbot_gate2_upper
             TotalCount 75
             MaxActive 6
@@ -234,7 +249,9 @@ WaveSchedule
         WaveSpawn {
 
             Name "wave2c"
+            Where spawnbot_gate1_main_c
             Where spawnbot_gate1_main
+            Where spawnbot_gate2_main_c
             Where spawnbot_gate2_main
             TotalCount 3
             MaxActive 1
@@ -294,12 +311,22 @@ WaveSchedule
             Delay 0.2
         }
 
+        StartWaveOutput {
+
+            Target BigNet
+            Action RunScriptCode
+            Param "SendGlobalGameEvent(`hide_annotation`, {id = 2543})"
+        }
+
         WaveSpawn {
 
             Name "wave3a"
             Where spawnbot_base_main
+            Where spawnbot_base_main_c
             Where spawnbot_gate1_main
+            Where spawnbot_gate1_main_c
             Where spawnbot_gate2_main
+            Where spawnbot_gate2_main_c
             TotalCount 9
             MaxActive 6
             SpawnCount 3
@@ -380,6 +407,7 @@ WaveSchedule
             WaitForAllDead "wave3b"
             WaitBetweenSpawns 3
             Support Limited
+            RandomSpawn 1
 
             Squad {
 
@@ -428,6 +456,7 @@ WaveSchedule
             WaitBetweenSpawns 2
             WaitBeforeStarting 10
             TotalCurrency 100
+            RandomSpawn 1
 
             TFBot { Template T_TFBot_Heavyweapons_Shotgun Tag nav_main }
         }
@@ -448,6 +477,7 @@ WaveSchedule
             MaxActive 1
             SpawnCount 1
             TotalCurrency 100
+            RandomSpawn 1
 
             // StartWaveOutput {
 
@@ -482,6 +512,7 @@ WaveSchedule
             SpawnCount 3
             TotalCurrency 100
             WaitForAllDead "wave4a1"
+            RandomSpawn 1
 
             Squad {
 
@@ -511,6 +542,7 @@ WaveSchedule
             MaxActive 3
             SpawnCount 3
             TotalCurrency 200
+            RandomSpawn 1
 
             Squad { 
 
@@ -540,6 +572,7 @@ WaveSchedule
             TotalCurrency 100
             WaitForAllDead "wave4c"
             WaitBeforeStarting 5
+            RandomSpawn 1
 
             Squad {
 
@@ -580,12 +613,20 @@ WaveSchedule
         WaveSpawn {
 
             Name "wave5a1"
+            Where spawnbot_base_main
+            Where spawnbot_base_upper
+            Where spawnbot_base_battlements
+            Where spawnbot_gate1_main
+            Where spawnbot_gate1_upper
+            Where spawnbot_gate2_main
+            Where spawnbot_gate2_upper
             TotalCount 24
             MaxActive 2
             SpawnCount 2
             WaitBeforeStarting 1
             WaitBetweenSpawns 2
             TotalCurrency 100
+            RandomSpawn 1
 
             TFBot { Template T_TFBot_Soldier_RocketShotgun }
         }

@@ -1,34 +1,67 @@
 __CREATE_SCOPE( "__motherland_maplogic", "_MotherlandMapLogic" )
 
-// rafmod/potato server hack, this messes with engi hints
-SetValue( "sig_etc_entity_limit_manager_convert_server_entity", 0 )
-
-for (local hint; hint = FindByClassname(hint, "bot_hint_sentrygun");) {
-
-    if ( hint.entindex() ) break
-
-    ClientPrint( null, HUD_PRINTCENTER, "disabling sig_etc_entity_limit_manager_convert_server_entity" )
-
-    if ( GetPropBool ( _MotherlandMain.ObjRes, "m_bMannVsMachineBetweenWaves" ) )
-        SetValue( "mp_restartgame_immediate", true )
-    
-    _MotherlandUtils.ScriptEntFireSafe( hint, "SetValue( `mp_restartgame_immediate`, true )", 1 )
-    break
-}
-
 // Temporary until we start utilizing the flank bomb path more
 EntFire( "hologramrelay_mainbomb", "Trigger" )
 
+EmitSoundEx({ sound_name = "ambient/alarms/combine_bank_alarm_loop4.wav", flags = SND_STOP channel = CHAN_STATIC })
+
+// stuff that requires round restarts to work
+if ( !("__MotherlandMapLogic_FirstLoad" in ROOT) )
+
+    ::__MotherlandMapLogic_FirstLoad <- {
+
+        loaded = false
+
+        function PotatoFix() { 
+
+            local cvar = GetInt( "sig_etc_entity_limit_manager_convert_server_entity" )
+
+            if ( cvar )
+                SetValue( "sig_etc_entity_limit_manager_convert_server_entity", 0 )
+            else if ( cvar == null )
+                __MotherlandMapLogic_FirstLoad.loaded = true
+
+            return cvar
+        }
+    }
+
+if ( !__MotherlandMapLogic_FirstLoad.loaded ) {
+    
+    foreach( func in __MotherlandMapLogic_FirstLoad )
+        if ( typeof func == "function" )
+            func()
+
+    if ( __MotherlandMapLogic_FirstLoad.loaded ) return
+
+    if ( GetPropBool( _MotherlandMain.ObjRes, "m_bMannVsMachineBetweenWaves" ) )
+        SetPropFloat( _MotherlandMain.GameRules, "m_flRestartRoundTime", Time() )
+
+    _MotherlandUtils.ScriptEntFireSafe( "tf_gamerules", "SetPropFloat( self, `m_flRestartRoundTime`, Time() )", 0.1 )
+
+    __MotherlandMapLogic_FirstLoad.loaded = true
+}
+
+// using multiple spawns with RandomSpawn 1 doesn't brick, idk why
+_MotherlandUtils.ScriptEntFireSafe( "logic_script_lizardmvm", "SetCSpawns( true )" )
+
 function _MotherlandMapLogic::_OnDestroy() {
 
-    local gateb = _MotherlandMain.GateBDoor
+    EmitSoundEx({ sound_name = "ambient/alarms/combine_bank_alarm_loop4.wav", flags = SND_STOP channel = CHAN_STATIC })
 
-    local gateb_scope = gateb.GetScriptScope()
+    local gateb
+    while ( gateb = FindByName( gateb, "gate2_door" ) ) break
 
-    if ( gateb_scope && "_IsCapped" in gateb_scope )
-        delete gateb_scope._IsCapped
+    if ( gateb && gateb.GetScriptScope() ) {
+
+        local gateb_scope = gateb.GetScriptScope()
+
+        if ( "_IsCapped" in gateb_scope )
+            delete gateb_scope._IsCapped
+    }
 
     AddOutputs( null )
+
+    delete ::__MotherlandMapLogic_FirstLoad
 }
 
 local altbomb = FindByName( null, "gate2_bomb2" )

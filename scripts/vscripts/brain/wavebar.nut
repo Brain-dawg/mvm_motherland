@@ -157,7 +157,7 @@ function _MotherlandWavebar::GetWaveIconSlot( name, flags ) {
     return -1
 }
 
-function _MotherlandWavebar::SetWaveIconFlags( name, flags ) {
+function _MotherlandWavebar::SetWaveIconFlags( name, flags, oldflags = 0 ) {
 
     local size_array = GetPropArraySize( ObjRes, STRING_NETPROP_COUNTS )
     for ( local a = 0; a < 2; a++ ) {
@@ -168,7 +168,7 @@ function _MotherlandWavebar::SetWaveIconFlags( name, flags ) {
 
             local name_slot = GetPropStringArray( ObjRes, format( "%s%s", STRING_NETPROP_CLASSNAMES, suffix ), i )
 
-            if ( name_slot == name )
+            if ( name_slot == name && ( oldflags == 0 || GetPropIntArray( ObjRes, format( "%s%s", STRING_NETPROP_FLAGS, suffix ), i ) == oldflags ) )
                 SetPropIntArray( ObjRes, format( "%s%s", STRING_NETPROP_FLAGS, suffix ), flags, i )
         }
     }
@@ -254,10 +254,22 @@ function _MotherlandWavebar::IncrementWaveIcon( name, flags, count = 1, change_m
         SetWaveIcon( name, flags, cur_count + count, change_max_enemy_count )
 }
 
-function _MotherlandWavebar::RemoveWaveIcon( name, flags ) {
+function _MotherlandWavebar::RemoveWaveIcon( name, flags = 0 ) {
 
     if ( GetWaveIcon( name, flags ) > 0 )
         SetWaveIcon( name, flags, 0 )
 
     // _MotherlandUtils.GameStrings[ format( "RemoveWaveIcon(`%s`, %d)", name, flags ) ] <- null
+}
+
+function _MotherlandWavebar::AddWaveIconCount( count ) {
+
+    SetPropInt( _MotherlandMain.ObjRes, STRING_NETPROP_ENEMYCOUNT, GetPropInt( _MotherlandMain.ObjRes, STRING_NETPROP_ENEMYCOUNT ) + count )
+}
+
+function _MotherlandWavebar::SupportToMainWave( icon, flags, oldflags = 0, count = 999 ) {
+
+    SetWaveIconFlags( icon, flags, oldflags )
+    count = oldflags & ICON_SUPPORT|ICON_SUPPORT_LIMITED ? count : -count
+    AddWaveIconCount( count )
 }

@@ -129,10 +129,12 @@ __CREATE_SCOPE( "__motherland_main", "_MotherlandMain" )
 _MotherlandMain.TriggerHurt  <- CreateByClassname( "trigger_hurt" )
 _MotherlandMain.ClientCmd    <- CreateByClassname( "point_clientcommand" )
 _MotherlandMain.ObjRes       <- FindByClassname( null, "tf_objective_resource" )
+_MotherlandMain.GameRules    <- FindByClassname( null, "tf_gamerules" )
 _MotherlandMain.PopInterface <- FindByClassname( null, "point_populator_interface" )
 _MotherlandMain.popname      <- GetPropString( _MotherlandMain.ObjRes, "m_iszMvMPopfileName" )
 _MotherlandMain.GateBDoor    <- FindByName( null, "gate2_door" )
 _MotherlandMain.GateADoor    <- FindByName( null, "gate1_main_door" )
+_MotherlandMain.TrainSpawnTrigger <- FindByClassnameNearest( "trigger_multiple", FindByName( null, "spawnbot_traintank" ).GetCenter(), 128 )
 
 IncludeScript( "brain/event_wrapper.nut" )
 IncludeScript( "brain/utils.nut" )
@@ -185,9 +187,10 @@ _EventWrapper("recalculate_holidays", "MainCleanup", function( params ) {
         _MotherlandMain.PlayerCleanup( player )
     }
 
+	// mission name changed, wipe out everything
     if ( GetPropString( _MotherlandMain.ObjRes, "m_iszMvMPopfileName" ) != _MotherlandMain.popname ) {
 
-        _MotherlandEvents.ClearEvents( "*" )
+        _MotherlandEvents.ClearEvents( null )
         foreach ( ent in __active_scopes.keys() )
             if ( ent && ent.IsValid() )
                 ent.Kill()

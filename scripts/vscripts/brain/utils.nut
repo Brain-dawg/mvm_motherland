@@ -9,6 +9,7 @@ function _MotherlandUtils::_OnDestroy() {
         PurgeGameString( str )
 }
 
+// mitigate CUtlRBTree overflows
 function _MotherlandUtils::GameStringGenerator() {
 
 	local gamestrings_snapshot = clone GameStrings
@@ -24,6 +25,9 @@ function _MotherlandUtils::GameStringGenerator() {
 		yield str
 	}
 }
+
+EntFire( "*", "RunScriptCode", "_MotherlandUtils.GameStrings[self.GetScriptId()] <- null" )
+_MotherlandUtils.GameStrings["_MotherlandUtils.GameStrings[self.GetScriptId()] <- null"] <- null
 
 local stringhandler_cooldown = 0.0
 local gen = null
@@ -123,7 +127,7 @@ function _MotherlandUtils::PressButton( player, button, duration = -1 ) {
     SetPropInt( player, "m_nButtons", GetPropInt( player, "m_nButtons" ) | button )
 
     if ( duration != -1 )
-        _MotherlandUtils.ScriptEntFireSafe( player, format( "ReleaseButton( self, %d )", button ), duration )
+        _MotherlandUtils.ScriptEntFireSafe( player, format( "_MotherlandUtils.ReleaseButton( self, %d )", button ), duration )
 }
 
 function _MotherlandUtils::ReleaseButton( player, button ) {

@@ -44,8 +44,9 @@ _MotherlandTags.Tags <- {
         if ( !gateb_locked ) {
 
             if ( paint )
-                for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity && child.GetAttribute( "set item tint RGB", -1 ) != color); child = child.NextMovePeer() )
-                    child.AddAttribute( "set item tint RGB", color, -1 )
+                for ( local child = bot.FirstMoveChild(); child; child = child.NextMovePeer() )
+                    if ( child instanceof CEconEntity && child.GetAttribute( "set item tint RGB", -1 ) != color )
+                        child.AddAttribute( "set item tint RGB", color, -1 )
 
             bot.AddBotAttribute( AGGRESSIVE ) // seemingly doesn't work
             bot.AddBotAttribute( IGNORE_FLAG )
@@ -59,13 +60,18 @@ _MotherlandTags.Tags <- {
             bot.RemoveBotAttribute( IGNORE_FLAG )
             bot.RemoveBotAttribute( DISABLE_DODGE )
 
-            for ( local child = bot.FirstMoveChild(); (child && child instanceof CEconEntity && child.GetAttribute( "set item tint RGB", -1 ) == color); child = child.NextMovePeer() )
-                child.RemoveAttribute( "set item tint RGB" )
+            for ( local child = bot.FirstMoveChild(); child; child = child.NextMovePeer() )
+                if ( child instanceof CEconEntity && child.GetAttribute( "set item tint RGB", -1 ) == color )
+                    child.RemoveAttribute( "set item tint RGB" )
 
             // local bothp = bot.GetHealth()
             // bot.Regenerate( true )
             // bot.SetHealth( bothp )
         }
+    }
+
+    function motherland_trainbot( bot, args ) {
+        _MotherlandMain.TrainSpawnTrigger.AcceptInput( "StartTouch", "!activator", bot, bot )
     }
 
     function motherland_altfire( bot, args ) {
@@ -88,6 +94,7 @@ _MotherlandTags.Tags <- {
             _MotherlandWavebar.SetWaveIcon( icon, flags, count, false )
 
         _EventWrapper( "player_death", format( "Tags_%d_LimitedSupport", bot.entindex() ), function( params ) {
+            printl("\n\nplayer death\n\n")
 
             local _bot = GetPlayerFromUserID( params.userid )
 
@@ -323,29 +330,29 @@ _MotherlandTags.Tags <- {
 
     function motherland_holdfire( bot, args ) {
 
-			local scope = bot.GetScriptScope()
-			scope.holdingfire <- false
-			scope.lastfiretime <- 0.0
+			BotScope <- bot.GetScriptScope()
+			BotScope.holdingfire <- false
+			BotScope.lastfiretime <- 0.0
 
-			function HoldFireThink() {
+            if ( !bot.HasBotAttribute( HOLD_FIRE_UNTIL_FULL_RELOAD ) ) return
 
-				if ( !bot.HasBotAttribute( HOLD_FIRE_UNTIL_FULL_RELOAD ) ) return
+			function BotScope::BotThinkTable::HoldFireThink() {
 
 				local activegun = bot.GetActiveWeapon()
 				if ( activegun == null ) return
 				local clip = activegun.Clip1()
+
 				if ( clip == 0 ) {
 
 					bot.AddBotAttribute( SUPPRESS_FIRE )
-					scope.holdingfire = true
+					holdingfire = true
 				}
-				else if ( clip == activegun.GetMaxClip1() && scope.holdingfire ) {
+				else if ( clip == -1 || ( clip == activegun.GetMaxClip1() && holdingfire ) ) {
 
 					bot.RemoveBotAttribute( SUPPRESS_FIRE )
-					scope.holdingfire = false
+					holdingfire = false
 				}
 			}
-			bot.GetScriptScope().BotThinkTable.HoldFireThink <- HoldFireThink
     }
 
     function motherland_setmission( bot, args ) {
@@ -492,6 +499,8 @@ _MotherlandTags.Tags <- {
     }
 }
 
+_MotherlandTags.Tags.traintank_spawn <- _MotherlandTags.Tags.motherland_trainbot
+
 function _MotherlandTags::ParseTagArguments( bot, tag ) {
 
     local newtags = {}
@@ -538,7 +547,7 @@ function _MotherlandTags::EvaluateTags( bot ) {
     // bot has no tags
     if ( !bot_tags.len() ) return
 
-    local scope = _MotherlandUtils.GetEntScope( bot )
+    local scope = _MotherlandUtils.GetEntScope( bot ) || {}
 
     foreach( tag in bot_tags ) {
 
@@ -577,19 +586,18 @@ _EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
 
     local bot = player
 
-    local scope = _MotherlandUtils.GetEntScope( bot )
+    BotScope <- _MotherlandUtils.GetEntScope( bot )
 
-    if ( !( "BotThinkTable" in scope ) )
-        scope.BotThinkTable <- {}
+    if ( !( "BotThinkTable" in BotScope ) )
+        BotScope.BotThinkTable <- {}
 
-    function BotThinks() {
+    function BotScope::BotThinks() {
 
-        foreach ( name, func in scope.BotThinkTable )
-            func.call( scope )
+        foreach ( name, func in BotThinkTable )
+            func()
+
         return -1
     }
-
-    scope.BotThinks <- BotThinks
 
     AddThinkToEnt( bot, "BotThinks" )
 
