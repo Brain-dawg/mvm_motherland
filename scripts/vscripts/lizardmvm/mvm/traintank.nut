@@ -8,7 +8,7 @@ PrecacheSound("ambient/machines/station_train_squeel.wav");
 PrecacheSound("ambient/slow_train.wav");
 PrecacheSound("plats/train_brake1.wav");
 
-//PrecacheParticle("Motherland_train_antenna_parent");
+PrecacheParticle("Motherland_train_antenna_parent");
 PrecacheParticle("mvm_tank_destroy");
 
 traintank_tracktrain <- null;
@@ -201,7 +201,7 @@ function StartTrainTankJourney()
 
 function TrainTankEnteredGameplaySpace(pointIndex)
 {
-    if (pointIndex != currentGateIndex || activator != traintank_tracktrain)
+    if (pointIndex != currentTrainIndex || activator != traintank_tracktrain)
         return;
 
     AddTimer(0.1, SlowTrainTankDown);
@@ -263,16 +263,20 @@ function TrainTankArrivedAtPoint()
     EntFire("train_snow_vfx", "Stop");
     EntFire("train_wheels_vfx", "Stop");
 
+    EntFire("tf_point_nav_interface", "RecomputeBlockers");
     EntFire("traintank_navblocker", "BlockNav");
     EntFire("gate1_separator", "Disable");
 
-    local addon = currentGateIndex == 1 ? "" : "Right";
-    EntFire("train_doors*", "SetAnimation", "OpenDoors" + addon, 1.0);
-    EntFire("train_doors*", "SetDefaultAnimation", "StayOpen" + addon, 1.0);
+    local postfix = currentTrainIndex == 1 ? "" : "Right";
+    EntFire("train_doors_engine", "SetAnimation", "OpenDoors" + postfix, 1.0);
+    EntFire("train_doors_engine", "SetDefaultAnimation", "StayOpen" + postfix, 1.0);
+    EntFire("train_doors_wagon", "SetAnimation", "OpenDoor" + postfix, 1.0);
+    EntFire("train_doors_wagon", "SetDefaultAnimation", "DoorOpen" + postfix, 1.0);
+
     EntFire("train_teleporters*", "SetAnimation", "TeleporterSpin", 3.5);
     EntFire("train_teleporters*", "SetDefaultAnimation", "TeleporterSpin", 3.5);
 
-    local vfxTarget = currentGateIndex == 1 ? "train_teleporters_vfx_*" : "train_teleporters_vfx_right";
+    local vfxTarget = currentTrainIndex == 1 ? "train_teleporters_vfx_*" : "train_teleporters_vfx_right";
     EntFire(vfxTarget, "Start", "", 4);
 
     for (local i = 0; i < 2; i++)
@@ -320,10 +324,11 @@ function OnGateCapture_TrainTank()
     if (!IsValid(traintank_base_boss))
         return;
 
-    local doorAnimation = currentGateIndex == 2 ? "CloseDoors" : "CloseDoorsRight";
+    local postfix = currentTrainIndex == 2 ? "" : "Right";
+    EntFire("train_doors_engine", "SetAnimation", "CloseDoors" + postfix, 1.0);
+    EntFire("train_doors_wagon", "SetAnimation", "CloseDoor" + postfix, 1.0);
+    EntFire("train_doors*", "SetDefaultAnimation", "idle", 1.0);
 
-    EntFire("train_doors*", "SetAnimation", doorAnimation, 1);
-    EntFire("train_doors*", "SetDefaultAnimation", "idle", 2);
     EntFire("train_teleporters*", "SetAnimation", "idle");
     EntFire("train_teleporters*", "SetDefaultAnimation", "idle");
     EntFire("train_teleporters_vfx*", "Stop");
@@ -374,12 +379,12 @@ function StartJourneyBetweenPoints()
             SetPropFloat(traintank_tracktrain, "m_flSpeed", lastPoint ? speed + 3 : speed + 3);
         else
             return TIMER_DELETE;
-    }, currentGateIndex == 2);
+    }, currentTrainIndex == 2);
 }
 
 function SlowTrainTankDownBetweenPoints(pointIndex)
 {
-    if (pointIndex != currentGateIndex || activator != traintank_tracktrain)
+    if (pointIndex != currentTrainIndex || activator != traintank_tracktrain)
         return;
 
     AddTimer(0.1, function()

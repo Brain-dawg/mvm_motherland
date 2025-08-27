@@ -35,6 +35,7 @@ if (!("PrintWarning" in ROOT))
     ::PrintWarning <- function(...) { }
     ::OnDevCommand <- function(...) { }
     ::SoftAssert <- function(...) { }
+    ::SendDebugLogToSourceTV <- function(...) { }
 }
 if (!("ErrorHandler" in ROOT))
     ::ErrorHandler <- function(e) {};
@@ -90,3 +91,11 @@ try { Include("__lizardcore/debug.nut"); } catch (e) { }
 DebugPrint("=====================================================================");
 local time = PopBenchmark();
 DebugPrint("Time wasted on loading in total: %.4f", time);
+
+if (_intsize_ == 4 && RAND_MAX == 32768 && !hasEverDisplay32bitWarning && !IsInWaitingForPlayers())
+{
+    hasEverDisplay32bitWarning = true;
+    RunWithDelay(5, ClientPrint, null, HUD_PRINTTALK,
+        "\x07d41e1eWarning! This server runs a 32-bit Windows version of srcds!\n" +
+        "It's known ");
+}

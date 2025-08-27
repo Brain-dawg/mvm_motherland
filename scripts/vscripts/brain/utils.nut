@@ -123,7 +123,7 @@ function _MotherlandUtils::PressButton( player, button, duration = -1 ) {
     SetPropInt( player, "m_nButtons", GetPropInt( player, "m_nButtons" ) | button )
 
     if ( duration != -1 )
-        ScriptEntFireSafe( player, format( "ReleaseButton( self, %d )", button ), duration )
+        _MotherlandUtils.ScriptEntFireSafe( player, format( "ReleaseButton( self, %d )", button ), duration )
 }
 
 function _MotherlandUtils::ReleaseButton( player, button ) {

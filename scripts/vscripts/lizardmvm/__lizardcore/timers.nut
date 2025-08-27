@@ -113,7 +113,44 @@ CONST.TIMER_DELETE <- INT_MAX;
 
 //The timer run mechanism
 
-//todo 32 bits
+//Some servers still run on 32 bit Windows, which has unreliable timings for EntFire.
+//The "proper" timer approach relies on EntFire being reliable,
+// so, we use an alternative timer function for the 32-bit Windows instead.
+if (_intsize_ == 4 && RAND_MAX == 32768)
+{
+    ::Timer_InitLoopForThisTick <- function()
+    {
+        local time = Time();
+
+        for (local i = 0; i < ::lizardTimersLen; i++)
+        {
+            local entry = ::lizardTimers[i];
+            if (!entry[2] || (entry[3] && !entry[3].IsValid()))
+            {
+                ::lizardTimers.remove(i--);
+                ::lizardTimersLen--;
+                continue;
+            }
+
+            if (time < entry[4])
+                continue;
+            entry[4] += entry[5];
+
+            local result;
+            try { result = entry[0].acall([entry[2]].extend(entry[1])); } catch(e) { }
+
+            if (result == INT_MAX || entry[5] == FLT_MAX)
+            {
+                ::lizardTimers.remove(i--);
+                ::lizardTimersLen--;
+            }
+        }
+        return -1;
+    }
+    ::hasEverDisplay32bitWarning <- 0;
+
+    return;
+}
 
 ::timerGenerator <- null;
 

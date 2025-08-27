@@ -22,9 +22,9 @@ function ConvertToTrainBot(bot)
     for (local i = 0; i < 10; i++)
     {
         if (bot.IsMiniBoss())
-            randomTeleport = RandomElement(traintank_tepeports_giant_all[currentGateIndex]);
+            randomTeleport = RandomElement(traintank_tepeports_giant_all[currentTrainIndex]);
         else
-            randomTeleport = RandomElement(traintank_tepeports_all[currentGateIndex]);
+            randomTeleport = RandomElement(traintank_tepeports_all[currentTrainIndex]);
 
         if (IsSpaceFree(randomTeleport, bot))
             break;
@@ -78,6 +78,7 @@ OnGameEvent("player_spawn_post", function(bot, params)
 ::JETPACK_MODEL_INDEX <- PrecacheModel("models/motherland/bot_rocketpack.mdl");
 PrecacheParticle("botpack_exhaust");
 PrecacheParticle("Motherland_cap_parent");
+PrecacheModel("models/motherland/bot_rocketpack_gib.mdl");
 
 OnGameEvent("player_spawn_post", function(bot, params)
 {
@@ -185,28 +186,33 @@ class CustomJetpackRobot extends CustomCharacter
 
     function FinishJetpackSpawnSequence()
     {
-        /*if (IsValid(jetpackWearable))
+        if (IsValid(jetpackWearable))
         {
+            local playerScale = player.GetModelScale();
+            local model = playerScale < 1.3
+                ? "models/motherland/bot_rocketpack_gib.mdl"
+                : "models/motherland/bot_rocketpack_gib_giant.mdl";
+
             local gibSpawner = SpawnEntityFromTable("env_shooter",
             {
                 spawnflags = 5,
                 m_iGibs = 1,
                 m_flVelocity = 200,
-                scale = player.GetModelScale(),
+                scale = 1,
                 m_flVariance = 3,
                 m_flGibLife = 8,
                 shootsounds = 3,
                 simulation = 1,
                 skin = 1,
                 nogibshadows = true,
-                origin = player.GetCenter(),
-                angles = "-80 -80 -80",
+                origin = player.GetAttachmentOrigin(player.LookupAttachment("flag")),
+                //angles = "-80 -80 -80",
                 gibangles = player.GetAbsAngles(),
-                shootmodel = "models/motherland/bot_rocketpack.mdl"
+                shootmodel = model
             });
-            EntFireByHandle(gibSpawner, "Shoot", "", -1, null, null);
+            gibSpawner.AcceptInput("Shoot", "", null, null);
             EntFireByHandle(gibSpawner, "Kill", "", 0.2, null, null);
-        }*/
+        }
 
         player.RemoveCustomAttribute("no_attack");
         player.RemoveCond(TF_COND_INVULNERABLE_HIDE_UNLESS_DAMAGED);

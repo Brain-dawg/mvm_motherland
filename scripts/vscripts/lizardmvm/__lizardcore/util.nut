@@ -259,6 +259,9 @@
 
 ::TableToString <- function(table)
 {
+    if (!table)
+        return "<null-table>";
+
     local string = table + " {";
     foreach(k, v in table)
         string += "\n" + k + " -> " + v;
@@ -299,42 +302,6 @@
         }
     }
     return minKey;
-}
-
-::DebugDrawSphere <- function( vCenter, flRadius, nTheta, nPhi, r, g, b, z, time )
-{
-	++nTheta;
-
-	local pVerts = array( nPhi * nTheta );
-
-	local i, j, c = 0;
-	for ( i = 0; i < nPhi; ++i )
-	{
-		for ( j = 0; j < nTheta; ++j )
-		{
-			local u = j / ( nTheta - 1 ).tofloat();
-			local v = i / ( nPhi - 1 ).tofloat();
-			local theta = 6.283185307 * u;
-			local phi = PI * v;
-			local sp = flRadius * sin(phi);
-
-			pVerts[c++] = Vector(
-				vCenter.x + ( sp * cos(theta) ),
-				vCenter.y + ( sp * sin(theta) ),
-				vCenter.z + ( flRadius * cos(phi) ) );
-		}
-	}
-
-	for ( i = 0; i < nPhi - 1; ++i )
-	{
-		for ( j = 0; j < nTheta - 1; ++j )
-		{
-			local idx = nTheta * i + j;
-
-            DebugDrawLine(pVerts[idx], pVerts[idx + nTheta], r, g, b, z, time);
-            DebugDrawLine(pVerts[idx], pVerts[idx+1], r, g, b, z, time);
-		}
-	}
 }
 
 ::GetClassname <- function(entity)

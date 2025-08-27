@@ -246,6 +246,17 @@ const CHAN_VOICE_BASE = 8;
 const CHAN_USER_BASE = 136;
 const CHAN_VOICE_LIZARD = 141;
 
+const TF_AMMO_DUMMY = 0;
+const TF_AMMO_PRIMARY = 1;
+const TF_AMMO_SECONDARY = 2;
+const TF_AMMO_METAL = 3;
+const TF_AMMO_GRENADES1 = 4;
+const TF_AMMO_GRENADES2 = 5;
+const TF_AMMO_GRENADES3 = 6;
+const TF_AMMO_COUNT = 7;
+
+const LOADOUT_POSITION_PRIMARY = 0;
+
 CONST.DMG_MELEE <- DMG_CLUB;
 CONST.DMG_TRAIN <- DMG_VEHICLE;
 CONST.DMG_SAWBLADE <- DMG_NERVEGAS;
@@ -254,7 +265,7 @@ CONST.DMG_USEDISTANCEMOD <- DMG_SLOWBURN;
 CONST.DMG_NOCLOSEDISTANCEMOD <- DMG_POISON;
 
 //While VScript integers use 64 bits on a 64-bit build of the game,
-// both the game's c++ code and other scripts define INT_MAX assuming the 32 bit limit.
+// both the game's c++ code and other vscript scripts define INT_MAX assuming the 32 bit limit.
 const INT_MAX = 2147483647;
 const FLT_MAX = 3.402823466e+38;
 

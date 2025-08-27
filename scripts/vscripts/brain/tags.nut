@@ -18,7 +18,9 @@ _MotherlandTags.Tags <- {
 
         local cooldowntime = 0.0
 
-        function SuicideCounterThink() {
+        BotScope <- bot.GetScriptScope()
+
+        function BotScope::BotThinkTable::SuicideCounterThink() {
 
             if ( cooldowntime > Time() ) return
 
@@ -26,10 +28,9 @@ _MotherlandTags.Tags <- {
 
             cooldowntime = Time() + interval
         }
-        bot.GetScriptScope().BotThinkTable.SuicideCounterThink <- SuicideCounterThink
 
         if ( duration )
-            Utils.ScriptEntFireSafe( bot, "delete BotThinkTable.SuicideCounterThink", duration )
+            _MotherlandUtils.ScriptEntFireSafe( bot, "delete BotThinkTable.SuicideCounterThink", duration )
     }
 
     function motherland_revertgatebot( bot, args ) {
@@ -131,13 +132,13 @@ _MotherlandTags.Tags <- {
 
             maxrepeats++
 
-            Utils.ScriptEntFireSafe( bot, format( "PressButton( self, %d, %d )", button, duration ), delay )
+            _MotherlandUtils.ScriptEntFireSafe( bot, format( "PressButton( self, %d, %d )", button, duration ), delay )
             cooldowntime = Time() + cooldown
         }
         bot.GetScriptScope().BotThinkTable.FireWeaponThink <- FireWeaponThink
 
         if ( duration )
-            Utils.ScriptEntFireSafe( bot, "delete BotThinkTable.FireWeaponThink", duration )
+            _MotherlandUtils.ScriptEntFireSafe( bot, "delete BotThinkTable.FireWeaponThink", duration )
     }
 
     function motherland_minisentry( bot, args ) {
@@ -156,11 +157,11 @@ _MotherlandTags.Tags <- {
 
                 if ( !nearest_hint ) return
 
-                sentry.ValidateScriptScope()
+               SentryScope <- _MotherlandUtils.GetEntScope( sentry )
 
-                function CheckBuiltThink() {
+                function SentryScope::CheckBuiltThink() {
 
-                    if ( GetPropBool( self, "m_bBuilding" ) ) return -1
+                    if ( GetPropBool( self, "m_bBuilding" ) || !self.IsValid() ) return -1
 
                     // create a minisentry
                     local minisentry = SpawnEntityFromTable( "obj_sentrygun", {
@@ -179,9 +180,6 @@ _MotherlandTags.Tags <- {
                     nearest_hint.SetOwner( minisentry )
                     self.Kill()
                 }
-
-                sentry.GetScriptScope().CheckBuiltThink <- CheckBuiltThink
-
                 AddThinkToEnt( sentry, "CheckBuiltThink" )
             }
         }, EVENT_WRAPPER_TAGS )
@@ -225,16 +223,15 @@ _MotherlandTags.Tags <- {
 
                 if ( obj != OBJ_DISPENSER ) {
 
-                    local building_scope = _MotherlandUtils.GetEntScope( building )
+                    BuildingScope <- _MotherlandUtils.GetEntScope( building )
 
-                    function CheckBuiltThink() {
+                    function BuildingScope::CheckBuiltThink() {
 
-                        if ( GetPropBool( building, "m_bBuilding" ) ) return
+                        if ( GetPropBool( building, "m_bBuilding" ) || !building.IsValid() ) return
 
                         EntFireByHandle( building, "Disable", "", -1, null, null )
-                        delete building_scope.CheckBuiltThink
+                        delete this.CheckBuiltThink
                     }
-                    building_scope.CheckBuiltThink <- CheckBuiltThink
                     AddThinkToEnt( building, "CheckBuiltThink" )
                 }
 
@@ -324,6 +321,33 @@ _MotherlandTags.Tags <- {
         scope.BotThinkTable.MeleeHeavyThink <- MeleeHeavyThink
     }
 
+    function motherland_holdfire( bot, args ) {
+
+			local scope = bot.GetScriptScope()
+			scope.holdingfire <- false
+			scope.lastfiretime <- 0.0
+
+			function HoldFireThink() {
+
+				if ( !bot.HasBotAttribute( HOLD_FIRE_UNTIL_FULL_RELOAD ) ) return
+
+				local activegun = bot.GetActiveWeapon()
+				if ( activegun == null ) return
+				local clip = activegun.Clip1()
+				if ( clip == 0 ) {
+
+					bot.AddBotAttribute( SUPPRESS_FIRE )
+					scope.holdingfire = true
+				}
+				else if ( clip == activegun.GetMaxClip1() && scope.holdingfire ) {
+
+					bot.RemoveBotAttribute( SUPPRESS_FIRE )
+					scope.holdingfire = false
+				}
+			}
+			bot.GetScriptScope().BotThinkTable.HoldFireThink <- HoldFireThink
+    }
+
     function motherland_setmission( bot, args ) {
 
         local mission 		 = "mission" in args        ? args.mission : args.type
@@ -368,76 +392,78 @@ _MotherlandTags.Tags <- {
         // this is only used sparingly on a handful of bots
         function BestWeaponThink() {
 
+            if ( !bot.IsAlive() ) return
+
             switch( bot.GetPlayerClass() ) {
 
-            case TF_CLASS_SCOUT:
+                case TF_CLASS_SCOUT:
 
-                if ( bot.GetActiveWeapon() != _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
-                    bot.Weapon_Switch( _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
+                    if ( bot.GetActiveWeapon() != _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
+                        bot.Weapon_Switch( _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
 
-                for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
+                    for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
 
-                    if ( p.GetTeam() == bot.GetTeam() ) continue
+                        if ( p.GetTeam() == bot.GetTeam() ) continue
 
-                    local primary = _MotherlandUtils.GetItemInSlot( bot, SLOT_PRIMARY )
+                        local primary = _MotherlandUtils.GetItemInSlot( bot, SLOT_PRIMARY )
 
-                    bot.Weapon_Switch( primary )
-                    primary.AddAttribute( "disable weapon switch", 1, 1 )
-                    _MotherlandUtils.ScriptEntFireSafe( primary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
-                }
-            break
+                        bot.Weapon_Switch( primary )
+                        primary.AddAttribute( "disable weapon switch", 1, 1 )
+                        _MotherlandUtils.ScriptEntFireSafe( primary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
+                    }
+                break
 
-            case TF_CLASS_SNIPER:
+                case TF_CLASS_SNIPER:
 
-                for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 750 ); ) {
+                    for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 750 ); ) {
 
-                    if ( 
-                        p.GetTeam() == bot.GetTeam()
-                        || bot.GetActiveWeapon().GetSlot() == SLOT_SECONDARY
-                        || !p.IsAlive()
-                        || fabs( p.GetCenter().Length() - bot.GetCenter().Length() ) < 250 // so melee snipers still work
-                    ) continue
+                        if ( 
+                            p.GetTeam() == bot.GetTeam()
+                            || bot.GetActiveWeapon().GetSlot() == SLOT_SECONDARY
+                            || !p.IsAlive()
+                            || fabs( p.GetCenter().Length() - bot.GetCenter().Length() ) < 250 // so melee snipers still work
+                        ) continue
 
-                    local secondary = _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY )
+                        local secondary = _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY )
 
-                    bot.Weapon_Switch( secondary )
-                    secondary.AddAttribute( "disable weapon switch", 1, 1 )
-                    _MotherlandUtils.ScriptEntFireSafe( secondary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
-                    bot.PressFireButton( 1.0 )
-                }
-            break
+                        bot.Weapon_Switch( secondary )
+                        secondary.AddAttribute( "disable weapon switch", 1, 1 )
+                        _MotherlandUtils.ScriptEntFireSafe( secondary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
+                        bot.PressFireButton( 1.0 )
+                    }
+                break
 
-            case TF_CLASS_SOLDIER:
+                case TF_CLASS_SOLDIER:
 
-                for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
+                    for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
 
-                    if ( p.GetTeam() == bot.GetTeam() || bot.GetActiveWeapon().Clip1() != 0 ) 
-                        continue
+                        if ( p.GetTeam() == bot.GetTeam() || bot.GetActiveWeapon().Clip1() != 0 ) 
+                            continue
 
-                    local secondary = _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY )
+                        local secondary = _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY )
 
-                    bot.Weapon_Switch( secondary )
-                    secondary.AddAttribute( "disable weapon switch", 1, 2 )
-                    _MotherlandUtils.ScriptEntFireSafe( secondary, "self.RemoveAttribute( `disable weapon switch` )", 2.0 )
-                }
-            break
+                        bot.Weapon_Switch( secondary )
+                        secondary.AddAttribute( "disable weapon switch", 1, 2 )
+                        _MotherlandUtils.ScriptEntFireSafe( secondary, "self.RemoveAttribute( `disable weapon switch` )", 2.0 )
+                    }
+                break
 
-            case TF_CLASS_PYRO:
+                case TF_CLASS_PYRO:
 
-                if ( bot.GetActiveWeapon() != _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
-                    bot.Weapon_Switch( _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
+                    if ( bot.GetActiveWeapon() != _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
+                        bot.Weapon_Switch( _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY ) )
 
-                for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
+                    for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
 
-                    if ( p.GetTeam() == bot.GetTeam() ) continue
+                        if ( p.GetTeam() == bot.GetTeam() ) continue
 
-                    local primary = _MotherlandUtils.GetItemInSlot( bot, SLOT_PRIMARY )
+                        local primary = _MotherlandUtils.GetItemInSlot( bot, SLOT_PRIMARY )
 
-                    bot.Weapon_Switch( primary )
-                    primary.AddAttribute( "disable weapon switch", 1, 1 )
-                    _MotherlandUtils.ScriptEntFireSafe( primary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
-                }
-            break
+                        bot.Weapon_Switch( primary )
+                        primary.AddAttribute( "disable weapon switch", 1, 1 )
+                        _MotherlandUtils.ScriptEntFireSafe( primary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
+                    }
+                break
             }
         }
 
@@ -511,13 +537,17 @@ function _MotherlandTags::EvaluateTags( bot ) {
     // bot has no tags
     if ( !bot_tags.len() ) return
 
-    foreach( i, tag in bot_tags ) {
+    local scope = _MotherlandUtils.GetEntScope( bot )
+
+    foreach( tag in bot_tags ) {
 
         local func = split( tag, "{" )[0]
         local args = ParseTagArguments( bot, tag )
 
-        if ( func in _MotherlandTags.Tags )
-            _MotherlandTags.Tags[func].call( bot.GetScriptScope() || (bot.ValidateScriptScope(), bot.GetScriptScope()), bot, args )
+        if ( func in _MotherlandTags.Tags ) {
+
+            _MotherlandTags.Tags[func].call( scope, bot, args )
+        }
     }
 }
 
@@ -546,13 +576,7 @@ _EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
 
     local bot = player
 
-    local scope = bot.GetScriptScope()
-
-    if ( !scope ) {
-
-        bot.ValidateScriptScope()
-        scope = bot.GetScriptScope()
-    }
+    local scope = _MotherlandUtils.GetEntScope( bot )
 
     if ( !( "BotThinkTable" in scope ) )
         scope.BotThinkTable <- {}

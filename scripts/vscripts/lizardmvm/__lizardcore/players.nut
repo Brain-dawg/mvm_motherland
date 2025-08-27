@@ -74,6 +74,9 @@ OnGameEvent("player_death", 1000, function(player, params)
 
 OnGameEvent("player_disconnect", 1000, function(player, params)
 {
+    if (!player || !("GetTeam" in player))
+        return;
+
     local index = client_cache.find(player);
     if (index != null) client_cache.remove(index);
 
@@ -265,7 +268,7 @@ OnGameEvent("player_disconnect", 1000, function(player, params)
 }
 ::CTFBot.CollectWeapons <- CTFPlayer.CollectWeapons;
 
-::CTFPlayer.CollectWeaponsAndAttachments <- function()
+::CTFPlayer.CollectWeaponsAndExtras <- function()
 {
     local result = [];
     local extraVM;
@@ -285,7 +288,7 @@ OnGameEvent("player_disconnect", 1000, function(player, params)
 	}
     return result;
 }
-::CTFBot.CollectWeaponsAndAttachments <- CTFPlayer.CollectWeaponsAndAttachments;
+::CTFBot.CollectWeaponsAndExtras <- CTFPlayer.CollectWeaponsAndExtras;
 
 ::CTFPlayer.Heal <- function(healing, dispalyOnHud = true)
 {

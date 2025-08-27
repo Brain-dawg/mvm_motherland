@@ -3,9 +3,11 @@ PrecacheSound("misc/null.wav");
 ::ProvideCustomWeapon <- function(player, customWeaponClass)
 {
     local weaponEnt = CreateByClassname(customWeaponClass.baseclass);
+    weaponEnt.Teleport(true, player.GetCenter(), true, player.GetAbsAngles(), false, Vector());
     SetPropInt(weaponEnt, "m_AttributeManager.m_Item.m_iItemDefinitionIndex", customWeaponClass.baseid);
     SetPropBool(weaponEnt, "m_AttributeManager.m_Item.m_bInitialized", true);
     SetPropBool(weaponEnt, "m_bValidatedAttachedEntity", true);
+	weaponEnt.SetTeam(player.GetTeam());
     weaponEnt.DispatchSpawn();
     player.Weapon_Equip(weaponEnt);
 
@@ -137,7 +139,8 @@ PrecacheSound("misc/null.wav");
                 if (attribute)
                 {
                     local maxAmmoBuff = maxAmmo / TF_CLASS_AMMO[player.GetPlayerClass()][ammoType].tofloat();
-                    weapon.AddAttribute(attribute, maxAmmoBuff, -1);
+                    local existingAmmoBuff = weapon.GetAttribute(attribute, 1.0);
+                    weapon.AddAttribute(attribute, maxAmmoBuff * existingAmmoBuff, -1);
                 }
             }
         }

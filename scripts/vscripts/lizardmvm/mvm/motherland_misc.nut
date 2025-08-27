@@ -7,7 +7,7 @@ CreateByClassname("point_populator_interface");
 
 EntFire("func_door", "AddOutput", "OnFullyOpen tf_point_nav_interface:RecomputeBlockers::0:-1");
 EntFire("func_door", "AddOutput", "OnFullyClosed tf_point_nav_interface:RecomputeBlockers::0:-1");
-//EntFire("block_default_main_path", "UnBlockNav");
+EntFire("block_default_main_path", "UnBlockNav");
 EntFire("tf_point_nav_interface", "RecomputeBlockers");
 
 ::activeNavBlockers <- {};
@@ -35,9 +35,9 @@ tf_point_nav_interface.ValidateScriptScope();
 tf_point_nav_interface.GetScriptScope().InputRecomputeBlockers <- RestoreActiveBlockers;
 tf_point_nav_interface.GetScriptScope().Inputrecomputeblockers <- RestoreActiveBlockers;
 
+
 //===============================================================
-// A [normal] tank that stops when reaching the shortcut gate
-// that goes straight to the Hatch from Robot Base
+// Handling the stock tank approaching the shortcut gate
 //===============================================================
 
 const TANK_SHORTCUT_DOOR_NAME = "tank_shortcut_door";
@@ -62,6 +62,23 @@ function TankReachedShortcutGate(hTank)
         0, -1);
 }
 
+
+//===============================================================
+// Handling the stock tank approaching the train gate
+//===============================================================
+
+function CheckIfWeShouldCloseTrainGate()
+{
+    if (!FindByClassname(null, "tank_boss") || InSetup())
+    {
+        if (currentGateIndex > 0)
+            EntFire("close_traingate_relay", "Trigger");
+
+        return TIMER_DELETE; //Map I/O runs with in a timer sometimes
+    }
+}
+
+
 //===============================================================
 // Peaceful train send-off logic
 //===============================================================
@@ -76,14 +93,13 @@ function DisablePeacefulTrain()
 function RunSetupTrain()
 {
     RunWithDelay(RandomInt(40, 55), RunSetupTrain);
-    //if (!FindByClassname(null, "tank_boss"))
     if (!InSetup() || bPeacefulTrainDisabled)
         return;
     DoEntFire("peaceful_train" + RandomInt(1, 2), "StartForward", "", 0, null, null);
     DoEntFire("train_warning", "Trigger", "", 0, null, null);
     DoEntFire("train_warning_stop", "Trigger", "", 20, null, null);
 }
-RunWithDelay(RandomInt(10, 15), RunSetupTrain); //todo find better place
+RunWithDelay(RandomInt(10, 15), RunSetupTrain);
 DoEntFire("train_warning_stop", "Trigger", "", 0.1, null, null);
 
 
