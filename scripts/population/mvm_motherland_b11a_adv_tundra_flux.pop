@@ -175,7 +175,6 @@ WaveSchedule
 			Param "
 			SetRobotSpawnAtGateA()
 			DisableSecondBomb()
-		//	EntFire("gate1_spawn_door","Open")
 			"
 		}
 		WaveSpawn
