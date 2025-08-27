@@ -12,8 +12,15 @@ WaveSchedule {
 			SpawnCount	1
 			WaitBeforeStarting	0
 			Where spawnbot_base_main
+			Where spawnbot_base_closet
+			Where spawnbot_base_battlements
 			Where spawnbot_gate1_main
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate1_flank
 			Where spawnbot_gate2_main
+			Where spawnbot_gate2_upper
+			Where spawnbot_gate2_flank
+			RandomSpawn 1
 
 			TFBot { Template T_TFBot_Motherland_Train }
 		}
