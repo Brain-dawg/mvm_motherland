@@ -369,6 +369,7 @@ WaveSchedule {
 			MaxActive 1
 			SpawnCount 1
 			WaitBeforeStarting 7
+			RandomSpawn 1
 
 			// no crit particles to save fps
 			// dummy AlwaysCrit bot for the crit icon
@@ -397,9 +398,9 @@ WaveSchedule {
 			TotalCount 69 // nice
 			MaxActive 9
 			SpawnCount 3
-			RandomSpawn 1
 			TotalCurrency 150
 			WaitBeforeStarting 8
+			RandomSpawn 1
 
 			TFBot {
 
@@ -428,8 +429,8 @@ WaveSchedule {
 			MaxActive 5
 			SpawnCount 5
 			WaitBetweenSpawns 1
-			RandomSpawn 1
 			TotalCurrency 50
+			RandomSpawn 1
 
 			TFBot {
 
@@ -1206,6 +1207,7 @@ WaveSchedule {
 			WaitBeforeStarting 2
 			TotalCurrency 100
 			WaitForAllSpawned "wave3traintank"
+			RandomSpawn 1
 
 			TFBot { Template T_TFBot_Giant_Demo_RapidFire Tag bot_giant }
 		}
@@ -1250,7 +1252,7 @@ WaveSchedule {
 			WaitBetweenSpawns 1
 			Support Limited
 			WaitForAllDead "wave3train1"
-
+			RandomSpawn 1
 			TFBot {
 				Template T_TFBot_Medic_BigHeal
 				CharacterAttributes { "mod weapon blocks healing" 1 }
@@ -1466,6 +1468,7 @@ WaveSchedule {
 			Template T_WaveSpawn_Motherland_Train
 			Name "wave5traintank"
 			TotalCurrency 400
+			RandomSpawn 1
 
 			TFBot { Template T_TFBot_Motherland_Train Health 32000 }
 
@@ -1951,6 +1954,7 @@ WaveSchedule {
 			Name "wave6traintank"
 			WaitForAllDead "wave6b1"
 			WaitBeforeStarting 6
+			RandomSpawn 1
 			Template T_WaveSpawn_Motherland_Train
 			FirstSpawnOutput {
 

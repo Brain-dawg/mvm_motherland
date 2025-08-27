@@ -408,6 +408,7 @@ WaveSchedule
             WaitBetweenSpawns 3
             Support Limited
             RandomSpawn 1
+            TotalCurrency 100
 
             Squad {
 
