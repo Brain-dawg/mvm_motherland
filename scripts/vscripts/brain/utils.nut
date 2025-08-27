@@ -171,7 +171,7 @@ function _MotherlandUtils::WipeTanks() {
     _MotherlandUtils.GameStrings[ "WipeTanks" ] <- null
 }
 
-function _MotherlandUtils::GiveWearableItem( player, item_id, attrs = {}, model = null ) {
+function _MotherlandUtils::GiveWearableItem( player, item_id, attrs = {}, model = null, scale = null ) {
 
 	local dummy = CreateByClassname( "tf_weapon_parachute" )
 	SetPropInt( dummy, STRING_NETPROP_ITEMDEF, 1101 ) // base jumper
@@ -202,6 +202,9 @@ function _MotherlandUtils::GiveWearableItem( player, item_id, attrs = {}, model 
 	player.AddEFlags( EFL_NO_PHYSCANNON_INTERACTION )
 	SendGlobalGameEvent( "post_inventory_application",  { userid = userid_cache[ player ] } )
 	player.RemoveEFlags( EFL_NO_PHYSCANNON_INTERACTION )
+
+    if ( scale != null )
+        wearable.SetModelScale( scale, 0.0 )
 
 	local scope = player.GetScriptScope()
 

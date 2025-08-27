@@ -40,6 +40,7 @@ WaveSchedule {
 		T_TFBot_Engineer_Gate_Battle {
 
 			Class Engineer
+			ClassIcon engineer_frontier_justice_nys
 			Tag motherland_revertgatebot
 
 			EventChangeAttributes {
@@ -49,10 +50,9 @@ WaveSchedule {
 					Skill Expert
 					Attributes AlwaysCrit
 					Attributes HoldFireUntilFullReload
-					Tag "motherland_holdfire"
 					Attributes Aggressive
-					Attributes IgnoreFlag
 					Tag nav_flank
+					Tag motherland_holdfire
 					Tag motherland_revertgatebot
 					Item "The Endothermic Exowear"
 					Item "The Frontier Justice"
@@ -103,10 +103,10 @@ WaveSchedule {
 		TFBot {
 
 			Template T_TFBot_SentryBuster
+			Skill Easy // these 3 settings make busters look/move around less
 			Attributes IgnoreEnemies
 			Attributes DisableDodge
 			Item "EOTL_demopants"
-			Skill Easy
 		}
 	}
 
@@ -862,7 +862,7 @@ WaveSchedule {
 				Template T_TFBot_Giant_Scout_Fast
 				Skill Expert
 				Item "EOTL_thermal_sleeves"
-				Item "Transparent Trousers"
+				// Item "Transparent Trousers"
 				Item "Sun-on-a-Stick"
 				ClassIcon scout_sunstick_swordstone
 				Tag bot_giant
@@ -1724,8 +1724,8 @@ WaveSchedule {
 			DoneOutput {
 
 				Target logic_script_lizardmvm
-				Action RunScriptCode
-				Param "SetRobotSpawnAtGateA(); RunWithDelay( 2, SetRobotSpawnAtGateB )"
+				Action CallScriptFunction
+				Param SetRobotSpawnAtGateB
 				Delay 2
 			}
 
@@ -1781,6 +1781,15 @@ WaveSchedule {
 			WaitBeforeStarting 1
 			WaitForAllSpawned "wave6traintank"
 			RandomSpawn 1
+			Support Limited
+
+			FirstSpawnOutput {
+
+				Target __motherland_wavebar
+				Action RunScriptCode
+				Param "RemoveWaveIcon( `pyro`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )"
+				Param "RemoveWaveIcon( `engineer_minisentry_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )"
+			}
 
 			Squad {
 
@@ -1793,12 +1802,13 @@ WaveSchedule {
 					Skill Expert
 					Attributes Aggressive
 					Tag motherland_revertgatebot
+					Tag "motherland_limitedsupport{ icon = `pyro`, count = 32, flags = 5 }"
 					Item "Firebrand"
 				}
 
-				TFBot { Template T_TFBot_Engineer_Gate_Battle }
-				TFBot { Template T_TFBot_Engineer_Gate_Battle }
-				TFBot { Template T_TFBot_Engineer_Gate_Battle }
+				TFBot { Template T_TFBot_Engineer_Gate_Battle Tag "motherland_limitedsupport{ icon = `engineer_frontier_justice_nys`, count = 32, flags = 5 }" }
+				TFBot { Template T_TFBot_Engineer_Gate_Battle Tag "motherland_limitedsupport{ icon = `engineer_frontier_justice_nys`, count = 32, flags = 5 }" }
+				TFBot { Template T_TFBot_Engineer_Gate_Battle Tag "motherland_limitedsupport{ icon = `engineer_frontier_justice_nys`, count = 32, flags = 5 }" }
 			}
 		}
 	}

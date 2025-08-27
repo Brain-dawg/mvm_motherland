@@ -486,8 +486,9 @@ _MotherlandTags.Tags <- {
         local item_id = "item_id" in args ? args.item_id : -1
         local model = "model" in args ? args.model : null
         local attrs = "attrs" in args ? args.attrs : {}
+        local scale = "scale" in args ? args.scale : 1.0
 
-        _MotherlandUtils.GiveWearableItem( bot, item_id, attrs, model )
+        _MotherlandUtils.GiveWearableItem( bot, item_id, attrs, model, scale )
     }
 }
 
