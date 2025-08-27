@@ -117,6 +117,22 @@ WaveSchedule {
 			Item "Hazard Handler"
 			Item "Delldozer"
 		}
+		
+		T_TFBot_Heavyweapons_Deflector {
+
+			Class Heavyweapons
+			Name "Deflector Heavy"
+			ClassIcon heavy_deflector
+			Skill Hard
+			Item "The U-clank-a"
+			Item "Deflector"
+			MaxVisionRange 1200
+			ItemAttributes 
+			{
+				ItemName "Deflector"
+				"attack projectiles" 1
+			}
+		}
 
 		T_TFBot_Medic_Kritz {
 
@@ -346,6 +362,31 @@ WaveSchedule {
 
 				ItemName "Jarate"
 				"effect bar recharge rate increased" 0.4
+			}
+		}
+
+
+		// GIANTS
+		
+		T_TFBot_Giant_Medic_Kritz {
+
+			Class Medic
+			Name "Kritzkrieg Medic"
+			ClassIcon medic_kritz_giant
+			Item "The Kritzkrieg"
+			Attributes SpawnWithFullCharge
+			Attributes IgnoreEnemies
+			WeaponRestrictions SecondaryOnly
+			Attributes MiniBoss
+			Health 4500
+
+			ItemAttributes {
+
+				ItemName "The Kritzkrieg"
+				"ubercharge rate bonus" 999
+				"uber duration bonus" 999
+				"bot medic uber health threshold" 999
+				"heal rate bonus" 9999
 			}
 		}
 	}
