@@ -138,7 +138,7 @@ WaveSchedule {
 
 			Class Medic
 			Name "Kritzkrieg Medic"
-			ClassIcon medic_kritz
+			ClassIcon medic_kritz_lite
 			Item "The Kritzkrieg"
 			Attributes SpawnWithFullCharge
 			Attributes IgnoreEnemies
@@ -372,7 +372,7 @@ WaveSchedule {
 
 			Class Medic
 			Name "Kritzkrieg Medic"
-			ClassIcon medic_kritz_giant
+			ClassIcon medic_kritz_lite_giant
 			Item "The Kritzkrieg"
 			Attributes SpawnWithFullCharge
 			Attributes IgnoreEnemies
