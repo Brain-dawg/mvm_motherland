@@ -91,14 +91,15 @@ _MotherlandTags.Tags <- {
         local flags = "flags" in args ? args.flags : MVM_CLASS_FLAG_SUPPORT|MVM_CLASS_FLAG_SUPPORT_LIMITED
 
         if ( icon && !_MotherlandWavebar.GetWaveIcon( icon, flags ) )
-            _MotherlandWavebar.SetWaveIcon( icon, flags, count, false )
+            _MotherlandWavebar.SetWaveIcon( icon, flags, count, (flags & MVM_CLASS_FLAG_NORMAL) )
 
         _EventWrapper( "player_death", format( "Tags_%d_LimitedSupport", bot.entindex() ), function( params ) {
-            printl("\n\nplayer death\n\n")
 
             local _bot = GetPlayerFromUserID( params.userid )
 
             if ( _bot != bot ) return
+
+            printl( GetClientConvarValue("name", bot.entindex()) + " : " + flags + " : " + icon )
 
             _MotherlandWavebar.IncrementWaveIcon( icon, flags, -1 )
             
@@ -191,6 +192,19 @@ _MotherlandTags.Tags <- {
             }
         }, EVENT_WRAPPER_TAGS )
     }
+
+    function motherland_stripslot( bot, args ) {
+
+        local slot = "slot" in args ? args.slot.tointeger() : args.type.tointeger()
+
+        if ( slot == -1 ) 
+            slot = bot.GetActiveWeapon().GetSlot()
+
+        for ( local child = bot.FirstMoveChild(); (child && child instanceof CBaseCombatWeapon); child = child.NextMovePeer() )
+            if ( child.GetSlot() == slot )
+                EntFireByHandle( child, "Kill", "", -1, null, null )
+
+	}
 
     // TODO: handle hauling/moving to new hints better for sentry override
     // Engi-bots will try to haul their sentry to the next hint and this confuses them a lot

@@ -175,7 +175,7 @@ const CHAN_VOICE2     =  7
 const CHAN_VOICE_BASE =  8
 const CHAN_USER_BASE  =  136
 
-// DMG type bits, less confusing than shit like DMG_AIRBOAT or DMG_SLOWBURN
+// DMG type bits, less confusing than DMG_AIRBOAT or DMG_SLOWBURN
 const DMG_USE_HITLOCATIONS   = 33554432  // DMG_AIRBOAT
 const DMG_HALF_FALLOFF       = 262144    // DMG_RADIATION
 const DMG_CRITICAL           = 1048576   // DMG_ACID

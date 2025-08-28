@@ -26,26 +26,32 @@ WaveSchedule
         RunForThisManyWaves 5
         DesiredCount        1
 
-        TFBot { Template T_TFBot_SentryBuster }
+        TFBot {
+
+            Template T_TFBot_SentryBuster
+            Skill Easy
+            Attributes IgnoreEnemies
+            Attributes DisableDodge
+        }
     }
 
-    Mission {
+    // Mission {
 
-        Objective Spy
+    //     Objective Spy
 
-        Where spawnbot_base_main
-        Where spawnbot_base_main_c
-        Where spawnbot_gate1_main
-        Where spawnbot_gate1_main_c
-        Where spawnbot_gate2_main
-        Where spawnbot_gate2_main_c
-        BeginAtWave 4
-        RunForThisManyWaves 1
-        DesiredCount 1
-        CooldownTime 30
+    //     Where spawnbot_base_main
+    //     Where spawnbot_base_main_c
+    //     Where spawnbot_gate1_main
+    //     Where spawnbot_gate1_main_c
+    //     Where spawnbot_gate2_main
+    //     Where spawnbot_gate2_main_c
+    //     BeginAtWave 4
+    //     RunForThisManyWaves 1
+    //     DesiredCount 1
+    //     CooldownTime 30
 
-        TFBot { Template T_TFBot_Spy }
-    }
+    //     TFBot { Template T_TFBot_Spy }
+    // }
 
     Mission {
 
@@ -520,8 +526,8 @@ WaveSchedule
                 ShouldPreserveSquad 1
 
                 TFBot { Template T_TFBot_Giant_Soldier_Spammer_Reload Skill Normal Tag jetpack_spawn Tag nav_main }
-                TFBot { Template T_TFBot_Pyro Tag jetpack_spawn Tag nav_main }
-                TFBot { Template T_TFBot_Pyro Tag jetpack_spawn Tag nav_main }
+                TFBot { Template T_TFBot_Pyro Skill Easy Tag jetpack_spawn Tag nav_main }
+                TFBot { Template T_TFBot_Pyro Skill Easy Tag jetpack_spawn Tag nav_main }
             }
         }
 
@@ -550,8 +556,8 @@ WaveSchedule
                 ShouldPreserveSquad 1
 
                 TFBot { Template T_TFBot_Giant_Heavyweapons_Deflector Skill Easy Tag nav_main Tag bot_giant Tag jetpack_spawn }
-                TFBot { Template T_TFBot_Pyro Tag nav_main Tag jetpack_spawn }
-                TFBot { Template T_TFBot_Pyro Tag nav_main Tag jetpack_spawn }
+                TFBot { Template T_TFBot_Pyro Skill Easy Tag nav_main Tag jetpack_spawn }
+                TFBot { Template T_TFBot_Pyro Skill Easy Tag nav_main Tag jetpack_spawn }
             }
         }
 
@@ -567,9 +573,9 @@ WaveSchedule
             Where spawnbot_gate2_jetpack1
             Where spawnbot_gate2_jetpack2
             Where spawnbot_gate2_jetpack3
-            TotalCount 2
-            MaxActive 2
-            SpawnCount 2
+            TotalCount 4
+            MaxActive 4
+            SpawnCount 4
             TotalCurrency 100
             WaitForAllDead "wave4c"
             WaitBeforeStarting 5
@@ -580,6 +586,8 @@ WaveSchedule
                 ShouldPreserveSquad 1
 
                 TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag jetpack_spawn Tag nav_main Tag bot_giant }
+                TFBot { Template T_TFBot_Medic_Kritz Tag jetpack_spawn Tag nav_main }
+                TFBot { Template T_TFBot_Medic_Kritz Tag jetpack_spawn Tag nav_main }
                 TFBot { Template T_TFBot_Medic_Kritz Tag jetpack_spawn Tag nav_main }
             }
         }
