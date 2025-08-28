@@ -1664,11 +1664,10 @@ WaveSchedule {
 				SetBSpawns( true )
 				DisablePeacefulTrain()
 
-				if ( !IsSoundPrecached( `ambient/alarms/combine_bank_alarm_loop4.wav` ) )
-					::PrecacheSoundOriginal( `ambient/alarms/combine_bank_alarm_loop4.wav` )
+				::PrecacheSoundOriginal( `ambient/alarms/combine_bank_alarm_loop4.wav` )
 
-				for (local i = 0; i < 3; i++)
-					SendGlobalGameEvent( `teamplay_broadcast_audio`, { sound = `ambient/alarms/train_horn_distant1.wav` additional_flags = 0x4 team = 255 })
+				// for (local i = 0; i < 3; i++)
+				SendGlobalGameEvent( `teamplay_broadcast_audio`, { sound = `ambient/alarms/train_horn_distant1.wav` additional_flags = 0x4 team = 255 })
 			"
 		}
 
