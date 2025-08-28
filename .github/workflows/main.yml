@@ -34,22 +34,6 @@ jobs:
 
     # "2244 pterodactyl@eu9.potato.tf:/"
     # Runs a set of commands using the runners shell
-      - name: Create workshop pack
-        env:
-            SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          set -e
-          find scripts materials -type f ! -name '*.xz' -print0 | while IFS= read -r -d '' file; do
-            xz -9 -k -f "$file"
-          done
-
-          # Rsync all .xz files to the remote storage
-          find scripts materials -type f -name '*.xz' -print0 | while IFS= read -r -d '' xzfile; do
-            # Remove leading ./ if present
-            relpath="${xzfile#./}"
-            remotepath="pterodactyl@storage.potato.tf:/mnt/archival/testing_uploads_current/${relpath}"
-            rsync -a --chmod=777 --mkpath -e "ssh -o StrictHostKeyChecking=no" "$xzfile" "$remotepath"
-          done
       - name: Sync with game servers
         env:
             SSH_AUTH_SOCK: /tmp/ssh_agent.sock
