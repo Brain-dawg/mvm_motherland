@@ -385,7 +385,7 @@ WaveSchedule
 			Where spawnbot_base_battlements
 			Where spawnbot_gate1_upper
 			Where spawnbot_gate2_upper
-			TotalCount 18
+			TotalCount 12
 			MaxActive 6
 			SpawnCount 3
 			WaitBeforeStarting 5
@@ -414,7 +414,7 @@ WaveSchedule
 			TFBot
 			{
 				Class Scout
-				Skill Normal
+				Skill Easy
 				Tag nav_flank2
 			}
 		}
@@ -426,7 +426,7 @@ WaveSchedule
 			Where spawnbot_gate2_main
 			TotalCount 51
 			MaxActive 10
-			SpawnCount 3
+			SpawnCount 2
 			WaitBeforeStarting 0
 			WaitBetweenSpawns 1
 			WaitForAllDead "wave02a"
@@ -491,7 +491,7 @@ WaveSchedule
 			TotalCount 12
 			MaxActive 12
 			SpawnCount 4
-			WaitBeforeStarting 4
+			WaitBeforeStarting 2
 			WaitBetweenSpawns 2
 			WaitForAllSpawned "wave02b"
 			TotalCurrency 100
@@ -559,17 +559,14 @@ WaveSchedule
 				TFBot
 				{
 					Template T_TFGateBot_Demoman_Hard
-					Tag nav_flank
 				}
 				TFBot
 				{
 					Template T_TFGateBot_Scout_Normal
-					Tag nav_flank
 				}
 				TFBot
 				{
 					Template T_TFGateBot_Scout_Normal
-					Tag nav_flank
 				}
 			}
 		}
@@ -778,7 +775,7 @@ WaveSchedule
 			TFBot
 			{
 				Template T_TFGateBot_Giant_Soldier_SlowBarrage
-				Tag nav_flank
+				Tag nav_main
 			}
 		}
 		WaveSpawn
@@ -904,7 +901,7 @@ WaveSchedule
 			MaxActive 9
 			SpawnCount 3
 			WaitBetweenSpawns 1
-			WaitBeforeStarting 2
+			WaitBeforeStarting 3
 			WaitForAllSpawned "wave04c"
 			TotalCurrency 300
 			
@@ -915,18 +912,32 @@ WaveSchedule
 				TFBot
 				{
 					Template T_TFBot_Heavyweapons_Shotgun
-					Tag traintank_spawn
+					Skill Easy
+				//	Tag traintank_spawn
 				}
 				TFBot
 				{
 					Template T_TFBot_Heavyweapons_Shotgun
-					Tag traintank_spawn
+					Skill Easy
+				//	Tag traintank_spawn
 				}
 				TFBot
 				{
 					Class Demoman
-					Skill Normal
-					Tag traintank_spawn
+					Skill Easy
+				//	Tag traintank_spawn
+				}
+				TFBot
+				{
+					Class Demoman
+					Skill Easy
+				//	Tag traintank_spawn
+				}
+				TFBot
+				{
+					Class Demoman
+					Skill Easy
+				//	Tag traintank_spawn
 				}
 			}
 		}
@@ -937,8 +948,8 @@ WaveSchedule
 			TotalCount 8
 			MaxActive 1
 			SpawnCount 1
-			WaitBeforeStarting 20
-			WaitBetweenSpawnsAfterDeath 20
+			WaitBeforeStarting 30
+			WaitBetweenSpawnsAfterDeath 30
 			WaitForAllSpawned "wave04c"
 			
 			Support 1 // limited does not work with WaitBetweenSpawnsAfterDeath
@@ -946,7 +957,8 @@ WaveSchedule
 			TFBot
 			{
 				Template T_TFBot_Giant_Heavyweapons
-				Tag traintank_spawn
+				Skill Normal
+			//	Tag traintank_spawn
 			}
 		}
 	}
