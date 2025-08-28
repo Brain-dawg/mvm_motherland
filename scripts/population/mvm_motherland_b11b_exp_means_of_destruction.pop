@@ -2027,9 +2027,9 @@ WaveSchedule {
 
 			Name "wave6d"
 			Where spawnbot_traintank
-			TotalCount 4
-			MaxActive 2
-			SpawnCount 2
+			TotalCount 2
+			MaxActive 1
+			SpawnCount 1
 			WaitForAllDead "wave6c"
 			WaitBeforeStarting 1
 			WaitBetweenSpawnsAfterDeath 2
@@ -2048,22 +2048,11 @@ WaveSchedule {
 				"
 			}
 
-			Squad {
-
-				TFBot {
-					Template T_TFBot_Giant_Heavyweapons_Deflector
-					ClassIcon heavy_deflector_giant
-					Tag motherland_altfire
-					Tag nav_flank
-				}
-
-				TFBot {
-
-					Template T_TFBot_Giant_Medic_Regen
-					Attributes IgnoreEnemies
-					WeaponRestrictions SecondaryOnly
-					Tag nav_flank
-				}
+			TFBot {
+				Template T_TFBot_Giant_Heavyweapons_Deflector
+				ClassIcon heavy_deflector_giant
+				Tag motherland_altfire
+				Tag nav_flank
 			}
 		}
 
