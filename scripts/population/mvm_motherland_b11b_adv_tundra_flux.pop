@@ -15,7 +15,7 @@ WaveSchedule
 		{
 			Name "MatryOS"
 			Class Heavy
-			ClassIcon teleporter
+			ClassIcon boss_spawner
 			Health 50000
 			Attributes MiniBoss
 			Scale 1.75	// 2 gets stuck too much
