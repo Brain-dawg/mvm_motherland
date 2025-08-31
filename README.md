@@ -1,7 +1,7 @@
 Latest up-to-date mission and script files for mvm_motherland
 
 ## Installation
-1. Click the < > Code button in the top right corner of this repo and click "Download ZIP"
+1. Click the `< > Code` button in the top right corner of this repo and click "Download ZIP"
 2. Open zip and extract the `scripts` folders to your tf/ directory
 3. Done.  Other files aren't necessary.
 
