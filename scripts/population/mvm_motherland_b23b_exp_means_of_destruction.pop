@@ -1445,7 +1445,7 @@ WaveSchedule {
 			Where spawnbot_gate2_upper
 			MaxActive 4
 			SpawnCount 1
-			WaitBetweenSpawns 6
+			WaitBetweenSpawns 10
 			Support 1
 			RandomSpawn 1
 			TFBot { Template T_TFBot_Medic_QuickUber }
@@ -1699,7 +1699,7 @@ WaveSchedule {
 
 			DoneOutput {
 
-				Target logic_script_lizardmvm
+				Target __motherland_utils
 				Action RunScriptCode
 				Param "
 
@@ -1711,18 +1711,17 @@ WaveSchedule {
 					]
 
 					EmitSoundEx({ sound_name = `vo/announcer_security_alert.mp3`, special_dsp = 57 })
-					_MotherlandUtils.ScriptEntFireSafe( self, `EmitSoundEx({sound_name = \`ambient/alarms/combine_bank_alarm_loop4.wav\` pitch = 80 channel = CHAN_STATIC })`, 1.0 )
-					_MotherlandUtils.ScriptEntFireSafe( self, `SetRobotSpawnAtGateB(); SetTrainStopNearHatch()`, 2.0 )
-					_MotherlandUtils.ScriptEntFireSafe( self, `EmitSoundEx({sound_name = \`ambient/alarms/combine_bank_alarm_loop4.wav\` flags = SND_STOP channel = CHAN_STATIC })`, 12.0 )
+					ScriptEntFireSafe( `logic_script_lizardmvm`, `EmitSoundEx({sound_name = \`ambient/alarms/combine_bank_alarm_loop4.wav\` pitch = 80 channel = CHAN_STATIC })`, 1.0 )
+					ScriptEntFireSafe( `logic_script_lizardmvm`, `SetRobotSpawnAtGateB(); SetTrainStopNearHatch()`, 2.0 )
+					ScriptEntFireSafe( `logic_script_lizardmvm`, `EmitSoundEx({sound_name = \`ambient/alarms/combine_bank_alarm_loop4.wav\` flags = SND_STOP channel = CHAN_STATIC })`, 10.0 )
 					EntFire( `base_bothint_sniper`, `Disable` )
 					EntFire( `gate1_bothint_sniper`, `Disable` )
-					for ( local hint, i = 0; hint = FindByName( hint, `gate2_bothint_sniper`); i++ ) {
 
+					for ( local hint, i = 0; hint = FindByName( hint, `gate2_bothint_sniper`); i++ )
 						if ( i in hintspots )
 							(hint.SetOrigin(hintspots[i]), hint.AcceptInput( `Enable`, null, null, null ))
 						else
 							hint.AcceptInput( `Disable`, null, null, null )
-					}
 				"
 				Delay 1
 			}

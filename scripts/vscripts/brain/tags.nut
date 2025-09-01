@@ -84,6 +84,11 @@ _MotherlandTags.Tags <- {
         SetPropBool( bot, "m_bGlowEnabled", true )
     }
 
+    function motherland_addcond( bot, args ) {
+
+        bot.AddCondEx( "cond" in args ? args.cond : args.type, "duration" in args ? args.duration.tofloat() : INT_MAX, bot )
+    }
+
     function motherland_limitedsupport( bot, args ) {
 
         local icon  = "icon" in args  ? args.icon : null
@@ -207,7 +212,7 @@ _MotherlandTags.Tags <- {
 	}
 
     // TODO: handle hauling/moving to new hints better for sentry override
-    // Engi-bots will try to haul their sentry to the next hint and this confuses them a lot
+    // Engi-bots will try to haul their dispenser to the next hint and this confuses them a lot
     function motherland_dispenseroverride( bot, args ) {
 
         local alwaysfire = bot.HasBotAttribute( ALWAYS_FIRE_WEAPON )
@@ -411,7 +416,14 @@ _MotherlandTags.Tags <- {
 
         // TODO: expensive findbyclassnamewithin calls, optimize this
         // this is only used sparingly on a handful of bots
-        function BestWeaponThink() {
+
+        BotScope <- bot.GetScriptScope()
+
+        printl(bot)
+
+        function BotScope::ThinkTable::BestWeaponThink() {
+
+            printl(bot)
 
             if ( !bot.IsAlive() ) return
 
@@ -431,6 +443,7 @@ _MotherlandTags.Tags <- {
                         bot.Weapon_Switch( primary )
                         primary.AddAttribute( "disable weapon switch", 1, 1 )
                         _MotherlandUtils.ScriptEntFireSafe( primary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
+                        break
                     }
                 break
 
@@ -451,6 +464,7 @@ _MotherlandTags.Tags <- {
                         secondary.AddAttribute( "disable weapon switch", 1, 1 )
                         _MotherlandUtils.ScriptEntFireSafe( secondary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
                         bot.PressFireButton( 1.0 )
+                        break
                     }
                 break
 
@@ -466,6 +480,7 @@ _MotherlandTags.Tags <- {
                         bot.Weapon_Switch( secondary )
                         secondary.AddAttribute( "disable weapon switch", 1, 2 )
                         _MotherlandUtils.ScriptEntFireSafe( secondary, "self.RemoveAttribute( `disable weapon switch` )", 2.0 )
+                        break
                     }
                 break
 
@@ -480,15 +495,16 @@ _MotherlandTags.Tags <- {
 
                         local primary = _MotherlandUtils.GetItemInSlot( bot, SLOT_PRIMARY )
 
+                        printl(bot.GetActiveWeapon())
+
                         bot.Weapon_Switch( primary )
-                        primary.AddAttribute( "disable weapon switch", 1, 1 )
-                        _MotherlandUtils.ScriptEntFireSafe( primary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
+                        // primary.AddAttribute( "disable weapon switch", 1, 1 )
+                        // _MotherlandUtils.ScriptEntFireSafe( primary, "self.RemoveAttribute( `disable weapon switch` )", 1.0 )
+                        break
                     }
                 break
             }
         }
-
-        bot.GetScriptScope().BotThinkTable.BestWeaponThink <- BestWeaponThink
     }
 
     function motherland_paintall( bot, args ) {
@@ -593,6 +609,8 @@ _EventWrapper( "player_team", "TagsPlayerTeam", function( params ) {
 _EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
 
     local player = GetPlayerFromUserID( params.userid )
+
+    printl(player)
 
     if ( !player.IsBotOfType( TF_BOT_TYPE ) ) {
         return

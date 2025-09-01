@@ -12,6 +12,42 @@ WaveSchedule
     CanBotsAttackWhileInSpawnRoom         No // Can the bots attack before they have dropped into the map?
     FixedRespawnWaveTime                  Yes // If this is set to 'No', then the RespawnWaveTime can vary slightly.
 
+    Templates {
+
+        // not sure why this isn't being pulled from robot_motherland.pop
+		T_TFBot_Giant_Heavyweapons_HOK_Fixed {
+
+			Class Heavyweapons
+			Name "Giant Heal-on-Kill Heavy"
+			ClassIcon heavy_deflector_healonkill
+			Skill Expert
+			Health 5000
+			WeaponRestrictions PrimaryOnly
+			MaxVisionRange 1200
+			Attributes MiniBoss
+			Attributes UseBossHealthBar
+			Tag bot_giant
+			Item "Deflector"
+			Item "The Tungsten Toque"
+			ItemAttributes
+			{
+				ItemName "Deflector"
+				"damage bonus"	1.2
+				"attack projectiles" 2
+				// "weapon spread bonus" 1
+				// "fire rate penalty" 4
+				"heal on kill" 5000
+			}
+			CharacterAttributes
+			{
+				"move speed bonus"	0.35
+				"damage force reduction" 0.3
+				"airblast vulnerability multiplier" 0.3
+				"override footstep sound set" 2
+			}
+		}
+    }
+
     // Wave 1-5 Sentry Busters
     Mission {
 
@@ -66,10 +102,10 @@ WaveSchedule
         Where spawnbot_gate2_flank
         Where spawnbot_gate2_battlements
         BeginAtWave 4
-        RunForThisManyWaves 1
+        RunForThisManyWaves 2
         DesiredCount 2
         CooldownTime 30
-        InitialCooldown 20
+        InitialCooldown 50
 
         TFBot { Template T_TFBot_Sniper }
     }
@@ -90,7 +126,7 @@ WaveSchedule
         }
 
         StartWaveOutput {
-            
+
             Target __motherland_utils
             Action RunScriptCode
             Param "EntFire( `gate2_door`, `Open` )"
@@ -127,13 +163,13 @@ WaveSchedule
             WaitBeforeStarting 0 // The amount of time to wait before spawning in these bots.
             WaitBetweenSpawnsAfterDeath 3
             TotalCurrency 500
-            TFBot { 
+            TFBot {
 
-                Template T_TFBot_Giant_Pyro_Flare_Spammer 
+                Template T_TFBot_Giant_Pyro_Flare_Spammer
                 ClassIcon pyro_detonator_lite
-                Skill Easy 
-                Tag nav_main 
-                Tag bot_giant 
+                Skill Easy
+                Tag nav_main
+                Tag bot_giant
             }
         }
     }
@@ -367,7 +403,7 @@ WaveSchedule
 
             TFBot { Template T_TFBot_Scout_Scattergun_SlowFire Tag nav_main }
         }
-        
+
         WaveSpawn {
 
             Name "wave3b"
@@ -392,7 +428,7 @@ WaveSchedule
                 TFBot { Template T_TFBot_Medic_Kritz Tag nav_main }
             }
         }
-        
+
 		WaveSpawn {
 
             Template T_WaveSpawn_Motherland_Train
@@ -439,7 +475,7 @@ WaveSchedule
                     Tag "motherland_limitedsupport{ icon = `scout_sunstick_swordstone` count = 9999 }"
                 }
             }
-                
+
         }
     }
 
@@ -483,7 +519,7 @@ WaveSchedule
             TotalCount 1
             MaxActive 1
             SpawnCount 1
-            TotalCurrency 100
+            TotalCurrency 200
             RandomSpawn 1
 
             // StartWaveOutput {
@@ -551,7 +587,7 @@ WaveSchedule
             TotalCurrency 200
             RandomSpawn 1
 
-            Squad { 
+            Squad {
 
                 ShouldPreserveSquad 1
 
@@ -576,7 +612,7 @@ WaveSchedule
             TotalCount 4
             MaxActive 4
             SpawnCount 4
-            TotalCurrency 100
+            TotalCurrency 400
             WaitForAllDead "wave4c"
             WaitBeforeStarting 5
             RandomSpawn 1
@@ -618,10 +654,111 @@ WaveSchedule
 				}
             }
         }
-        // Subwave description here
         WaveSpawn {
 
-            Name "wave5a1"
+            Name "wave5a"
+            Where spawnbot_base_main
+            Where spawnbot_gate1_main
+            Where spawnbot_gate2_main
+            Where spawnbot_base_main_c
+            Where spawnbot_gate1_main_c
+            Where spawnbot_gate2_main_c
+            TotalCount 4
+            MaxActive 1
+            SpawnCount 1
+            // WaitBeforeStarting 10
+            WaitBetweenSpawns 1
+            TotalCurrency 100
+            RandomSpawn 1
+
+            TFBot {
+
+                Class Pyro
+                Name "Giant Flare Pyro"
+                Health 3200
+
+                EventChangeAttributes {
+                    Default {
+
+                        Skill Expert
+                        Item "The Nostromo Napalmer"
+                        Item "Old Guadalajara"
+                        Tag bot_giant
+                        Attributes MiniBoss
+                        Attributes AlwaysCrit
+                        WeaponRestrictions PrimaryOnly
+
+                        ItemAttributes {
+
+                            ItemName "The Nostromo Napalmer"
+                            "airblast disabled" 1
+                            "lunchbox adds minicrits" 2
+                        }
+
+                        CharacterAttributes {
+
+                            "move speed bonus"	0.5
+                            "damage force reduction" 0.6
+                            "airblast vulnerability multiplier" 0.6
+                            "override footstep sound set" 6
+                        }
+                    }
+
+                    GateACapped {
+
+                        Skill Expert
+                        Item "The Flare Gun"
+                        Item "Old Guadalajara"
+                        Tag bot_giant
+                        Attributes MiniBoss
+                        Attributes AlwaysCrit
+                        WeaponRestrictions SecondaryOnly
+
+                        ItemAttributes {
+
+                            ItemName "The Flare Gun"
+                            "fire rate bonus" 0.3
+                        }
+
+                        CharacterAttributes {
+
+                            "move speed bonus"	0.5
+                            "damage force reduction" 0.6
+                            "airblast vulnerability multiplier" 0.6
+                            "override footstep sound set" 6
+                        }
+                    }
+
+                    RevertGateBotsBehavior {
+
+                        Skill Expert
+                        Item "The Flare Gun"
+                        Item "Old Guadalajara"
+                        Tag bot_giant
+                        Attributes MiniBoss
+                        Attributes AlwaysCrit
+                        WeaponRestrictions SecondaryOnly
+
+                        ItemAttributes {
+
+                            ItemName "The Flare Gun"
+                            "fire rate bonus" 0.3
+                        }
+
+                        CharacterAttributes {
+
+                            "move speed bonus"	0.5
+                            "damage force reduction" 0.6
+                            "airblast vulnerability multiplier" 0.6
+                            "override footstep sound set" 6
+                        }
+                    }
+                }
+            }
+        }
+        WaveSpawn {
+
+            Name "wave5a"
             Where spawnbot_base_main
             Where spawnbot_base_upper
             Where spawnbot_base_battlements
@@ -629,15 +766,73 @@ WaveSchedule
             Where spawnbot_gate1_upper
             Where spawnbot_gate2_main
             Where spawnbot_gate2_upper
-            TotalCount 24
-            MaxActive 2
-            SpawnCount 2
+            TotalCount 40
+            MaxActive 8
+            SpawnCount 4
             WaitBeforeStarting 1
-            WaitBetweenSpawns 2
+            WaitBetweenSpawns 1
             TotalCurrency 100
             RandomSpawn 1
 
-            TFBot { Template T_TFBot_Soldier_RocketShotgun }
+            TFBot { Template T_TFBot_Soldier_RocketShotgun Attributes AlwaysCrit }
+        }
+
+        WaveSpawn {
+
+            Name "wave5b"
+            Where spawnbot_base_jetpack1
+            Where spawnbot_base_jetpack2
+            Where spawnbot_gate1_jetpack1
+            Where spawnbot_gate1_jetpack2
+            Where spawnbot_gate2_jetpack1
+            Where spawnbot_gate2_jetpack2
+            TotalCount 4
+            MaxActive 4
+            SpawnCount 4
+            WaitBeforeStarting 5
+            TotalCurrency 100
+            WaitForAllDead "wave5a"
+            RandomSpawn 1
+
+            Squad {
+
+                TFBot { Template T_TFBot_Giant_Heavyweapons_HOK_Fixed Attributes AlwaysCrit Skill Normal }
+                TFBot { Template T_TFBot_Medic_Vacc_Bullet_Full ClassIcon medic_vac_trio_nys }
+                TFBot { Template T_TFBot_Medic_Vacc_Blast_Full  ClassIcon medic_vac_trio_nys }
+                TFBot { Template T_TFBot_Medic_Vacc_Fire_Full   ClassIcon medic_vac_trio_nys }
+
+            }
+        }
+
+        WaveSpawn {
+
+            Name "wave5traintank"
+            WaitForAllDead "wave5b"
+            Template T_WaveSpawn_Motherland_Train
+            TFBot { Template T_TFBot_Motherland_Train Health 30000 }
+        }
+
+        WaveSpawn {
+
+            Name "wave5traintank_support"
+            Where spawnbot_traintank
+            TotalCount 9999
+            MaxActive 6
+            SpawnCount 2
+            WaitBetweenSpawns 1
+            WaitBeforeStarting 1
+            WaitForAllSpawned "wave5traintank"
+            Support Limited
+            RandomSpawn 1
+
+            TFBot {
+
+                Template T_TFBot_Giant_Boxing_Heavy
+                Item "Gloves of Running Urgently MvM"
+                ClassIcon heavy_gru_giant
+                Tag nav_main
+                Tag bot_giant
+            }
         }
     }
 }

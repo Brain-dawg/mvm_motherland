@@ -11,8 +11,7 @@ WaveSchedule {
 			MaxActive	1
 			SpawnCount	1
 			WaitBeforeStarting	0
-			Where spawnbot_base_main
-			Where spawnbot_base_closet
+			Where spawnbot_base_upper
 			Where spawnbot_base_battlements
 			Where spawnbot_gate1_main
 			Where spawnbot_gate1_upper
@@ -37,6 +36,7 @@ WaveSchedule {
 			Attributes MiniBoss
 			MaxVisionRange 1
 			Tag bot_traintank_hackbot
+			Scale 0.001
 
 			CharacterAttributes {
 
@@ -44,6 +44,8 @@ WaveSchedule {
 				"no_jump" 1
 				"no_duck" 1
 				"cancel falling damage" 1
+				"damage force reduction" 0.001
+				"airblast vulnerability multiplier" 0.001
 			}
 		}
 
@@ -326,7 +328,7 @@ WaveSchedule {
 
 			Class Medic
 			Name "Vaccinator Medic"
-			ClassIcon medic_bullet
+			ClassIcon medic_fire
 			Skill Expert
 			Attributes IgnoreEnemies
 			Attributes SpawnWithFullCharge
@@ -367,12 +369,45 @@ WaveSchedule {
 
 
 		// GIANTS
+
+		T_TFBot_Giant_Heavyweapons_HOK_Fixed {
+
+			Class Heavyweapons
+			Name "Giant Heal-on-Kill Heavy"
+			ClassIcon heavy_deflector_healonkill
+			Skill Expert
+			Health 5000
+			WeaponRestrictions PrimaryOnly
+			MaxVisionRange 1200
+			Attributes MiniBoss
+			Attributes UseBossHealthBar
+			Tag bot_giant
+			Item "Deflector"
+			Item "The Tungsten Toque"
+			ItemAttributes
+			{
+				ItemName "Deflector"
+				"damage bonus"	1.2
+				"attack projectiles" 2
+				// "weapon spread bonus" 1
+				// "fire rate penalty" 4
+				"heal on kill" 5000
+			}
+			CharacterAttributes
+			{
+				"move speed bonus"	0.35
+				"damage force reduction" 0.3
+				"airblast vulnerability multiplier" 0.3
+				"override footstep sound set" 2
+			}
+		}
 		
 		T_TFBot_Giant_Medic_Kritz {
 
 			Class Medic
 			Name "Kritzkrieg Medic"
 			ClassIcon medic_kritz_lite_giant
+			Tag bot_giant
 			Item "The Kritzkrieg"
 			Attributes SpawnWithFullCharge
 			Attributes IgnoreEnemies
@@ -387,6 +422,11 @@ WaveSchedule {
 				"uber duration bonus" 999
 				"bot medic uber health threshold" 999
 				"heal rate bonus" 9999
+
+				"airblast vulnerability multiplier" 0.5
+				"airblast vertical vulnerability multiplier" 0.5
+				"damage force reduction" 0.5
+				"move speed penalty" 0.5
 			}
 		}
 	}

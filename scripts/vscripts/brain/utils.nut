@@ -212,9 +212,10 @@ function _MotherlandUtils::GiveWearableItem( player, item_id, attrs = {}, model 
 
 	local scope = player.GetScriptScope()
 
-    if (!("wearables_to_kill" in scope))
-        scope.wearables_to_kill <- []
-	scope.wearables_to_kill.append( wearable )
+    if ( "wearables_to_kill" in scope )
+        scope.wearables_to_kill.append( wearable )
+    else
+        scope.wearables_to_kill <- [ wearable ]
 
 	return wearable
 }
