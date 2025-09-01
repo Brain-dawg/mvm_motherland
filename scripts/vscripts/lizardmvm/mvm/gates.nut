@@ -31,8 +31,18 @@ function SetCSpawns(state)
 }
 ::SetBSpawns <- SetCSpawns.bindenv(this);
 
-::DisableSecondBomb <- function() { bEnableSecondBomb = false; }.bindenv(this);
-::EnableSecondBomb <- function() { bEnableSecondBomb = true; }.bindenv(this);
+::DisableSecondBomb <- function()
+{
+    bEnableSecondBomb = false;
+    EntFire("gate2_bomb2", "Disable");
+}.bindenv(this);
+
+::EnableSecondBomb <- function()
+{
+    if (currentGateIndex == 2)
+        EntFire("gate2_bomb2", "Enable");
+    bEnableSecondBomb = true;
+}.bindenv(this);
 
 ::SetRobotSpawnAtBase <- function() { SetRobotSpawnGate(0); }
 ::SetRobotSpawnAtGateA <- function() { SetRobotSpawnGate(1); }
@@ -168,8 +178,14 @@ function SetRobotSpawnGate(newSpawnGateIndex)
 
         if (InSetup())
         {
-            EntFire("gate1_blockers", "Enable");
-            EntFire("gate2_blockers", "Disable");
+            DisablePeacefulTrain();
+            RunWithDelay(5, DisablePeacefulTrain);
+
+            EntFire("gate1_blockers", "Enable", "", 0.1, null);
+            EntFire("gate2_blockers", "Disable", "", 0.1, null);
+
+            EntFire("gate1_blockers", "Enable", "", 5, null);
+            EntFire("gate2_blockers", "Disable", "", 5, null);
 
             EntFire("holograms_bomb_base_to_gate1", "Disable");
             EntFire("holograms_bomb_gate1_to_gate2", "Enable");
@@ -200,7 +216,6 @@ function SetRobotSpawnGate(newSpawnGateIndex)
             TryConvertFromGateBot(bot);
 
         EntFire("gate2_bomb1", "Enable");
-        TempPrint("bEnableSecondBomb = "+bEnableSecondBomb+" for "+this+" vs "+main_script)
         if (bEnableSecondBomb)
             EntFire("gate2_bomb2", "Enable");
         else
@@ -216,8 +231,14 @@ function SetRobotSpawnGate(newSpawnGateIndex)
 
         if (InSetup())
         {
-            EntFire("gate1_blockers", "Disable");
-            EntFire("gate2_blockers", "Enable");
+            DisablePeacefulTrain();
+            RunWithDelay(5, DisablePeacefulTrain);
+
+            EntFire("gate1_blockers", "Disable", "", 0.2, null);
+            EntFire("gate2_blockers", "Enable", "", 0.2, null);
+
+            EntFire("gate1_blockers", "Disable", "", 5, null);
+            EntFire("gate2_blockers", "Enable", "", 5, null);
 
             EntFire("gate1_door", "Close");
             EntFire("gate1_main_door", "Close");
@@ -351,6 +372,7 @@ gate2_alarm.GetScriptScope().OnTrigger <- OnGateAlarm.bindenv(this);
 // Radio capture logic
 //===============================================================
 
+PrecacheParticle("Motherland_cap_parent");
 PrecacheSound("vo/announcer_sd_rocket_warnings09.mp3");
 PrecacheSound("vo/announcer_sd_generic_success_fail05.mp3");
 

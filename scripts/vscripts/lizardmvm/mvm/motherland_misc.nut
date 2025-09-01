@@ -133,7 +133,7 @@ function PlayWaveStartMusic()
             music = "motherland.mvm_start_train_wave";
         //else if (waveNum >= waveMax)
         //    music = "motherland.mvm_boss";
-        else if (waveNum >= waveMax - 1)
+        else if (waveNum >= waveMax)
             music = "motherland.mvm_start_last_wave";
         else
             music = "motherland.mvm_start_mid_wave";

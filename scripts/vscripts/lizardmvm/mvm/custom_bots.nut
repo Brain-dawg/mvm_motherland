@@ -77,7 +77,6 @@ OnGameEvent("player_spawn_post", function(bot, params)
 
 ::JETPACK_MODEL_INDEX <- PrecacheModel("models/motherland/bot_rocketpack.mdl");
 PrecacheParticle("botpack_exhaust");
-PrecacheParticle("Motherland_cap_parent");
 PrecacheModel("models/motherland/bot_rocketpack_gib.mdl");
 
 OnGameEvent("player_spawn_post", function(bot, params)
