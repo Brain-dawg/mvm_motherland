@@ -774,7 +774,7 @@ WaveSchedule
             TotalCurrency 100
             RandomSpawn 1
 
-            TFBot { Template T_TFBot_Soldier_RocketShotgun Attributes AlwaysCrit }
+            TFBot { Template T_TFBot_Soldier_RocketShotgun }
         }
 
         WaveSpawn {
@@ -796,7 +796,7 @@ WaveSchedule
 
             Squad {
 
-                TFBot { Template T_TFBot_Giant_Heavyweapons_HOK_Fixed Attributes AlwaysCrit Skill Normal }
+                TFBot { Template T_TFBot_Giant_Heavyweapons_HOK_Fixed }
                 TFBot { Template T_TFBot_Medic_Vacc_Bullet_Full ClassIcon medic_vac_trio_nys }
                 TFBot { Template T_TFBot_Medic_Vacc_Blast_Full  ClassIcon medic_vac_trio_nys }
                 TFBot { Template T_TFBot_Medic_Vacc_Fire_Full   ClassIcon medic_vac_trio_nys }

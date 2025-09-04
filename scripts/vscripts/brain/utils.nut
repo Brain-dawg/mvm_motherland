@@ -1,5 +1,25 @@
 __CREATE_SCOPE( "__motherland_utils", "_MotherlandUtils", null, "_MotherlandUtilsThink" )
 
+local ENTFIRE_DEBUG = true
+
+// optional arguments
+if (!("__EntFireByHandle" in ROOT))
+	::__EntFireByHandle <- ::EntFireByHandle
+
+::EntFireByHandle <- function( ent, action, params = "", delay = 0.0, activator = null, caller = null ) {
+
+	if ( ENTFIRE_DEBUG && !ent.IsValid() ) {
+
+		// local stack = getstackinfos(2)
+
+		// Assert( false, format("null entity instance in %s (%s)", stack.func, stack.src ) )
+		return
+	}
+
+	return __EntFireByHandle( ent, action, params, delay, activator, caller )
+}
+
+// mitigate CUtlRBTree overflows
 if ( !("GameStrings" in _MotherlandUtils) )
     _MotherlandUtils.GameStrings <- {}
 
@@ -9,7 +29,6 @@ function _MotherlandUtils::_OnDestroy() {
         PurgeGameString( str )
 }
 
-// mitigate CUtlRBTree overflows
 function _MotherlandUtils::GameStringGenerator() {
 
 	local gamestrings_snapshot = clone GameStrings
