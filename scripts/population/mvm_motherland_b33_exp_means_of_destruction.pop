@@ -140,13 +140,19 @@ WaveSchedule {
 		RunForThisManyWaves 6
 		CooldownTime 30
 
-		TFBot {
+		RandomChoice {
 
-			Template T_TFBot_SentryBuster
-			Skill Easy // these 3 settings make busters look/move around less
-			Attributes IgnoreEnemies
-			Attributes DisableDodge
-			Item "EOTL_demopants"
+			TFBot { Template T_TFBot_Motherland_SentryBuster }
+			TFBot { Template T_TFBot_Motherland_SentryBuster }
+			TFBot { Template T_TFBot_Motherland_SentryBuster }
+			TFBot { Template T_TFBot_Motherland_SentryBuster }
+			TFBot { Template T_TFBot_Motherland_SentryBuster }
+			TFBot { Template T_TFBot_Motherland_SentryBuster }
+			TFBot { Template T_TFBot_Motherland_SentryBuster }
+			// TFBot { 
+			// 	Template T_TFBot_Motherland_SentryBuster
+			// 	Item "The Pain Train"
+			// }
 		}
 	}
 

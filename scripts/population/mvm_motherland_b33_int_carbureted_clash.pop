@@ -61,6 +61,7 @@ WaveSchedule
         BeginAtWave         1
         RunForThisManyWaves 5
         DesiredCount        1
+        CooldownTime        30
 
         TFBot {
 
@@ -369,7 +370,7 @@ WaveSchedule
             Where spawnbot_gate1_main_c
             Where spawnbot_gate2_main
             Where spawnbot_gate2_main_c
-            TotalCount 9
+            TotalCount 6
             MaxActive 6
             SpawnCount 3
             WaitBeforeStarting 0
@@ -817,9 +818,30 @@ WaveSchedule
             Name "wave5traintank_support"
             Where spawnbot_traintank
             TotalCount 9999
-            MaxActive 6
-            SpawnCount 2
+            MaxActive 9
+            SpawnCount 1
             WaitBetweenSpawns 1
+            WaitBeforeStarting 1
+            WaitForAllSpawned "wave5traintank"
+            Support Limited
+            RandomSpawn 1
+
+            TFBot {
+
+                Template T_TFBot_Heavyweapons_Heavyweight_Champ
+                Tag nav_main
+                Tag bot_giant
+            }
+        }
+
+        WaveSpawn {
+
+            Name "wave5traintank_support"
+            Where spawnbot_traintank
+            TotalCount 9999
+            MaxActive 2
+            SpawnCount 1
+            WaitBetweenSpawns 20
             WaitBeforeStarting 1
             WaitForAllSpawned "wave5traintank"
             Support Limited
