@@ -63,13 +63,7 @@ WaveSchedule
         DesiredCount        1
         CooldownTime        30
 
-        TFBot {
-
-            Template T_TFBot_SentryBuster
-            Skill Easy
-            Attributes IgnoreEnemies
-            Attributes DisableDodge
-        }
+		TFBot { Template T_TFBot_Motherland_SentryBuster }
     }
 
     // Mission {
@@ -483,6 +477,12 @@ WaveSchedule
     // Wave 4
     Wave {
 
+        InitWaveOutput {
+            Target logic_script_lizardmvm
+            Action RunScriptCode
+            Param "SetRobotSpawnAtBase"
+        }
+
         WaveSpawn {
 
             Name "wave4a"
@@ -632,6 +632,13 @@ WaveSchedule
 
     // Wave 5
     Wave {
+
+        InitWaveOutput {
+            Target logic_script_lizardmvm
+            Action CallScriptFunction
+            Param "SetRobotSpawnAtBase"
+        }
+
         // Subwave description here
         WaveSpawn {
 

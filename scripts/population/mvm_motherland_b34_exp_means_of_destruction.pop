@@ -140,20 +140,7 @@ WaveSchedule {
 		RunForThisManyWaves 6
 		CooldownTime 30
 
-		RandomChoice {
-
-			TFBot { Template T_TFBot_Motherland_SentryBuster }
-			TFBot { Template T_TFBot_Motherland_SentryBuster }
-			TFBot { Template T_TFBot_Motherland_SentryBuster }
-			TFBot { Template T_TFBot_Motherland_SentryBuster }
-			TFBot { Template T_TFBot_Motherland_SentryBuster }
-			TFBot { Template T_TFBot_Motherland_SentryBuster }
-			TFBot { Template T_TFBot_Motherland_SentryBuster }
-			// TFBot { 
-			// 	Template T_TFBot_Motherland_SentryBuster
-			// 	Item "The Pain Train"
-			// }
-		}
+		TFBot { Template T_TFBot_Motherland_SentryBuster }
 	}
 
 	// W1
