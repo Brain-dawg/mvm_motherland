@@ -1,6 +1,6 @@
 __CREATE_SCOPE( "__motherland_utils", "_MotherlandUtils", null, "_MotherlandUtilsThink" )
 
-local ENTFIRE_DEBUG = true
+local ENTFIRE_DEBUG = false
 
 // optional arguments
 if (!("__EntFireByHandle" in ROOT))
@@ -8,13 +8,8 @@ if (!("__EntFireByHandle" in ROOT))
 
 ::EntFireByHandle <- function( ent, action, params = "", delay = 0.0, activator = null, caller = null ) {
 
-	if ( ENTFIRE_DEBUG && !ent.IsValid() ) {
-
-		// local stack = getstackinfos(2)
-
-		// Assert( false, format("null entity instance in %s (%s)", stack.func, stack.src ) )
-		return
-	}
+    if ( ENTFIRE_DEBUG && ( !ent || !ent.IsValid() ) )
+        Assert( false, "NULL entity in EntFireByHandle" )
 
 	return __EntFireByHandle( ent, action, params, delay, activator, caller )
 }
