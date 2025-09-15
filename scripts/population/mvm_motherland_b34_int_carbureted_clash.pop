@@ -113,7 +113,6 @@ WaveSchedule
             Target logic_script_lizardmvm
             Action RunScriptCode
             Param "
-                SetRobotSpawnAtGateB()
                 DisableSecondBomb()
                 IncludeScript( `brain/main` )
                 EntFire( `func_door*`, `Close`, ``, 1 )
@@ -178,7 +177,6 @@ WaveSchedule
             Action RunScriptCode
             Param "
                 IncludeScript( `brain/main` )
-                SetRobotSpawnAtGateA()
                 DisableSecondBomb()
                 EntFire( `flank_door`, `Close`, 1 )
                 EntFire( `tank_shortcut_door`, `Close`, 1 )
@@ -331,7 +329,6 @@ WaveSchedule
             Target logic_script_lizardmvm
             Action RunScriptCode
             Param "
-                SetRobotSpawnAtGateA()
                 DisableSecondBomb()
                 EntFire( `flank_door`, `Close`, 1 )
                 EntFire( `tank_shortcut_door`, `Close`, 1 )
@@ -476,12 +473,6 @@ WaveSchedule
 
     // Wave 4
     Wave {
-
-        InitWaveOutput {
-            Target logic_script_lizardmvm
-            Action RunScriptCode
-            Param "SetRobotSpawnAtBase"
-        }
 
         WaveSpawn {
 
@@ -632,12 +623,6 @@ WaveSchedule
 
     // Wave 5
     Wave {
-
-        InitWaveOutput {
-            Target logic_script_lizardmvm
-            Action CallScriptFunction
-            Param "SetRobotSpawnAtBase"
-        }
 
         // Subwave description here
         WaveSpawn {

@@ -173,7 +173,6 @@ WaveSchedule
 			Target bignet
 			Action RunScriptCode
 			Param "
-			SetRobotSpawnAtGateA()
 			DisableSecondBomb()
 			"
 		}
@@ -520,8 +519,8 @@ WaveSchedule
             Target bignet
             Action RunScriptCode
             Param "
-                EntFire("point_populator_interface", "ChangeBotAttributes", "RevertGateBotsBehavior");
-                EntFire("point_populator_interface", "ChangeDefaultEventAttributes", "RevertGateBotsBehavior");
+                EntFire(`point_populator_interface`, `ChangeBotAttributes`, `RevertGateBotsBehavior`);
+                EntFire(`point_populator_interface`, `ChangeDefaultEventAttributes`, `RevertGateBotsBehavior`);
             "
         }
 		StartWaveOutput
@@ -767,8 +766,8 @@ WaveSchedule
 				Target bignet
 				Action RunScriptCode
 				Param "
-					EntFire("point_populator_interface", "ChangeBotAttributes", "RevertGateBotsBehavior");
-					EntFire("point_populator_interface", "ChangeDefaultEventAttributes", "RevertGateBotsBehavior");
+					EntFire(`point_populator_interface`, `ChangeBotAttributes`, `RevertGateBotsBehavior`);
+					EntFire(`point_populator_interface`, `ChangeDefaultEventAttributes`, `RevertGateBotsBehavior`);
 				"
 			}
 			
