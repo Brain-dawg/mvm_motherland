@@ -1705,7 +1705,7 @@ WaveSchedule {
 
 					EmitSoundEx({ sound_name = `vo/announcer_security_alert.mp3`, special_dsp = 57 })
 					ScriptEntFireSafe( `logic_script_lizardmvm`, `EmitSoundEx({sound_name = \`ambient/alarms/combine_bank_alarm_loop4.wav\` pitch = 80 channel = CHAN_STATIC })`, 1.0 )
-					ScriptEntFireSafe( `logic_script_lizardmvm`, `SetTrainStopNearHatch()`, 2.0 )
+					ScriptEntFireSafe( `logic_script_lizardmvm`, `SetTrainStopNearHatch(); SetRobotSpawnGate(2)`, 2.0 )
 					ScriptEntFireSafe( `logic_script_lizardmvm`, `EmitSoundEx({sound_name = \`ambient/alarms/combine_bank_alarm_loop4.wav\` flags = SND_STOP channel = CHAN_STATIC })`, 10.0 )
 					EntFire( `base_bothint_sniper`, `Disable` )
 					EntFire( `gate1_bothint_sniper`, `Disable` )
