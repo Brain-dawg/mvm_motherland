@@ -115,24 +115,21 @@ WaveSchedule
             Param "
                 DisableSecondBomb()
                 IncludeScript( `brain/main` )
-                EntFire( `func_door*`, `Close`, ``, 1 )
             "
-        }
-
-        StartWaveOutput {
-
-            Target __motherland_utils
-            Action RunScriptCode
-            Param "EntFire( `gate2_door`, `Open` )"
         }
 
         // Subwave description here
         WaveSpawn {
 
             Name "wave1a" // The name of this WaveSpawn
+            Where spawnbot_base_main
+            Where spawnbot_base_main_c
+            Where spawnbot_base_upper
+            Where spawnbot_gate1_main_c
+            Where spawnbot_gate1_main
+            Where spawnbot_gate1_upper
             Where spawnbot_gate2_main_c
             Where spawnbot_gate2_main
-            Where spawnbot_gate2_main_c
             Where spawnbot_gate2_upper
             TotalCount 75
             MaxActive 8 // How many bots from this WaveSpawn can be spawned at once.
@@ -147,9 +144,14 @@ WaveSchedule
         WaveSpawn {
 
             Name "wave1b"
+            Where spawnbot_base_main
+            Where spawnbot_base_main_c
+            Where spawnbot_base_upper
+            Where spawnbot_gate1_main_c
+            Where spawnbot_gate1_main
+            Where spawnbot_gate1_upper
             Where spawnbot_gate2_main_c
             Where spawnbot_gate2_main
-            Where spawnbot_gate2_main_c
             Where spawnbot_gate2_upper
             TotalCount 5
             MaxActive 1 // How many bots from this WaveSpawn can be spawned at once.
@@ -178,17 +180,6 @@ WaveSchedule
             Param "
                 IncludeScript( `brain/main` )
                 DisableSecondBomb()
-                EntFire( `flank_door`, `Close`, 1 )
-                EntFire( `tank_shortcut_door`, `Close`, 1 )
-                SendGlobalGameEvent( `show_annotation`, {
-                   worldposX = -8359
-                   worldposY = 239
-                   worldposZ = 436
-                   id = 2543
-                   text = `Bots will now spawn from Gate A!`
-                   lifetime = -1
-                   play_sound = `misc/null.wav`
-                })
             "
             Delay 0.2
         }
@@ -226,6 +217,9 @@ WaveSchedule
         WaveSpawn {
 
             Name "wave2a1"
+            Where spawnbot_base_main
+            Where spawnbot_base_main_c
+            Where spawnbot_base_upper
             Where spawnbot_gate1_battlements
             Where spawnbot_gate1_main
             Where spawnbot_gate1_upper_c
@@ -246,6 +240,9 @@ WaveSchedule
         WaveSpawn {
 
             Name "wave2b"
+            Where spawnbot_base_main
+            Where spawnbot_base_main_c
+            Where spawnbot_base_upper
             Where spawnbot_gate1_main_c
             Where spawnbot_gate1_main
             Where spawnbot_gate1_main_c
@@ -268,6 +265,9 @@ WaveSchedule
         WaveSpawn {
 
             Name "wave2b1"
+            Where spawnbot_base_main
+            Where spawnbot_base_main_c
+            Where spawnbot_base_upper
             Where spawnbot_gate1_upper_c
             Where spawnbot_gate1_upper
             Where spawnbot_gate2_upper_c
@@ -284,6 +284,9 @@ WaveSchedule
         WaveSpawn {
 
             Name "wave2c"
+            Where spawnbot_base_main
+            Where spawnbot_base_main_c
+            Where spawnbot_base_upper
             Where spawnbot_gate1_main_c
             Where spawnbot_gate1_main
             Where spawnbot_gate2_main_c
@@ -327,29 +330,9 @@ WaveSchedule
         InitWaveOutput {
 
             Target logic_script_lizardmvm
-            Action RunScriptCode
-            Param "
-                DisableSecondBomb()
-                EntFire( `flank_door`, `Close`, 1 )
-                EntFire( `tank_shortcut_door`, `Close`, 1 )
-                SendGlobalGameEvent( `show_annotation`, {
-                   worldposX = -8359
-                   worldposY = 239
-                   worldposZ = 436
-                   id = 2543
-                   text = `Bots will spawn from Gate A!`
-                   lifetime = -1
-                   play_sound = `misc/null.wav`
-                })
-            "
+            Action CallScriptFunction
+            Param DisableSecondBomb
             Delay 0.2
-        }
-
-        StartWaveOutput {
-
-            Target BigNet
-            Action RunScriptCode
-            Param "SendGlobalGameEvent(`hide_annotation`, {id = 2543})"
         }
 
         WaveSpawn {
@@ -473,6 +456,12 @@ WaveSchedule
 
     // Wave 4
     Wave {
+
+        InitWaveOutput {
+            Target logic_script_lizardmvm
+            Action RunScriptCode
+            Param "SetRobotSpawnAtBase"
+        }
 
         WaveSpawn {
 
@@ -623,6 +612,12 @@ WaveSchedule
 
     // Wave 5
     Wave {
+
+        InitWaveOutput {
+            Target logic_script_lizardmvm
+            Action CallScriptFunction
+            Param "SetRobotSpawnAtBase"
+        }
 
         // Subwave description here
         WaveSpawn {
