@@ -136,6 +136,16 @@ _MotherlandMain.GateBDoor    <- FindByName( null, "gate2_door" )
 _MotherlandMain.GateADoor    <- FindByName( null, "gate1_main_door" )
 _MotherlandMain.TrainSpawnTrigger <- FindByClassnameNearest( "trigger_multiple", FindByName( null, "spawnbot_traintank" ).GetCenter(), 128 )
 
+// clean name for the workshop version
+if ( startswith( GetMapName(), "workshop/" ) ) {
+
+	local popname = _MotherlandMain.popname
+	local name_override = popname == GetMapName() ? "(Int) Carbureted Clash" : "(Exp) Means of Destruction"
+
+	_MotherlandMain.popname <- name_override
+	SetPropString( _MotherlandMain.ObjRes, STRING_NETPROP_POPNAME, name_override )
+}
+
 IncludeScript( "brain/event_wrapper.nut" )
 IncludeScript( "brain/utils.nut" )
 IncludeScript( "brain/wavebar.nut" )

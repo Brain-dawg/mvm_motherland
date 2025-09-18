@@ -1143,11 +1143,7 @@ WaveSchedule {
 			Template T_WaveSpawn_Motherland_Train
 			Name "wave3traintank"
 			WaitForAllDead "wave3_pretrain"
-			TFBot {
-
-				Template T_TFBot_Motherland_Train
-				Health 25000
-			}
+			TFBot { Template T_TFBot_Motherland_Train }
 
 			DoneOutput {
 
@@ -1218,11 +1214,11 @@ WaveSchedule {
 			Where spawnbot_gate1_main_c
 			Where spawnbot_gate2_main
 			Where spawnbot_gate2_main_c
-			TotalCount 4
+			TotalCount 3
 			MaxActive 2
 			SpawnCount 1
 			WaitBetweenSpawns 10
-			WaitBeforeStarting 2
+			WaitBeforeStarting 8
 			TotalCurrency 100
 			WaitForAllSpawned "wave3traintank"
 			RandomSpawn 1
@@ -1243,11 +1239,11 @@ WaveSchedule {
 			Where spawnbot_gate2_main
 			Where spawnbot_gate2_upper
 			Where spawnbot_gate2_flank
-			TotalCount 32
+			TotalCount 24
 			MaxActive 8
 			SpawnCount 4
 			WaitBetweenSpawns 1
-			WaitBeforeStarting 2
+			WaitBeforeStarting 6
 			TotalCurrency 50
 			WaitForAllSpawned "wave3traintank"
 			RandomSpawn 1
@@ -1489,7 +1485,7 @@ WaveSchedule {
 			TotalCurrency 400
 			RandomSpawn 1
 
-			TFBot { Template T_TFBot_Motherland_Train Health 32000 }
+			TFBot { Template T_TFBot_Motherland_Train Health 30000 }
 
 			DoneOutput {
 
@@ -1724,7 +1720,7 @@ WaveSchedule {
 				Class Heavy
 				Skill Expert
 				ClassIcon heavy_warrior
-				Health 70000
+				Health 60000
 				Attributes MiniBoss
 				Attributes UseBossHealthBar
 				Attributes AlwaysFireWeapon
@@ -1824,7 +1820,7 @@ WaveSchedule {
 				Delay 0.2
 			}
 
-			TFBot { Template T_TFBot_Motherland_Train Health 45000 }
+			TFBot { Template T_TFBot_Motherland_Train Health 42000 }
 		}
 
 		WaveSpawn {

@@ -104,8 +104,6 @@ _MotherlandTags.Tags <- {
 
             if ( _bot != bot ) return
 
-            printl( GetClientConvarValue("name", bot.entindex()) + " : " + flags + " : " + icon )
-
             _MotherlandWavebar.IncrementWaveIcon( icon, flags, -1 )
             
         }, EVENT_WRAPPER_TAGS )
@@ -419,11 +417,7 @@ _MotherlandTags.Tags <- {
 
         BotScope <- bot.GetScriptScope()
 
-        printl(bot)
-
-        function BotScope::ThinkTable::BestWeaponThink() {
-
-            printl(bot)
+        function BotScope::BotThinkTable::BestWeaponThink() {
 
             if ( !bot.IsAlive() ) return
 
@@ -494,8 +488,6 @@ _MotherlandTags.Tags <- {
                         if ( p.GetTeam() == bot.GetTeam() ) continue
 
                         local primary = _MotherlandUtils.GetItemInSlot( bot, SLOT_PRIMARY )
-
-                        printl(bot.GetActiveWeapon())
 
                         bot.Weapon_Switch( primary )
                         // primary.AddAttribute( "disable weapon switch", 1, 1 )
@@ -609,8 +601,6 @@ _EventWrapper( "player_team", "TagsPlayerTeam", function( params ) {
 _EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
 
     local player = GetPlayerFromUserID( params.userid )
-
-    printl(player)
 
     if ( !player.IsBotOfType( TF_BOT_TYPE ) ) {
         return
