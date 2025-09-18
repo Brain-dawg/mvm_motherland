@@ -140,7 +140,29 @@ WaveSchedule {
 		RunForThisManyWaves 6
 		CooldownTime 30
 
-		TFBot { Template T_TFBot_Motherland_SentryBuster }
+		TFBot {
+
+			Class Demoman
+			Name "Sentry Buster"
+			Skill Easy
+			WeaponRestrictions MeleeOnly
+			Attributes IgnoreEnemies
+			Attributes DisableDodge
+			Attributes MiniBoss
+			MaxVisionRange 1
+			Health 2500
+			Item "The Ullapool Caber"
+			Item "EOTL_demopants"
+			ClassIcon sentry_buster
+			CharacterAttributes {
+
+				"move speed bonus" 2
+				"damage force reduction" 0.5
+				"airblast vulnerability multiplier" 0.5
+				"override footstep sound set" 7
+				"cannot be backstabbed" 1
+			}
+		}
 	}
 
 	// W1
