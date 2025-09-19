@@ -64,6 +64,7 @@ WaveSchedule
         CooldownTime        30
 
 		TFBot { Template T_TFBot_Motherland_SentryBuster }
+    }
 
     // Mission {
 
