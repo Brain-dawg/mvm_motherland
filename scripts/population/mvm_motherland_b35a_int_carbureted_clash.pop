@@ -63,30 +63,7 @@ WaveSchedule
         DesiredCount        1
         CooldownTime        30
 
-		TFBot {
-
-			Class Demoman
-			Name "Sentry Buster"
-			Skill Easy
-			WeaponRestrictions MeleeOnly
-			Attributes IgnoreEnemies
-			Attributes DisableDodge
-			Attributes MiniBoss
-			MaxVisionRange 1
-			Health 2500
-			Item "The Ullapool Caber"
-			Item "EOTL_demopants"
-			ClassIcon sentry_buster
-			CharacterAttributes {
-
-				"move speed bonus" 2
-				"damage force reduction" 0.5
-				"airblast vulnerability multiplier" 0.5
-				"override footstep sound set" 7
-				"cannot be backstabbed" 1
-			}
-		}
-    }
+		TFBot { Template T_TFBot_Motherland_SentryBuster }
 
     // Mission {
 
@@ -519,26 +496,19 @@ WaveSchedule
             Where spawnbot_gate2_jetpack1
             Where spawnbot_gate2_jetpack2
             Where spawnbot_gate2_jetpack3
-            TotalCount 1
+            TotalCount 2
             MaxActive 1
             SpawnCount 1
             TotalCurrency 200
             RandomSpawn 1
 
-            // StartWaveOutput {
+            TFBot {
 
-            //     Target __motherland_wavebar
-            //     Action RunScriptCode
-            //     Param "SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS )"
-            // }
-            // DoneOutput {
-
-            //     Target __motherland_wavebar
-            //     Action RunScriptCode
-            //     Param "SetWaveIconFlags( `soldier_barrage`, ICON_NORMAL|ICON_MINIBOSS|ICON_ALWAYSCRIT )"
-            // }
-
-            TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag jetpack_spawn Tag nav_main Tag bot_giant }
+                Template T_TFBot_Giant_Soldier_Extended_Buff_Banner
+                Tag nav_main
+                Tag bot_giant
+                Tag jetpack_spawn
+            }
         }
 
         WaveSpawn {
@@ -564,7 +534,7 @@ WaveSchedule
 
                 ShouldPreserveSquad 1
 
-                TFBot { Template T_TFBot_Giant_Soldier_Spammer_Reload Skill Normal Tag jetpack_spawn Tag nav_main }
+                TFBot { Template T_TFBot_Giant_Soldier_Spammer_Reload Skill Easy Tag jetpack_spawn Tag nav_main }
                 TFBot { Template T_TFBot_Pyro Skill Easy Tag jetpack_spawn Tag nav_main }
                 TFBot { Template T_TFBot_Pyro Skill Easy Tag jetpack_spawn Tag nav_main }
             }
@@ -594,7 +564,18 @@ WaveSchedule
 
                 ShouldPreserveSquad 1
 
-                TFBot { Template T_TFBot_Giant_Heavyweapons_Deflector Skill Easy Tag nav_main Tag bot_giant Tag jetpack_spawn }
+                TFBot {
+                    Template T_TFBot_Giant_Heavyweapons_Deflector
+                    Skill Easy
+                    Tag nav_main
+                    Tag bot_giant
+                    Tag jetpack_spawn
+                    ItemAttributes {
+
+                        ItemName "Deflector"
+                        "fire rate penalty" 1.25
+                    }
+                }
                 TFBot { Template T_TFBot_Pyro Skill Easy Tag nav_main Tag jetpack_spawn }
                 TFBot { Template T_TFBot_Pyro Skill Easy Tag nav_main Tag jetpack_spawn }
             }
@@ -612,9 +593,9 @@ WaveSchedule
             Where spawnbot_gate2_jetpack1
             Where spawnbot_gate2_jetpack2
             Where spawnbot_gate2_jetpack3
-            TotalCount 4
-            MaxActive 4
-            SpawnCount 4
+            TotalCount 3
+            MaxActive 3
+            SpawnCount 3
             TotalCurrency 400
             WaitForAllDead "wave4c"
             WaitBeforeStarting 5
@@ -625,7 +606,6 @@ WaveSchedule
                 ShouldPreserveSquad 1
 
                 TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag jetpack_spawn Tag nav_main Tag bot_giant }
-                TFBot { Template T_TFBot_Medic_Kritz Tag jetpack_spawn Tag nav_main }
                 TFBot { Template T_TFBot_Medic_Kritz Tag jetpack_spawn Tag nav_main }
                 TFBot { Template T_TFBot_Medic_Kritz Tag jetpack_spawn Tag nav_main }
             }

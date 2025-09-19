@@ -8,6 +8,7 @@ WaveSchedule
 	StartingCurrency		600
 	RespawnWaveTime 		6
 	CanBotsAttackWhileInSpawnRoom no
+	Advanced 1
 	
 	Templates
 	{

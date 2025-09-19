@@ -61,11 +61,15 @@ WaveSchedule {
 			Attributes MiniBoss
 			MaxVisionRange 1
 			Health 2500
-			Item "The Ullapool Caber"
+			Item "The Pain Train" // different taunt
 			Item "EOTL_demopants"
 			ClassIcon sentry_buster
-			CharacterAttributes {
 
+			ItemAttributes {
+
+				ItemName "The Pain Train"
+				"increase player capture value" -1
+				"dmg taken from bullets increased" 1.0
 				"move speed bonus" 2
 				"damage force reduction" 0.5
 				"airblast vulnerability multiplier" 0.5

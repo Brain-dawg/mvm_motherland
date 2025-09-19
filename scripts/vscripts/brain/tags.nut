@@ -105,7 +105,7 @@ _MotherlandTags.Tags <- {
             if ( _bot != bot ) return
 
             _MotherlandWavebar.IncrementWaveIcon( icon, flags, -1 )
-            
+
         }, EVENT_WRAPPER_TAGS )
     }
 
@@ -128,7 +128,7 @@ _MotherlandTags.Tags <- {
         function FireWeaponThink() {
 
             if ( ( maxrepeats ) >= repeats ) {
-                
+
                 delete BotThinkTable.FireWeaponThink
                 return
             }
@@ -186,7 +186,7 @@ _MotherlandTags.Tags <- {
                     })
 
                     // this is supposed to be set by the motherland_ents but for some reason it's not working
-                    EntFireByHandle( minisentry, "RunScriptCode", "self.SetSkin( 3 )", -1, null, null ) 
+                    EntFireByHandle( minisentry, "RunScriptCode", "self.SetSkin( 3 )", -1, null, null )
                     minisentry.AcceptInput( "SetBuilder", "!activator", bot, bot )
                     nearest_hint.SetOwner( minisentry )
                     self.Kill()
@@ -200,7 +200,7 @@ _MotherlandTags.Tags <- {
 
         local slot = "slot" in args ? args.slot.tointeger() : args.type.tointeger()
 
-        if ( slot == -1 ) 
+        if ( slot == -1 )
             slot = bot.GetActiveWeapon().GetSlot()
 
         for ( local child = bot.FirstMoveChild(); (child && child instanceof CBaseCombatWeapon); child = child.NextMovePeer() )
@@ -328,7 +328,7 @@ _MotherlandTags.Tags <- {
 
         function MeleeHeavyThink() {
 
-            if ( self.GetActiveWeapon().IsMeleeWeapon() ) 
+            if ( self.GetActiveWeapon().IsMeleeWeapon() )
                 return 0.2
 
             for (local player; player = FindByClassnameWithin( player, "player", bot.GetOrigin(), 256 ); ) {
@@ -410,6 +410,37 @@ _MotherlandTags.Tags <- {
             bot.SetMissionTarget( mission_target )
     }
 
+    function motherland_killicon( bot, args ) {
+
+        local weapon = "weapon" in args ? args.weapon : bot.GetActiveWeapon()
+
+		local event_hook_string = format( "MotherlandKillIcon_%d_%d", userid_cache[ bot ], weapon.entindex() )
+		local dummy_name = format( "motherland_killicon_dummy_%d_%d", userid_cache[ bot ], weapon.entindex() )
+        local killicon_dummy = CreateByClassname( "info_teleport_destination" )
+        SetPropString( killicon_dummy, STRING_NETPROP_NAME, dummy_name )
+        SetPropString( killicon_dummy, "m_iClassname", args.name )
+        SetPropBool( killicon_dummy, STRING_NETPROP_PURGESTRINGS, true )
+        local scope = bot.GetScriptScope()
+        if ( "wearables_to_kill" in scope )
+            scope.wearables_to_kill.append( killicon_dummy )
+        else
+            scope.wearables_to_kill <- [ killicon_dummy ]
+
+		_EventWrapper( "OnTakeDamage", event_hook_string, function( params ) {
+
+            // always assume the worst possible damage rampup scenario (point blank minicrit scattergun)
+			if (
+                params.weapon == null
+                || params.weapon != weapon
+                || params.const_entity.GetHealth() - ( ( params.damage * 1.75 ) * 1.35 ) > 0
+            ) return
+
+			params.inflictor = killicon_dummy
+
+		}, EVENT_WRAPPER_TAGS )
+
+	}
+
     function motherland_usebestweapon( bot, args ) {
 
         // TODO: expensive findbyclassnamewithin calls, optimize this
@@ -445,7 +476,7 @@ _MotherlandTags.Tags <- {
 
                     for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 750 ); ) {
 
-                        if ( 
+                        if (
                             p.GetTeam() == bot.GetTeam()
                             || bot.GetActiveWeapon().GetSlot() == SLOT_SECONDARY
                             || !p.IsAlive()
@@ -466,7 +497,7 @@ _MotherlandTags.Tags <- {
 
                     for ( local p; p = FindByClassnameWithin( p, "player", bot.GetOrigin(), 500 ); ) {
 
-                        if ( p.GetTeam() == bot.GetTeam() || bot.GetActiveWeapon().Clip1() != 0 ) 
+                        if ( p.GetTeam() == bot.GetTeam() || bot.GetActiveWeapon().Clip1() != 0 )
                             continue
 
                         local secondary = _MotherlandUtils.GetItemInSlot( bot, SLOT_SECONDARY )
@@ -584,10 +615,10 @@ function _MotherlandTags::EvaluateTags( bot ) {
 }
 
 _EventWrapper( "player_team", "TagsPlayerTeam", function( params ) {
-    
+
     local bot = GetPlayerFromUserID( params.userid )
 
-    if ( !bot || !bot.IsValid() || !bot.IsBotOfType( TF_BOT_TYPE ) || params.team != TEAM_SPECTATOR ) 
+    if ( params.team != TEAM_SPECTATOR || !bot || !bot.IsValid() || !bot.IsBotOfType( TF_BOT_TYPE ) )
         return
 
     _EventWrapper( "*", format("Tags_%d_*", bot.entindex()), null, EVENT_WRAPPER_TAGS )
@@ -600,13 +631,15 @@ _EventWrapper( "player_team", "TagsPlayerTeam", function( params ) {
 
 _EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
 
-    local player = GetPlayerFromUserID( params.userid )
+    local bot = GetPlayerFromUserID( params.userid )
 
-    if ( !player.IsBotOfType( TF_BOT_TYPE ) ) {
+    if ( !bot.IsBotOfType( TF_BOT_TYPE ) )
         return
-    }
 
-    local bot = player
+    // remove edict-wasting bot viewmodels
+    local viewmodel = GetPropEntity( bot, "m_hViewModel" )
+    if ( viewmodel && viewmodel.IsValid() )
+        EntFireByHandle( viewmodel, "Kill", null, 0.1, null, null )
 
     BotScope <- _MotherlandUtils.GetEntScope( bot )
 
@@ -622,6 +655,9 @@ _EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
     }
 
     AddThinkToEnt( bot, "BotThinks" )
+
+    if ( bot.HasBotTag( "jetpack_spawn" ) && bot.IsMiniBoss() )
+        bot.AddBotTag( "motherland_alwaysglow" )
 
     _MotherlandUtils.ScriptEntFireSafe( bot, "_MotherlandTags.EvaluateTags( self )", 0.1 )
 
