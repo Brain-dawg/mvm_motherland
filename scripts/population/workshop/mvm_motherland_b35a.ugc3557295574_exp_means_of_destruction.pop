@@ -5,8 +5,6 @@
 
 WaveSchedule {
 
-	PrecacheGeneric "materials/hud/leaderboard_class_engineer_frontier_justice_nys_crit.vmt" [$SIGSEGV]
-
 	StartingCurrency 1600
 	RespawnWaveTime 5
 	CanBotsAttackWhileInSpawnRoom No
@@ -14,6 +12,7 @@ WaveSchedule {
 
 	// pasting the templates here directly to avoid missing files
 	Templates {
+
 		T_WaveSpawn_Motherland_Train {
 
 			Name "TrainTank"
