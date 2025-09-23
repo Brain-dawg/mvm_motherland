@@ -1,0 +1,1478 @@
+#base robot_giant.pop
+#base robot_standard.pop
+#base robot_gatebot.pop
+#base robot_motherland.pop
+
+WaveSchedule
+{
+	StartingCurrency		600
+	RespawnWaveTime 		6
+	CanBotsAttackWhileInSpawnRoom no
+	Advanced 1
+	
+	Templates
+	{
+		T_TFBot_Boss_Nest_Spawner
+		{
+			Name "MatryOS"
+			Class Heavy
+			ClassIcon boss_spawner
+			Health 50000
+			Attributes MiniBoss
+			Scale 1.75	// 2 gets stuck too much
+			Attributes DisableDodge
+			Attributes UseBossHealthBar
+			Tag bigbossman
+			Tag bot_no_radio_jump
+			Item "Officer's Ushanka"
+			ItemAttributes
+			{
+				ItemName "TF_WEAPON_MINIGUN"
+				"damage bonus"	1.5
+			}
+			ItemAttributes
+			{
+				ItemName "TF_WEAPON_FISTS"
+				"damage bonus"	3
+			}
+			CharacterAttributes
+			{
+				"move speed bonus"	0.35
+				"damage force reduction" 0
+				"airblast vulnerability multiplier" 0
+				"override footstep sound set" 7
+				"gesture speed increase" 0.7
+				"cannot pick up intelligence" 1
+			}
+		}
+	}
+	
+	Mission // sentry buster
+	{
+		Objective DestroySentries
+
+		InitialCooldown 20
+		Where spawnbot_base_main
+		Where spawnbot_gate1_main
+		Where spawnbot_gate2_main
+		BeginAtWave 1
+		RunForThisManyWaves 7
+
+		CooldownTime 30            
+
+            TFBot
+			{
+				Template T_TFBot_SentryBuster
+				Attributes DisableDodge		// do not
+				Attributes IgnoreEnemies	// stop
+            }
+	}
+	Mission // engineer w2
+	{
+		Objective Engineer
+
+		InitialCooldown 60
+		Where spawnbot_base_battlements
+		Where spawnbot_gate1_main
+		Where spawnbot_gate2_main
+		BeginAtWave 2
+		RunForThisManyWaves 1
+		DesiredCount 2
+
+		CooldownTime 60
+
+            TFBot
+			{
+				Template T_TFBot_Engineer_Sentry_Battle_TeleIn
+            }
+	}
+	Mission // snipers w5
+	{
+		Objective Sniper
+
+		InitialCooldown 60
+		Where spawnbot_base_upper
+		Where spawnbot_base_battlements
+		Where spawnbot_gate1_upper
+		Where spawnbot_gate2_upper
+		BeginAtWave 5
+		RunForThisManyWaves 1
+		DesiredCount 4
+
+		CooldownTime 60
+
+            TFBot
+			{
+				Template T_TFBot_Sniper_Sydney_Sleeper
+            }
+	}
+	Mission // snipers w6
+	{
+		Objective Sniper
+
+		InitialCooldown 10
+		Where spawnbot_base_upper
+		Where spawnbot_base_battlements
+		Where spawnbot_gate1_upper
+		Where spawnbot_gate2_upper
+		BeginAtWave 6
+		RunForThisManyWaves 1
+		DesiredCount 2
+
+		CooldownTime 20
+
+            TFBot
+			{
+				Template T_TFBot_Sniper_Sydney_Sleeper
+            }
+	}
+	Mission // spies w6
+	{
+		Objective Spy
+
+		InitialCooldown 20
+		Where spawnbot_base_main
+		Where spawnbot_gate1_main
+		Where spawnbot_gate2_main
+		BeginAtWave 6
+		RunForThisManyWaves 1
+		DesiredCount 2
+
+		CooldownTime 30
+
+            TFBot
+			{
+				Class Spy
+            }
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	// Motherland Advanced (Tundra Flux)
+	// Cash given at start: $600
+	// Wave payouts:
+	// W1: $700 W2: $700 W3: $700
+	// W4: $900 W5: $900 W6: $800
+	// Max amount of money: $6700
+	// Max Amount without bonus: $6200
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//WAVE 1 ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Wave
+	{
+		StartWaveOutput
+		{
+			Target wave_start_relay
+			Action Trigger
+		}
+		DoneOutput					
+		{
+			Target wave_finished_relay
+			Action trigger
+		}
+		InitWaveOutput
+		{
+			Target bignet
+			Action RunScriptCode
+			Param "
+			DisableSecondBomb()
+			"
+		}
+		WaveSpawn
+		{
+			Name "wave01a"
+			Where spawnbot_base_closet
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 40
+			MaxActive 12
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 0.45
+			TotalCurrency 200
+
+			TFBot
+			{
+				Class Demoman
+				Skill Normal
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave01b"
+			Where spawnbot_base_battlements
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 4
+			MaxActive 4
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 10
+			WaitForAllSpawned "wave01a"
+			TotalCurrency 50
+
+			RandomSpawn 1
+
+			TFBot
+			{
+				Template T_TFBot_Giant_Soldier
+				Tag nav_flank
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave01c"
+			Where spawnbot_base_closet
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 36
+			MaxActive 8
+			SpawnCount 2
+			WaitBeforeStarting 12
+			WaitBetweenSpawns 0.1
+			WaitForAllDead	"wave01b"
+			TotalCurrency 100
+
+			TFBot
+			{
+				Class Demoman
+				Skill Normal
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave01c"
+			Where spawnbot_base_closet
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_flank
+			TotalCount 21
+			MaxActive 7
+			SpawnCount 1
+			WaitBeforeStarting 12
+			WaitBetweenSpawns 0.1
+			WaitForAllDead "wave01b"
+			TotalCurrency 100
+
+			TFBot
+			{
+				Template T_TFBot_Sniper_Huntsman
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave01c_giants"
+			Where spawnbot_base_upper
+			Where spawnbot_base_battlements
+			Where spawnbot_gate1_flank
+			Where spawnbot_gate2_upper
+			TotalCount 2
+			MaxActive 2
+			SpawnCount 1
+			WaitBeforeStarting 15
+			WaitBetweenSpawns 15
+			WaitForAllDead "wave01b"
+			TotalCurrency 100
+
+			TFBot
+			{
+				Template T_TFBot_Giant_Scout_Baseball_Armored
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave01d"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_flank
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 20
+			WaitBetweenSpawns 15
+			WaitForAllDead "wave01c_giants"
+			TotalCurrency 50
+
+			TFBot
+			{
+				Template T_TFBot_Giant_Heavyweapons_Shotgun
+				Skill Normal
+				Item "Squatter's Right"
+			}
+		}
+		WaveSpawn
+		{
+			Where spawnbot_base_closet
+			Where spawnbot_base_main
+			Where spawnbot_gate1_flank
+			Where spawnbot_gate2_main
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 13
+			WaitBetweenSpawnsAfterDeath 1
+			TotalCurrency 100
+			
+			Support 1
+
+			RandomChoice
+			{
+				TFBot
+				{
+					Template T_TFBot_Heavyweapons_Heavyweight_Champ
+					Name "друг"
+					Attributes AlwaysCrit
+					CharacterAttributes
+					{
+						"torso scale" 0.3
+						"hand scale" 1.35
+						"voice pitch scale" 0.3
+					}
+				}
+			}
+		}
+	}	
+	Wave
+	{
+		StartWaveOutput
+		{
+			Target wave_start_relay
+			Action Trigger
+		}
+		DoneOutput					
+		{
+			Target wave_finished_relay
+			Action trigger
+		}
+		
+		WaveSpawn
+		{
+			Name "wave02a"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 12
+			MaxActive 6
+			SpawnCount 3
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 20
+			TotalCurrency 200
+
+			Squad
+			{
+				TFBot
+				{
+					Template T_TFBot_Giant_DemoMan_PrinceTavish
+					Item "Squatter's Right"
+				}
+				TFBot
+				{
+					Template T_TFBot_Medic
+					Item "Squatter's Right"
+				}
+				TFBot
+				{
+					Template T_TFBot_Medic
+					Item "Squatter's Right"
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave02a"
+			Where spawnbot_base_battlements
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate2_upper
+			TotalCount 12
+			MaxActive 6
+			SpawnCount 3
+			WaitBeforeStarting 5
+			WaitBetweenSpawns 5
+			TotalCurrency 50
+			
+			TFBot
+			{
+				Class Heavy
+				Skill Normal
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave02a"
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate2_upper
+			TotalCount 20
+			MaxActive 8
+			SpawnCount 4
+			WaitBeforeStarting 7
+			WaitBetweenSpawns 7
+			TotalCurrency 50
+			
+			TFBot
+			{
+				Class Scout
+				Skill Easy
+				Tag nav_flank2
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave02b"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 51
+			MaxActive 10
+			SpawnCount 2
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 1
+			WaitForAllDead "wave02a"
+			TotalCurrency 200
+			
+			RandomChoice
+			{
+				TFBot
+				{
+					Class Pyro
+					Skill Easy
+				}
+				TFBot
+				{
+					Class Pyro
+					Skill Easy
+				}
+				TFBot
+				{
+					Class Pyro
+					Skill Easy
+				}
+				TFBot
+				{
+					Class Scout
+					Skill Hard
+					WeaponRestrictions MeleeOnly
+				}
+				TFBot
+				{
+					Class Scout
+					Skill Hard
+					WeaponRestrictions MeleeOnly
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave02b"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 30
+			MaxActive 10
+			SpawnCount 10
+			WaitBeforeStarting 10
+			WaitBetweenSpawns 0
+			WaitForAllDead "wave02a"
+			TotalCurrency 100
+			
+			TFBot
+			{
+				Template T_TFGateBot_Soldier_Easy
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave02c"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_flank
+			TotalCount 12
+			MaxActive 12
+			SpawnCount 4
+			WaitBeforeStarting 2
+			WaitBetweenSpawns 2
+			WaitForAllSpawned "wave02b"
+			TotalCurrency 100
+			
+			Squad
+			{
+				TFBot
+				{
+					Class Heavy
+					Skill Normal
+					Attributes AlwaysCrit
+					ClassIcon heavy_giant
+				}
+				TFBot
+				{
+					Template T_TFBot_Medic_Bigheal
+					Item "Squatter's Right"
+				}
+			}
+		}
+	}
+	Wave
+	{
+		InitWaveOutput	// give me back my gatebots
+        {
+            Target bignet
+            Action RunScriptCode
+            Param "
+                EntFire(`point_populator_interface`, `ChangeBotAttributes`, `RevertGateBotsBehavior`);
+                EntFire(`point_populator_interface`, `ChangeDefaultEventAttributes`, `RevertGateBotsBehavior`);
+            "
+        }
+		StartWaveOutput
+		{
+			Target wave_start_relay
+			Action Trigger
+		}
+		
+		WaveSpawn
+		{
+			Name "wave03a"
+			Where spawnbot_base_battlements
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 44
+			MaxActive 12
+			SpawnCount 4
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 2.5
+			TotalCurrency 100
+			
+			RandomSpawn 1
+
+			RandomChoice
+			{
+				TFBot
+				{
+					Template T_TFGateBot_Demoman_Hard
+				}
+				TFBot
+				{
+					Template T_TFGateBot_Demoman_Hard
+				}
+				TFBot
+				{
+					Template T_TFGateBot_Demoman_Hard
+				}
+				TFBot
+				{
+					Template T_TFGateBot_Scout_Normal
+				}
+				TFBot
+				{
+					Template T_TFGateBot_Scout_Normal
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave03a"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 2
+			MaxActive 2
+			SpawnCount 1
+			WaitBeforeStarting 12
+			WaitBetweenSpawns 15
+			TotalCurrency 100
+			
+			TFBot
+			{
+				Template T_TFGateBot_Giant_Heavyweapons_Deflector
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave03tank"
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 5
+			WaitForAllSpawned "wave03a"
+			TotalCurrency 200
+
+			Tank
+			{
+				Name Tank
+				Health 20000
+				StartingPathTrackNode "tank_path_0"
+				OnBombDroppedOutput
+				{
+					Target boss_deploy_relay
+					Action Trigger
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave03tank"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 12
+			MaxActive 12
+			SpawnCount 3
+			WaitBeforeStarting 20
+			WaitBetweenSpawns 15
+			WaitForAllSpawned "wave03a"
+			TotalCurrency 100
+			
+			Squad
+			{
+				TFBot
+				{
+					Template T_TFBot_Giant_Soldier_Spammer
+				}
+				TFBot
+				{
+					Template T_TFBot_Soldier_Extended_Buff_Banner
+				}
+				TFBot
+				{
+					Template T_TFBot_Soldier_Extended_Buff_Banner
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave03c"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 12
+			MaxActive 6
+			SpawnCount 2
+			WaitBeforeStarting 5
+			WaitBetweenSpawns 7
+			WaitForAllDead "wave03tank"
+			TotalCurrency 100
+			
+			TFBot
+			{
+				Template T_TFBot_Heavyweapons_Fist
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+				Tag bot_giant
+				Tag nav_main
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave03c"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 24
+			MaxActive 8
+			SpawnCount 4
+			WaitBeforeStarting 2
+			WaitBetweenSpawns 2
+			WaitForAllDead "wave03tank"
+			TotalCurrency 100
+			
+			TFBot
+			{
+				Template T_TFBot_Scout_FAN
+				Item "Squatter's Right"
+				Tag nav_main
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave03c"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate1_flank
+			Where spawnbot_gate2_main
+			Where spawnbot_gate2_flank
+			TotalCount 4
+			MaxActive 2
+			SpawnCount 1
+			WaitBeforeStarting 15
+			WaitBetweenSpawns 15
+			WaitForAllDead "wave03tank"
+			TotalCurrency 100
+			
+			RandomSpawn 1
+			
+			TFBot
+			{
+				Template T_TFBot_Giant_Demoman
+				Item "Squatter's Right"
+				Tag nav_main
+			}
+		}
+		WaveSpawn
+		{
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate2_upper
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawnsAfterDeath 3
+			WaitForAllSpawned "wave03b"
+			
+			Support 1
+			
+			TFBot
+			{
+				Class Scout
+				Skill Hard
+				WeaponRestrictions MeleeOnly
+			}
+		}
+	}
+	Wave
+	{
+		InitWaveOutput	// play me something fresh
+        {
+            Target bignet
+            Action RunScriptCode
+            Param "
+                SetWaveStartMusic(`motherland.mvm_start_train_wave`)
+            "
+        }
+		StartWaveOutput
+		{
+			Target wave_start_relay
+			Action Trigger
+		}
+		
+		WaveSpawn
+		{
+			Name "wave04a"
+			Where spawnbot_base_battlements
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 4
+			MaxActive 4
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 15
+			TotalCurrency 100
+			
+			RandomSpawn 1
+			
+			FirstSpawnOutput	// give me back my gatebots
+			{
+				Target bignet
+				Action RunScriptCode
+				Param "
+					EntFire(`point_populator_interface`, `ChangeBotAttributes`, `RevertGateBotsBehavior`);
+					EntFire(`point_populator_interface`, `ChangeDefaultEventAttributes`, `RevertGateBotsBehavior`);
+				"
+			}
+			
+			TFBot
+			{
+				Template T_TFGateBot_Giant_Soldier_SlowBarrage
+				Tag nav_main
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave04a"
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 12
+			MaxActive 6
+			SpawnCount 3
+			WaitBeforeStarting 6
+			WaitBetweenSpawns 6
+			TotalCurrency 100
+			
+			RandomSpawn 1
+			
+			TFBot
+			{
+				Template T_TFGateBot_Heavy_Normal
+			}
+		}
+		WaveSpawn
+		{
+	//		Name "wave04b"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 24
+			MaxActive 9
+			SpawnCount 3
+			WaitBeforeStarting 4
+			WaitBetweenSpawns 4
+			WaitForAllSpawned "wave04a"
+			TotalCurrency 100
+			
+			FirstSpawnWarningSound "ambient/alarms/train_horn_distant1.wav"
+			
+			RandomSpawn 1
+			
+			Squad
+			{
+				TFBot
+				{
+					Template T_TFGateBot_Soldier_Normal
+				}
+			//	TFBot
+			//	{
+			//		Template T_TFBot_Medic
+			//		Item "Squatter's Right"
+			//	}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave04b"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 8
+			MaxActive 8
+			SpawnCount 2
+			WaitBeforeStarting 10
+			WaitBetweenSpawns 20
+			WaitForAllSpawned "wave04a"
+			TotalCurrency 50
+			
+
+			Squad
+			{
+				TFBot
+				{
+					Template T_TFBot_Giant_Pyro
+					Item "Squatter's Right"
+					Tag nav_main
+				}
+				TFBot
+				{
+					Template T_TFBot_Medic
+					Item "Squatter's Right"
+					Tag nav_main
+				}
+			}
+		}
+		WaveSpawn
+		{
+	//		Name "wave04c"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 4
+			MaxActive 2
+			SpawnCount 1
+			WaitBeforeStarting 20
+			WaitBetweenSpawns 20
+			WaitForAllSpawned "wave04a"
+			TotalCurrency 50
+			
+
+			TFBot
+			{
+				Template T_TFBot_Giant_Scout_Fast
+				Item "Squatter's Right"
+				Item "The Track Terrorizer"
+			}
+		}
+		WaveSpawn	// shamelessly copypasted from the exp, this looks really funky to set up!!
+		{
+			Template T_WaveSpawn_Motherland_Train
+			Name "wave04trainboss"
+			WaitForAllSpawned "wave04b"
+			FirstSpawnWarningSound "ambient/alarms/train_horn2.wav"
+
+			TFBot
+			{
+				Template T_TFBot_Motherland_Train 
+			}
+		}
+		WaveSpawn
+		{
+			Where spawnbot_traintank
+			TotalCount 100
+			MaxActive 9
+			SpawnCount 3
+			WaitBetweenSpawns 1
+			WaitBeforeStarting 3
+			WaitForAllSpawned "wave04c"
+			TotalCurrency 300
+			
+			Support 1
+
+			RandomChoice
+			{
+				TFBot
+				{
+					Template T_TFBot_Heavyweapons_Shotgun
+					Skill Easy
+				//	Tag traintank_spawn
+				}
+				TFBot
+				{
+					Template T_TFBot_Heavyweapons_Shotgun
+					Skill Easy
+				//	Tag traintank_spawn
+				}
+				TFBot
+				{
+					Class Demoman
+					Skill Easy
+				//	Tag traintank_spawn
+				}
+				TFBot
+				{
+					Class Demoman
+					Skill Easy
+				//	Tag traintank_spawn
+				}
+				TFBot
+				{
+					Class Demoman
+					Skill Easy
+				//	Tag traintank_spawn
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave04d"
+			Where spawnbot_traintank
+			TotalCount 8
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 30
+			WaitBetweenSpawnsAfterDeath 30
+			WaitForAllSpawned "wave04c"
+			
+			Support 1 // limited does not work with WaitBetweenSpawnsAfterDeath
+			
+			TFBot
+			{
+				Template T_TFBot_Giant_Heavyweapons
+				Skill Normal
+			//	Tag traintank_spawn
+			}
+		}
+	}
+	Wave
+	{
+		InitWaveOutput	// play me something fresh
+        {
+            Target bignet
+            Action RunScriptCode
+            Param "
+                SetWaveStartMusic(`motherland.mvm_start_mid_wave`)
+            "
+        }
+		StartWaveOutput
+		{
+			Target wave_start_relay
+			Action Trigger
+		}
+		
+		WaveSpawn
+		{
+			Name "wave05a"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 8
+			TotalCurrency 25
+			
+			TFBot
+			{
+				Template T_TFBot_Giant_Soldier_Spammer
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05a"
+			Where spawnbot_base_battlements
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 8
+			TotalCurrency 25
+			
+			TFBot
+			{
+				Template T_TFBot_Giant_Soldier_Spammer
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05a"
+			Where spawnbot_base_closet
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 8
+			TotalCurrency 25
+			
+			TFBot
+			{
+				Template T_TFBot_Giant_Soldier_Spammer
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05a"
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 8
+			TotalCurrency 25
+			
+			TFBot
+			{
+				Template T_TFBot_Giant_Soldier_Spammer
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05b"
+			Where spawnbot_base_jetpack1
+			Where spawnbot_base_jetpack2
+			Where spawnbot_base_jetpack3
+			Where spawnbot_gate1_jetpack1
+			Where spawnbot_gate1_jetpack2
+			Where spawnbot_gate1_jetpack3
+			Where spawnbot_gate2_jetpack1
+			Where spawnbot_gate2_jetpack2
+			Where spawnbot_gate2_jetpack3
+			TotalCount 9
+			MaxActive 9
+			SpawnCount 3
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 8
+			WaitForAllDead "wave05a"
+			TotalCurrency 50
+			
+			RandomSpawn 1
+			
+			TFBot
+			{
+				Class Pyro
+				Skill Hard
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+				Tag jetpack_spawn
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05b"
+			Where spawnbot_base_jetpack1
+			Where spawnbot_base_jetpack2
+			Where spawnbot_base_jetpack3
+			Where spawnbot_gate1_jetpack1
+			Where spawnbot_gate1_jetpack2
+			Where spawnbot_gate1_jetpack3
+			Where spawnbot_gate2_jetpack1
+			Where spawnbot_gate2_jetpack2
+			Where spawnbot_gate2_jetpack3
+			TotalCount 9
+			MaxActive 9
+			SpawnCount 3
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 8
+			WaitForAllDead "wave05a"
+			TotalCurrency 50
+			
+			RandomSpawn 1
+			
+			TFBot
+			{
+				Class Pyro
+				Skill Hard
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+				Tag jetpack_spawn
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05c"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 8
+			WaitForAllSpawned "wave05b"
+			TotalCurrency 25
+			
+			TFBot
+			{
+				Template T_TFBot_Giant_Soldier_Spammer
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05c"
+			Where spawnbot_base_battlements
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 8
+			WaitForAllSpawned "wave05b"
+			TotalCurrency 25
+			
+			TFBot
+			{
+				Template T_TFBot_Giant_Soldier_Spammer
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05c"
+			Where spawnbot_base_closet
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 8
+			WaitForAllSpawned "wave05b"
+			TotalCurrency 25
+			
+			TFBot
+			{
+				Template T_TFBot_Giant_Soldier_Spammer
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05c"
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 8
+			WaitForAllSpawned "wave05b"
+			TotalCurrency 25
+			
+			TFBot
+			{
+				Template T_TFBot_Giant_Soldier_Spammer
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05d"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 4
+			MaxActive 4
+			SpawnCount 2
+			WaitBeforeStarting 20
+			WaitBetweenSpawns 20
+			WaitForAllDead "wave05c"
+			TotalCurrency 100
+			
+			TFBot
+			{
+				Template T_TFBot_Giant_Demoman
+				Item "Squatter's Right"
+				Item "The Soldier's Stogie"
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05d"
+			Where spawnbot_base_main
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 8
+			MaxActive 4
+			SpawnCount 2
+			WaitBeforeStarting 20
+			WaitBetweenSpawns 12
+			WaitForAllDead "wave05c"
+			TotalCurrency 100
+			
+			TFBot
+			{
+				Template T_TFBot_Medic
+				Item "Squatter's Right"
+			//	ItemAttributes
+			//	{
+			//		ItemName "TF_WEAPON_MEDIGUN"
+			//		"uber duration bonus" -4
+			//	}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave05e"
+			Where spawnbot_base_jetpack1
+			Where spawnbot_gate1_jetpack1
+			Where spawnbot_gate2_jetpack1
+			TotalCount 4
+			MaxActive 4
+			SpawnCount 2
+			WaitBeforeStarting 20
+			WaitBetweenSpawns 20
+			WaitForAllSpawned "wave05d"
+			TotalCurrency 800
+			
+			Squad
+			{
+				TFBot
+				{
+					Template T_TFBot_Giant_Demo_Burst
+					Item "Squatter's Right"
+			//		Attributes AlwaysCrit
+					Tag jetpack_spawn
+				}
+				TFBot
+				{
+					Template T_TFBot_Giant_Medic_Regen
+					Tag jetpack_spawn
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_upper
+			Where spawnbot_gate2_upper
+			TotalCount 72
+			MaxActive 9
+			SpawnCount 3
+			WaitBeforeStarting 5
+			WaitBetweenSpawns 4
+		//	WaitForAllDead "wave05c"
+			TotalCurrency 200
+			
+			Support 1
+			
+			TFBot
+			{
+				Class Scout
+				Skill Normal
+			}
+		}
+	}
+	Wave
+	{
+	//	InitWaveOutput	// roll up your sleeves for our grand finale
+    //    {
+    //        Target bignet
+    //        Action RunScriptCode
+    //        Param "
+    //            SetWaveStartMusic(`motherland.mvm_start_last_wave`)
+    //        "
+    //    }
+		StartWaveOutput
+		{
+			Target wave_start_relay
+			Action Trigger
+		}
+		
+		WaveSpawn
+		{
+			Name "wave06a"
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 8
+			MaxActive 8
+			SpawnCount 2
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 15
+			TotalCurrency 200
+			
+			Squad
+			{
+				TFBot
+				{
+					Template T_TFBot_Giant_Heavyweapons
+					Item "Squatter's Right"
+					Item "The Soldier's Stogie"
+				}
+				TFBot
+				{
+					Template T_TFBot_Medic
+					Item "Squatter's Right"
+				}
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave06a"
+			Where spawnbot_base_main
+			Where spawnbot_base_battlements
+			Where spawnbot_base_upper
+			Where spawnbot_gate1_main
+			Where spawnbot_gate2_main
+			TotalCount 40
+			MaxActive 12
+			SpawnCount 4
+			WaitBeforeStarting 8
+			WaitBetweenSpawns 3
+			TotalCurrency 300
+			
+			RandomSpawn 1
+			
+			TFBot
+			{
+				Class Soldier
+				Skill Hard
+				Attributes AlwaysCrit
+				ClassIcon soldier_giant
+			}
+		}
+		WaveSpawn
+		{
+			Name "wave06boss"
+			Where spawnbot_base_jetpack1
+			Where spawnbot_gate1_jetpack1
+			Where spawnbot_gate2_jetpack1
+			TotalCount 1
+			MaxActive 1
+			SpawnCount 1
+			WaitBeforeStarting 0
+			WaitBetweenSpawns 15
+			WaitForAllSpawned "wave06a"
+			TotalCurrency 0
+			
+			FirstSpawnOutput
+			{	
+				Target wave_start_relay
+				Action RunScriptCode
+				Param "
+					IncludeScript(`nestingdollboss.nut`)
+				"
+			}
+			TFBot
+			{
+				Template T_TFBot_Boss_Nest_Spawner
+				Tag jetpack_spawn
+			}
+		}
+		WaveSpawn
+		{
+			Where spawnbot_traintank
+			TotalCount 100
+			MaxActive 14
+			SpawnCount 7
+			WaitBetweenSpawns 2
+			WaitBeforeStarting 0.14
+			WaitForAllSpawned "wave04c"
+			TotalCurrency 500
+			
+			Support 1
+
+			RandomChoice
+			{
+				TFBot
+				{
+					Class Scout
+					ClassIcon scout_bat
+					Scale 1.25
+					Health 300
+					Name "Steel Sentinel"
+					Tag bot_giant
+					WeaponRestrictions MeleeOnly 
+					CharacterAttributes
+					{
+						"head scale" 0.6
+						"voice pitch scale" 0
+					}
+				}
+				TFBot
+				{
+					Class Soldier
+					Scale 1.25
+					Health 500
+					Name "Steel Sentinel"
+		//			Attributes AlwaysCrit
+					Tag bot_giant
+					CharacterAttributes
+					{
+						"head scale" 0.6
+						"voice pitch scale" 0
+					}
+				}
+				TFBot
+				{
+					Class Demoman
+					Scale 1.25
+					Health 400
+					Name "Steel Sentinel"
+					Attributes AlwaysCrit
+					Tag bot_giant
+					CharacterAttributes
+					{
+						"head scale" 0.6
+						"voice pitch scale" 0
+					}
+				}
+				TFBot
+				{
+					Class Scout
+					ClassIcon scout_bat
+					Scale 1.25
+					Health 300
+					Name "Steel Sentinel"
+					Tag bot_giant
+					WeaponRestrictions MeleeOnly 
+					CharacterAttributes
+					{
+						"head scale" 0.6
+						"voice pitch scale" 0
+					}
+				}
+			}
+		}
+	}
+}
