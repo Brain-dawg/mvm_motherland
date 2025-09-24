@@ -123,7 +123,6 @@ function __CREATE_SCOPE( name, scope_ref = null, entity_ref = null, think_func =
 
 	return { Entity = ent, Scope = ent_scope }
 }
-
 __CREATE_SCOPE( "__motherland_main", "_MotherlandMain" )
 
 _MotherlandMain.TriggerHurt  <- CreateByClassname( "trigger_hurt" )
@@ -131,16 +130,18 @@ _MotherlandMain.ClientCmd    <- CreateByClassname( "point_clientcommand" )
 _MotherlandMain.ObjRes       <- FindByClassname( null, "tf_objective_resource" )
 _MotherlandMain.GameRules    <- FindByClassname( null, "tf_gamerules" )
 _MotherlandMain.PopInterface <- FindByClassname( null, "point_populator_interface" )
-_MotherlandMain.popname      <- GetPropString( _MotherlandMain.ObjRes, "m_iszMvMPopfileName" )
+_MotherlandMain.popname      <- GetPropString( _MotherlandMain.ObjRes, "m_iszMvMPopfileName" ).slice( 19, -4 )
+_MotherlandMain.mapname      <- GetMapName()
 _MotherlandMain.GateBDoor    <- FindByName( null, "gate2_door" )
 _MotherlandMain.GateADoor    <- FindByName( null, "gate1_main_door" )
 _MotherlandMain.TrainSpawnTrigger <- FindByClassnameNearest( "trigger_multiple", FindByName( null, "spawnbot_traintank" ).GetCenter(), 128 )
 
 // clean name for the workshop version
-if ( startswith( GetMapName(), "workshop/" ) ) {
+if ( _MotherlandMain.popname[0] != '(' && 8 in _MotherlandMain.mapname && _MotherlandMain.mapname[8] == '/' ) {
 
 	local popname = _MotherlandMain.popname
-	local name_override = popname == GetMapName() ? "(Int) Carbureted Clash" : "(Exp) Means of Destruction"
+	// printl( popname + " : " + GetMapName() )
+	local name_override = popname == _MotherlandMain.mapname ? "(Int) Carbureted Clash" : "(Exp) Means of Destruction"
 
 	_MotherlandMain.popname <- name_override
 	SetPropString( _MotherlandMain.ObjRes, STRING_NETPROP_POPNAME, name_override )
@@ -198,7 +199,7 @@ _EventWrapper("recalculate_holidays", "MainCleanup", function( params ) {
     }
 
 	// mission name changed, wipe out everything
-    if ( GetPropString( _MotherlandMain.ObjRes, "m_iszMvMPopfileName" ) != _MotherlandMain.popname ) {
+    if ( GetPropString( _MotherlandMain.ObjRes, "m_iszMvMPopfileName" ).slice( 19, -4 ) != _MotherlandMain.popname ) {
 
         _MotherlandEvents.ClearEvents( null )
         foreach ( ent in __active_scopes.keys() )

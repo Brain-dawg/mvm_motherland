@@ -636,7 +636,6 @@ _EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
     if ( !bot.IsBotOfType( TF_BOT_TYPE ) )
         return
 
-    // remove edict-wasting bot viewmodels
     local viewmodel = GetPropEntity( bot, "m_hViewModel" )
     if ( viewmodel && viewmodel.IsValid() )
         EntFireByHandle( viewmodel, "Kill", null, 0.1, null, null )
