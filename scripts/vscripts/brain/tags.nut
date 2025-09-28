@@ -636,9 +636,9 @@ _EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
     if ( !bot.IsBotOfType( TF_BOT_TYPE ) )
         return
 
-    local viewmodel = GetPropEntity( bot, "m_hViewModel" )
-    if ( viewmodel && viewmodel.IsValid() )
-        EntFireByHandle( viewmodel, "Kill", null, 0.1, null, null )
+    // local viewmodel = GetPropEntity( bot, "m_hViewModel" )
+    // if ( viewmodel && viewmodel.IsValid() )
+    //     EntFireByHandle( viewmodel, "Kill", null, 0.1, null, null )
 
     BotScope <- _MotherlandUtils.GetEntScope( bot )
 
