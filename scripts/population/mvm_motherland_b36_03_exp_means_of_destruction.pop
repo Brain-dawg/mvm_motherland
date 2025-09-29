@@ -817,6 +817,7 @@ WaveSchedule {
 			Param "
 				IncludeScript( `brain/main`, getroottable() )
 				EntFire( `holograms_hatch_flank`, `Trigger` )
+				EntFire( `holograms_gate1_flank`, `Enable` )
 				DisableSecondBomb()
 			"
 		}
@@ -1186,9 +1187,9 @@ WaveSchedule {
 					}
 				}
 
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner ClassIcon soldier_banner_trio }
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner ClassIcon soldier_banner_trio }
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner ClassIcon soldier_banner_trio }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 } ClassIcon soldier_banner_trio }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 } ClassIcon soldier_banner_trio }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 } ClassIcon soldier_banner_trio }
 				// TFBot { Template T_TFBot_Soldier_Extended_Concheror ClassIcon soldier_banner_trio }
 				// TFBot { Template T_TFBot_Soldier_Extended_Battalion ClassIcon soldier_banner_trio }
 			}
@@ -1230,6 +1231,7 @@ WaveSchedule {
 			Param "
 				IncludeScript( `brain/main`, getroottable() )
 				EntFire( `holograms_hatch_flank`, `Trigger` )
+				EntFire( `holograms_gate1_flank`, `Enable` )
 			"
 		}
 
@@ -1433,8 +1435,8 @@ WaveSchedule {
 					Item "The Bunsen Brave"
 					Item "Weight Room Warmer"
 				}
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn Tag motherland_revertgatebot Attributes Aggressive }
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag jetpack_spawn Tag motherland_revertgatebot Attributes Aggressive }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 } Tag jetpack_spawn Tag motherland_revertgatebot Attributes Aggressive }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 } Tag jetpack_spawn Tag motherland_revertgatebot Attributes Aggressive }
 				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies Tag jetpack_spawn }
 				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies Tag jetpack_spawn }
 			}
@@ -1586,7 +1588,7 @@ WaveSchedule {
 
 			Squad {
 
-				TFBot { Template T_TFBot_Soldier_Extended_Concheror Tag nav_main }
+				TFBot { Template T_TFBot_Soldier_Extended_Concheror CharacterAttributes { "deploy time increased" 0.5 } Tag nav_main }
 				TFBot { Class Heavy Skill Normal Attributes AlwaysCrit Tag nav_main }
 				TFBot { Class Heavy Skill Normal Attributes AlwaysCrit Tag nav_main }
 				TFBot { Template T_TFBot_Medic_QuickUber Tag nav_main }
@@ -1893,7 +1895,11 @@ WaveSchedule {
 			WaitBetweenSpawns 10
 			Support 1
 			RandomSpawn 1
-			TFBot { Template T_TFBot_Medic_QuickUber }
+			RandomChoice {
+
+				TFBot { Template T_TFBot_Medic }
+				TFBot { Template T_TFBot_Medic_QuickUber }
+			}
 		}
 
 		WaveSpawn {
@@ -2067,7 +2073,7 @@ WaveSchedule {
 
 			Squad {
 
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner Tag nav_main }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 } Tag nav_main }
 				TFBot { Class Demoman Skill Expert Tag nav_main }
 			}
 		}

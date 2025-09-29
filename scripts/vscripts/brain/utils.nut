@@ -176,7 +176,7 @@ function _MotherlandUtils::GetAllOutputs( ent, output ) {
 
 function _MotherlandUtils::WipeTanks() {
 
-    ScriptEntFireSafe( "tank_boss", @"self.TakeDamage( INT_MAX, DMG_GENERIC, First() ); StopSoundOn( `MVM.TankExplodes`, First() )" )
+    ScriptEntFireSafe( "tank_boss", "self.TakeDamage( INT_MAX, DMG_GENERIC, First() ); StopSoundOn( `MVM.TankExplodes`, First() )" )
 
     EmitSoundEx({
         sound_name = "MVM.TankExplodes",

@@ -54,11 +54,14 @@ _MotherlandTags.Tags <- {
             return
         }
 
-        if ( bot.HasBotAttribute( AGGRESSIVE ) && !bot.HasBotTag( "motherland_alwayspush" ) ) {
+        if ( !bot.HasBotTag( "motherland_alwayspush" ) ) {
 
-            bot.RemoveBotAttribute( AGGRESSIVE )
-            bot.RemoveBotAttribute( IGNORE_FLAG )
-            bot.RemoveBotAttribute( DISABLE_DODGE )
+            if ( bot.HasBotAttribute( AGGRESSIVE ) ) {
+
+                bot.RemoveBotAttribute( AGGRESSIVE )
+                bot.RemoveBotAttribute( IGNORE_FLAG )
+                bot.RemoveBotAttribute( DISABLE_DODGE )
+            }
 
             for ( local child = bot.FirstMoveChild(); child; child = child.NextMovePeer() )
                 if ( child instanceof CEconEntity && child.GetAttribute( "set item tint RGB", -1 ) == color )
