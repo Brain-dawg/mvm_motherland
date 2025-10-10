@@ -1,0 +1,72 @@
+WaveSchedule {
+
+    CustomWeapon [$SIGSEGV] {
+
+        Name "Tomislav Replacement"
+        OriginalItemName "Tomislav"
+        "custom item model" ""
+    }
+
+    CustomWeapon [$SIGSEGV] {
+
+        Name "Botkiller Scattergun"
+        OriginalItemName "Upgradeable TF_WEAPON_SCATTERGUN"
+        "custom item model" ""
+    }
+
+    CustomWeapon [$SIGSEGV] {
+
+        Name "Botkiller Rocket Launcher"
+        OriginalItemName "Upgradeable TF_WEAPON_ROCKETLAUNCHER"
+        "custom item model" ""
+    }
+
+    CustomWeapon [$SIGSEGV] {
+
+        Name "Botkiller Flamethrower"
+        OriginalItemName "Upgradeable TF_WEAPON_FLAMETHROWER"
+        "custom item model" ""
+    }
+
+    CustomWeapon [$SIGSEGV] {
+
+        Name "Botkiller Sticky"
+        OriginalItemName "Upgradeable TF_WEAPON_PIPEBOMBLAUNCHER"
+        "custom item model" ""
+    }
+
+    CustomWeapon [$SIGSEGV] {
+
+        Name "Botkiller Minigun"
+        OriginalItemName "Upgradeable TF_WEAPON_MINIGUN"
+        "custom item model" ""
+    }
+
+    CustomWeapon [$SIGSEGV] {
+
+        Name "Botkiller Wrench"
+        OriginalItemName "Upgradeable TF_WEAPON_WRENCH"
+        "custom item model" ""
+    }
+
+    CustomWeapon [$SIGSEGV] {
+
+        Name "Botkiller Medigun"
+        OriginalItemName "Upgradeable TF_WEAPON_MEDIGUN"
+        "custom item model" ""
+    }
+
+    CustomWeapon [$SIGSEGV] {
+
+        Name "Botkiller Sniper Rifle"
+        OriginalItemName "Upgradeable TF_WEAPON_SNIPERRIFLE"
+        "custom item model" ""
+    }
+
+    CustomWeapon [$SIGSEGV] {
+
+        Name "Botkiller Knife"
+        OriginalItemName "Upgradeable TF_WEAPON_KNIFE"
+        "custom item model" ""
+    }
+}
