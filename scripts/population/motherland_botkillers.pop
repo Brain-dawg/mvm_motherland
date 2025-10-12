@@ -1,20 +1,15 @@
 WaveSchedule 
 {
 
-    // CustomWeapon  {
 
-    //     OriginalItemName "Tomislav Replacement"
-    //      "Tomislav"
-    //     "custom item model" ""
+    // CustomWeapon [$SIGSEGV]
+    // {
+
+        // Name "Scout Botkiller"	
+        // OriginalItemName "Silver Botkiller Scattergun Mk.I"
+        // "custom item model" "models/player/items/mvm_loot/scout/fob_e_scattergun.mdl"
+		// "selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     // }
-
-    CustomWeapon 
-    {
-
-        Name "Scout Botkiller"
-        OriginalItemName "Silver Botkiller Scattergun Mk.1"
-        "custom item model" "models/player/items/mvm_loot/scout/fob_e_scattergun.mdl"
-    }
 
     // CustomWeapon  {
 
@@ -73,7 +68,7 @@ WaveSchedule
     //     "custom item model" ""
     // }
 
-    ExtraLoadoutItems 
+    ExtraLoadoutItems [$SIGSEGV]
     {
 
         Scout        
@@ -88,5 +83,81 @@ WaveSchedule
         // Medic        { Secondary "Medic Botkiller"  }
         // Sniper       { Primary   "Sniper Botkiller" }
         // Spy          { Melee     "Spy Botkiller"    }
+    }
+
+    MissionUnloadOutput [$SIGSEGV]
+    {
+
+        Target "BigNet"
+        Action "RunScriptCode"
+        Param "
+
+            if ( `_Motherland_Botkillers` in ROOT )
+                return
+
+            ::_Motherland_Botkillers <- {
+
+                function Botkiller( p, w ) {
+
+                    // if ( !w.GetAttribute( `selfmade description`, 0.0 ) )
+                        // return
+
+                    local modelname = `models/player/items/mvm_loot/fob_soviet_` + w.GetClassname().slice( 10 ) + `.mdl`
+
+                    printl( modelname )
+
+                    // GetPropEntity( w, `m_hExtraWearable` )
+                    // local wep = CreateByClassname( w.GetClassname() )
+                    // SetPropInt( wep, STRING_NETPROP_ITEMDEF, GetPropInt( w, STRING_NETPROP_ITEMDEF ) )
+                    // SetPropBool( wep, STRING_NETPROP_INIT, true )
+                    // SetPropBool( wep, STRING_NETPROP_ATTACH, true )
+                    // wep.SetOwner( p )
+
+                    // local wearable = CreateByClassname( `tf_wearable` )
+                    // wearable.SetModelSimple( modelname )
+                    // SetPropBool( wearable, STRING_NETPROP_INIT, true )
+                    // SetPropBool( wearable, STRING_NETPROP_ATTACH, true )
+                    // SetPropEntity( wep, `m_hExtraWearable`, wearable )
+
+
+                    // local wearable_vm = CreateByClassname( `tf_wearable_vm` )
+                    // wearable_vm.SetModelSimple( modelname )
+                    // SetPropBool( wearable_vm, STRING_NETPROP_INIT, true )
+                    // SetPropBool( wearable_vm, STRING_NETPROP_ATTACH, true )
+                    // SetPropEntity( wep, `m_hExtraWearableViewModel` wearable_vm )
+
+                    // DispatchSpawn( p )
+                    // p.Weapon_Equip( wep )
+                    // w.Kill()
+
+                    // local scope = p.GetScriptScope() || (p.ValidateScriptScope(), p.GetScriptScope())
+
+                    // if ( !(`wearables_to_kill` in scope) )
+                    //     scope.wearables_to_kill <- [ wearable ]
+                    // else
+                    //     scope.wearables_to_kill.append( wearable )
+
+                    // scope.wearables_to_kill.append( wearable_vm )
+
+                    // p.AddEFlags( EFL_NO_PHYSCANNON_INTERACTION )
+                    // SendGlobalGameEvent( `post_inventory_application`, { userid = userid_cache[ p ] } )
+                    // p.RemoveEFlags( EFL_NO_PHYSCANNON_INTERACTION )
+                }
+
+                function OnGameEvent_player_say( params ) {
+
+                    local player = GetPlayerFromUserID( params.userid )
+                    
+                    if ( params.text != `.botkiller` || IsPlayerABot( player ) )
+                        return
+
+                    local wep = player.GetActiveWeapon()
+
+                    if ( wep )
+                        Botkiller( player, wep )
+                }
+            }
+            __CollectGameEventCallbacks( _Motherland_Botkillers )
+        "
     }
 }
