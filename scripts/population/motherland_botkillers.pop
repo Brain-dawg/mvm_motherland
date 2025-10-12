@@ -1,69 +1,69 @@
 WaveSchedule {
 
-    // CustomWeapon [$SIGSEGV] {
+    // CustomWeapon  {
 
     //     OriginalItemName "Tomislav Replacement"
     //      "Tomislav"
     //     "custom item model" ""
     // }
 
-    CustomWeapon [$SIGSEGV] {
+    CustomWeapon {
 
         Name "Scout Botkiller"
         OriginalItemName "Silver Botkiller Scattergun Mk.1"
         "custom item model" "models/player/items/mvm_loot/scout/fob_e_scattergun.mdl"
     }
 
-    // CustomWeapon [$SIGSEGV] {
+    // CustomWeapon  {
 
     //     Name "Soldier Botkiller"
     //     OriginalItemName "Silver Botkiller Rocket Launcher Mk.1"
     //     "custom item model" ""
     // }
 
-    // CustomWeapon [$SIGSEGV] {
+    // CustomWeapon  {
 
     //     Name "Pyro Botkiller"
     //     OriginalItemName "Silver Botkiller Flamethrower Mk.1"
     //     "custom item model" ""
     // }
 
-    // CustomWeapon [$SIGSEGV] {
+    // CustomWeapon  {
 
     //     Name "Demo Botkiller"
     //     OriginalItemName "Silver Botkiller Stickybomb Launcher Mk.1"
     //     "custom item model" ""
     // }
 
-    // CustomWeapon [$SIGSEGV] {
+    // CustomWeapon  {
 
     //     Name "Heavy Botkiller"
     //     OriginalItemName "Silver Botkiller Minigun Mk.1"
     //     "custom item model" ""
     // }
 
-    // CustomWeapon [$SIGSEGV] {
+    // CustomWeapon  {
 
     //     Name "Engi Botkiller"
     //     OriginalItemName "Silver Botkiller Wrench Mk.I"
     //     "custom item model" ""
     // }
 
-    // CustomWeapon [$SIGSEGV] {
+    // CustomWeapon  {
 
     //     Name "Medic Botkiller"
     //     OriginalItemName "Silver Botkiller Medigun Mk.I"
     //     "custom item model" ""
     // }
 
-    // CustomWeapon [$SIGSEGV] {
+    // CustomWeapon  {
 
     //     Name "Sniper Botkiller"
     //     OriginalItemName "Silver Botkiller Sniper Rifle Mk.I"
     //     "custom item model" ""
     // }
 
-    // CustomWeapon [$SIGSEGV] {
+    // CustomWeapon  {
 
 
     //     Name "Spy Botkiller"
@@ -71,7 +71,7 @@ WaveSchedule {
     //     "custom item model" ""
     // }
 
-    ExtraLoadoutItems [$SIGSEGV] {
+    ExtraLoadoutItems {
 
         Scout        { Primary   "Scout Botkiller"  }
         // Soldier      { Primary   "Soldier Botkiller"}
