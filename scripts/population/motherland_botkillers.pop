@@ -74,13 +74,13 @@ WaveSchedule {
     ExtraLoadoutItems [$SIGSEGV] {
 
         Scout        { Primary   "Scout Botkiller"  }
-        Soldier      { Primary   "Soldier Botkiller"}
-        Pyro         { Primary   "Pyro Botkiller"   }
-        Demoman      { Secondary "Demo Botkiller"   }
-        Heavyweapons { Primary   "Heavy Botkiller"  }
-        Engineer     { Melee     "Engi Botkiller"   }
-        Medic        { Secondary "Medic Botkiller"  }
-        Sniper       { Primary   "Sniper Botkiller" }
-        Spy          { Melee     "Spy Botkiller"    }
+        // Soldier      { Primary   "Soldier Botkiller"}
+        // Pyro         { Primary   "Pyro Botkiller"   }
+        // Demoman      { Secondary "Demo Botkiller"   }
+        // Heavyweapons { Primary   "Heavy Botkiller"  }
+        // Engineer     { Melee     "Engi Botkiller"   }
+        // Medic        { Secondary "Medic Botkiller"  }
+        // Sniper       { Primary   "Sniper Botkiller" }
+        // Spy          { Melee     "Spy Botkiller"    }
     }
 }
