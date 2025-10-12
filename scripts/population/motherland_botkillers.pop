@@ -1,72 +1,86 @@
 WaveSchedule {
 
+    // CustomWeapon [$SIGSEGV] {
+
+    //     OriginalItemName "Tomislav Replacement"
+    //      "Tomislav"
+    //     "custom item model" ""
+    // }
+
     CustomWeapon [$SIGSEGV] {
 
-        Name "Tomislav Replacement"
-        OriginalItemName "Tomislav"
-        "custom item model" ""
+        Name "Scout Botkiller"
+        OriginalItemName "Silver Botkiller Scattergun Mk.1"
+        "custom item model" "models/player/items/mvm_loot/scout/fob_e_scattergun.mdl"
     }
 
-    CustomWeapon [$SIGSEGV] {
+    // CustomWeapon [$SIGSEGV] {
 
-        Name "Botkiller Scattergun"
-        OriginalItemName "Upgradeable TF_WEAPON_SCATTERGUN"
-        "custom item model" ""
-    }
+    //     Name "Soldier Botkiller"
+    //     OriginalItemName "Silver Botkiller Rocket Launcher Mk.1"
+    //     "custom item model" ""
+    // }
 
-    CustomWeapon [$SIGSEGV] {
+    // CustomWeapon [$SIGSEGV] {
 
-        Name "Botkiller Rocket Launcher"
-        OriginalItemName "Upgradeable TF_WEAPON_ROCKETLAUNCHER"
-        "custom item model" ""
-    }
+    //     Name "Pyro Botkiller"
+    //     OriginalItemName "Silver Botkiller Flamethrower Mk.1"
+    //     "custom item model" ""
+    // }
 
-    CustomWeapon [$SIGSEGV] {
+    // CustomWeapon [$SIGSEGV] {
 
-        Name "Botkiller Flamethrower"
-        OriginalItemName "Upgradeable TF_WEAPON_FLAMETHROWER"
-        "custom item model" ""
-    }
+    //     Name "Demo Botkiller"
+    //     OriginalItemName "Silver Botkiller Stickybomb Launcher Mk.1"
+    //     "custom item model" ""
+    // }
 
-    CustomWeapon [$SIGSEGV] {
+    // CustomWeapon [$SIGSEGV] {
 
-        Name "Botkiller Sticky"
-        OriginalItemName "Upgradeable TF_WEAPON_PIPEBOMBLAUNCHER"
-        "custom item model" ""
-    }
+    //     Name "Heavy Botkiller"
+    //     OriginalItemName "Silver Botkiller Minigun Mk.1"
+    //     "custom item model" ""
+    // }
 
-    CustomWeapon [$SIGSEGV] {
+    // CustomWeapon [$SIGSEGV] {
 
-        Name "Botkiller Minigun"
-        OriginalItemName "Upgradeable TF_WEAPON_MINIGUN"
-        "custom item model" ""
-    }
+    //     Name "Engi Botkiller"
+    //     OriginalItemName "Silver Botkiller Wrench Mk.I"
+    //     "custom item model" ""
+    // }
 
-    CustomWeapon [$SIGSEGV] {
+    // CustomWeapon [$SIGSEGV] {
 
-        Name "Botkiller Wrench"
-        OriginalItemName "Upgradeable TF_WEAPON_WRENCH"
-        "custom item model" ""
-    }
+    //     Name "Medic Botkiller"
+    //     OriginalItemName "Silver Botkiller Medigun Mk.I"
+    //     "custom item model" ""
+    // }
 
-    CustomWeapon [$SIGSEGV] {
+    // CustomWeapon [$SIGSEGV] {
 
-        Name "Botkiller Medigun"
-        OriginalItemName "Upgradeable TF_WEAPON_MEDIGUN"
-        "custom item model" ""
-    }
+    //     Name "Sniper Botkiller"
+    //     OriginalItemName "Silver Botkiller Sniper Rifle Mk.I"
+    //     "custom item model" ""
+    // }
 
-    CustomWeapon [$SIGSEGV] {
+    // CustomWeapon [$SIGSEGV] {
 
-        Name "Botkiller Sniper Rifle"
-        OriginalItemName "Upgradeable TF_WEAPON_SNIPERRIFLE"
-        "custom item model" ""
-    }
 
-    CustomWeapon [$SIGSEGV] {
+    //     Name "Spy Botkiller"
+    //     OriginalItemName "Silver Botkiller Knife Mk.I"
+    //     "custom item model" ""
+    // }
 
-        Name "Botkiller Knife"
-        OriginalItemName "Upgradeable TF_WEAPON_KNIFE"
-        "custom item model" ""
+    ExtraLoadoutItems [$SIGSEGV] {
+
+        Scout        { Primary   "Scout Botkiller"  }
+        Soldier      { Primary   "Soldier Botkiller"}
+        Pyro         { Primary   "Pyro Botkiller"   }
+        Demoman      { Secondary "Demo Botkiller"   }
+        Heavyweapons { Primary   "Heavy Botkiller"  }
+        Engineer     { Melee     "Engi Botkiller"   }
+        Medic        { Secondary "Medic Botkiller"  }
+        Sniper       { Primary   "Sniper Botkiller" }
+        Spy          { Melee     "Spy Botkiller"    }
     }
 }

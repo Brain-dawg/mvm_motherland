@@ -1,5 +1,6 @@
 #base robot_standard.pop
 #base robot_giant.pop
+#base motherland_botkillers.pop [$SIGSEGV]
 // #base robot_motherland.pop
 
 WaveSchedule {
