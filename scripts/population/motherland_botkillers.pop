@@ -1,4 +1,5 @@
-WaveSchedule {
+WaveSchedule 
+{
 
     // CustomWeapon  {
 
@@ -7,7 +8,8 @@ WaveSchedule {
     //     "custom item model" ""
     // }
 
-    CustomWeapon {
+    CustomWeapon 
+    {
 
         Name "Scout Botkiller"
         OriginalItemName "Silver Botkiller Scattergun Mk.1"
@@ -71,9 +73,13 @@ WaveSchedule {
     //     "custom item model" ""
     // }
 
-    ExtraLoadoutItems {
+    ExtraLoadoutItems 
+    {
 
-        Scout        { Primary   "Scout Botkiller"  }
+        Scout        
+        { 
+            Primary   "Scout Botkiller"  
+        }
         // Soldier      { Primary   "Soldier Botkiller"}
         // Pyro         { Primary   "Pyro Botkiller"   }
         // Demoman      { Secondary "Demo Botkiller"   }
