@@ -16,7 +16,7 @@ WaveSchedule
 
         Name "Scout Botkiller"	
         OriginalItemName "Silver Botkiller Scattergun Mk.I"
-        "custom item model" "models/player/items/mvm_loot/scout/fob_e_scattergun.mdl"
+        "custom item model" "models/player/items/mvm_loot/scout/fob_soviet_scattergun.mdl"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
