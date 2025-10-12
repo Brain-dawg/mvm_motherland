@@ -6,15 +6,15 @@
 WaveSchedule {
 
 	PrecacheGeneric "materials/hud/leaderboard_class_engineer_frontier_justice_nys_crit.vmt" [$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/scout/fob_soviet_scattergun.mdl" [$SIGSEGV]
+    PrecacheModel "player/items/mvm_loot/scout/fob_soviet_scattergun.mdl" 		[$SIGSEGV]
     PrecacheModel "player/items/mvm_loot/soldier/fob_soviet_rocketlauncher.mdl" [$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/pyro/fob_soviet_flamethrower.mdl" [$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/demo/fob_soviet_sticky.mdl" [$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/heavy/fob_soviet_minigun.mdl" [$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/engi/fob_soviet_wrench.mdl" [$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/medic/fob_soviet_medigun.mdl" [$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/sniper/fob_soviet_sniper.mdl" [$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/spy/fob_soviet_knife.mdl" [$SIGSEGV]
+    PrecacheModel "player/items/mvm_loot/pyro/fob_soviet_flamethrower.mdl" 		[$SIGSEGV]
+    PrecacheModel "player/items/mvm_loot/demo/fob_soviet_sticky.mdl" 			[$SIGSEGV]
+    PrecacheModel "player/items/mvm_loot/heavy/fob_soviet_minigun.mdl" 			[$SIGSEGV]
+    PrecacheModel "player/items/mvm_loot/engi/fob_soviet_wrench.mdl" 			[$SIGSEGV]
+    PrecacheModel "player/items/mvm_loot/medic/fob_soviet_medigun.mdl" 			[$SIGSEGV]
+    PrecacheModel "player/items/mvm_loot/sniper/fob_soviet_sniper.mdl" 			[$SIGSEGV]
+    PrecacheModel "player/items/mvm_loot/spy/fob_soviet_knife.mdl" 				[$SIGSEGV]
 
 
 	StartingCurrency 1600
