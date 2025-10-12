@@ -5,16 +5,16 @@
 
 WaveSchedule {
 
-	PrecacheGeneric "materials/hud/leaderboard_class_engineer_frontier_justice_nys_crit.vmt" [$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/scout/fob_soviet_scattergun.mdl" 		[$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/soldier/fob_soviet_rocketlauncher.mdl" [$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/pyro/fob_soviet_flamethrower.mdl" 		[$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/demo/fob_soviet_sticky.mdl" 			[$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/heavy/fob_soviet_minigun.mdl" 			[$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/engi/fob_soviet_wrench.mdl" 			[$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/medic/fob_soviet_medigun.mdl" 			[$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/sniper/fob_soviet_sniper.mdl" 			[$SIGSEGV]
-    PrecacheModel "player/items/mvm_loot/spy/fob_soviet_knife.mdl" 				[$SIGSEGV]
+	PrecacheGeneric "materials/hud/leaderboard_class_engineer_frontier_justice_nys_crit.vmt"
+    PrecacheModel "models/player/items/mvm_loot/scout/fob_soviet_scattergun.mdl"
+    PrecacheModel "models/player/items/mvm_loot/soldier/fob_soviet_rocketlauncher.mdl"
+    PrecacheModel "models/player/items/mvm_loot/pyro/fob_soviet_flamethrower.mdl"
+    PrecacheModel "models/player/items/mvm_loot/demo/fob_soviet_sticky.mdl"
+    PrecacheModel "models/player/items/mvm_loot/heavy/fob_soviet_minigun.mdl"
+    PrecacheModel "models/player/items/mvm_loot/engi/fob_soviet_wrench.mdl"
+    PrecacheModel "models/player/items/mvm_loot/medic/fob_soviet_medigun.mdl"
+    PrecacheModel "models/player/items/mvm_loot/sniper/fob_soviet_sniper.mdl"
+    PrecacheModel "models/player/items/mvm_loot/spy/fob_soviet_knife.mdl"
 
 
 	StartingCurrency 1600
@@ -61,7 +61,7 @@ WaveSchedule {
 
 			CharacterAttributes {
 
-				"move speed penalty" 0.0001 
+				"move speed penalty" 0.0001
 				"no_jump" 1
 				"no_duck" 1
 				"cancel falling damage" 1
@@ -101,10 +101,10 @@ WaveSchedule {
 
 		T_TFBot_Scout_Fan_NoPush {
 
-			Class Scout 
-			Item "The Force-A-Nature" 
-			Skill Expert 
-			ClassIcon scout_fan 
+			Class Scout
+			Item "The Force-A-Nature"
+			Skill Expert
+			ClassIcon scout_fan
 		}
 
 		T_TFBot_Pyro_NoAirblast {
@@ -169,7 +169,7 @@ WaveSchedule {
 			Item "Hazard Handler"
 			Item "Delldozer"
 		}
-		
+
 		T_TFBot_Heavyweapons_Deflector {
 
 			Class Heavyweapons
@@ -179,7 +179,7 @@ WaveSchedule {
 			Item "The U-clank-a"
 			Item "Deflector"
 			MaxVisionRange 1200
-			ItemAttributes 
+			ItemAttributes
 			{
 				ItemName "Deflector"
 				"attack projectiles" 1
@@ -451,7 +451,7 @@ WaveSchedule {
 				"override footstep sound set" 2
 			}
 		}
-		
+
 		T_TFBot_Giant_Medic_Kritz {
 
 			Class Medic
@@ -2421,7 +2421,7 @@ WaveSchedule {
 					Template T_TFBot_Engineer_Battle
 					Tag "motherland_limitedsupport{ icon = `engineer_frontier_justice_nys_crit`, count = 30, flags = ICON_NORMAL }"
 					Item "Upgradeable TF_WEAPON_SHOTGUN_PRIMARY"
-					
+
 				}
 				TFBot {
 

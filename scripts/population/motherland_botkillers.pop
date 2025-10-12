@@ -151,7 +151,7 @@ WaveSchedule
 
                     for ( local child = player.FirstMoveChild(); child; child = child.NextMovePeer() )
                         if ( child instanceof CBaseCombatWeapon && child.GetAttribute( `selfmade description`, 0.0 ) )
-                            Botkiller( player, wep )
+                            Botkiller( player, child )
                 }
             }
             __CollectGameEventCallbacks( _Motherland_Botkillers )
