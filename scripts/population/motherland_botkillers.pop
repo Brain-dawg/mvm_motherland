@@ -106,15 +106,9 @@ WaveSchedule
 
             ::_Motherland_Botkillers <- {
 
+                classes = [ ``, `scout`, `sniper`, `soldier`, `demo`, `heavy`, `medic`, `pyro`, `spy`, `engineer` ]
+
                 function Botkiller( p, w ) {
-
-                    // if ( !w.GetAttribute( `selfmade description`, 0.0 ) )
-                        // return
-
-                    local modelname = `models/player/items/mvm_loot/fob_soviet_` + w.GetClassname().slice( 10 ) + `.mdl`
-
-                    printl( modelname )
-
 
                     if ( !w.GetAttribute( `selfmade description`, 0.0 ) )
                         return
@@ -123,6 +117,16 @@ WaveSchedule
 
                     printl( modelname )
 
+                    EntFireByHandle( GetPropEntity( w, `m_hExtraWearable` ), `Kill`, null, -1, null, null )
+                    EntFireByHandle( GetPropEntity( w, `m_hExtraWearableViewModel` ), `Kill`, null, -1, null, null )
+
+
+                    local wearable = CreateByClassname( `tf_wearable` )
+                    wearable.SetModelSimple( modelname )
+                    SetPropBool( wearable, STRING_NETPROP_ATTACH, true )
+                    wearable.SetOwner( p )
+                    SetPropEntity( w, `m_hExtraWearable`, wearable )
+                    DispatchSpawn( wearable )
 
                     local wearable_vm = CreateByClassname( `tf_wearable_vm` )
                     wearable_vm.SetModelSimple( modelname )
@@ -138,7 +142,13 @@ WaveSchedule
                     else
                         scope.wearables_to_kill.append( wearable_vm )
 
+                    scope.wearables_to_kill.append( wearable )
+
                     w.RemoveAttribute( `selfmade description` )
+
+                    p.AddEFlags( EFL_IS_BEING_LIFTED_BY_BARNACLE )
+                    SendGlobalGameEvent( `post_inventory_application`, { userid = userid_cache [ p ] } )
+                    p.RemoveEFlags( EFL_IS_BEING_LIFTED_BY_BARNACLE )
 
                 }
 
@@ -146,7 +156,7 @@ WaveSchedule
 
                     local player = GetPlayerFromUserID( params.userid )
                     
-                    if ( IsPlayerABot( player ) )
+                    if ( IsPlayerABot( player ) || player.IsEFlagSet( EFL_IS_BEING_LIFTED_BY_BARNACLE ) )
                         return
 
                     for ( local child = player.FirstMoveChild(); child; child = child.NextMovePeer() )
