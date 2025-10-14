@@ -49,7 +49,7 @@ WaveSchedule
     CustomWeapon [$SIGSEGV]
     {
         Name "Engineer Botkiller"
-        OriginalItemName "Silver Botkiller Wrench Mk.II"
+        OriginalItemName "Silver Botkiller Wrench Mk.I"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 

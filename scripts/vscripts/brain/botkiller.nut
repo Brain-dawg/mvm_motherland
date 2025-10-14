@@ -59,7 +59,7 @@ local STRING_NETPROP_MDLINDEX_OVERRIDES = "m_nModelIndexOverrides"
         local modelname = format("models/player/items/mvm_loot/%s/fob_soviet_%s.mdl", classes[cls], w.GetClassname().slice( 10 ) )
 
         if ( cls == TF_CLASS_SNIPER )
-            "models/player/items/mvm_loot/sniper/fob_soviet_sniper.mdl" // fob_soviet_sniperrifle -> fob_soviet_sniper
+            modelname = "models/player/items/mvm_loot/sniper/fob_soviet_sniper.mdl" // fob_soviet_sniperrifle -> fob_soviet_sniper
         
         if ( cls == TF_CLASS_DEMOMAN )
             modelname = "models/player/items/mvm_loot/demo/fob_soviet_sticky.mdl"
