@@ -98,7 +98,7 @@ WaveSchedule
         }
         Engineer
         {
-            Melee     "Engi Botkiller"
+            Melee     "Engineer Botkiller"
         }
         Medic
         {
