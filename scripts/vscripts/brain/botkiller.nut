@@ -61,7 +61,7 @@ local STRING_NETPROP_MDLINDEX_OVERRIDES = "m_nModelIndexOverrides"
         if ( cls == TF_CLASS_SNIPER )
             modelname = "models/player/items/mvm_loot/sniper/fob_soviet_sniper.mdl" // fob_soviet_sniperrifle -> fob_soviet_sniper
         
-        if ( cls == TF_CLASS_DEMOMAN )
+        else if ( cls == TF_CLASS_DEMOMAN )
             modelname = "models/player/items/mvm_loot/demo/fob_soviet_sticky.mdl"
         // local modelname = "models/player/items/mvm_loot/scout/fob_soviet_scattergun.mdl"
 
