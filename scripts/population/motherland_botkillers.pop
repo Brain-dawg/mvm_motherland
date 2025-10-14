@@ -1,4 +1,4 @@
-WaveSchedule 
+WaveSchedule
 {
 
     PrecacheModel "player/items/mvm_loot/scout/fob_soviet_scattergun.mdl"
@@ -13,158 +13,112 @@ WaveSchedule
 
     CustomWeapon [$SIGSEGV]
     {
-
-        Name "Scout Botkiller"	
+        Name "Scout Botkiller"
         OriginalItemName "Silver Botkiller Scattergun Mk.I"
-        "custom item model" "models/player/items/mvm_loot/scout/fob_soviet_scattergun.mdl"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
-    // CustomWeapon  {
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Soldier Botkiller"
+        OriginalItemName "Silver Botkiller Rocket Launcher Mk.I"
+		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
+    }
 
-    //     Name "Soldier Botkiller"
-    //     OriginalItemName "Silver Botkiller Rocket Launcher Mk.1"
-    //     "custom item model" ""
-    // }
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Pyro Botkiller"
+        OriginalItemName "Silver Botkiller Flamethrower Mk.I"
+		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
+    }
 
-    // CustomWeapon  {
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Demo Botkiller"
+        OriginalItemName "Silver Botkiller Stickybomb Launcher Mk.I"
+		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
+    }
 
-    //     Name "Pyro Botkiller"
-    //     OriginalItemName "Silver Botkiller Flamethrower Mk.1"
-    //     "custom item model" ""
-    // }
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Heavy Botkiller"
+        OriginalItemName "Silver Botkiller Minigun Mk.I"
+		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
+    }
 
-    // CustomWeapon  {
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Engineer Botkiller"
+        OriginalItemName "Silver Botkiller Wrench Mk.I"
+		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
+    }
 
-    //     Name "Demo Botkiller"
-    //     OriginalItemName "Silver Botkiller Stickybomb Launcher Mk.1"
-    //     "custom item model" ""
-    // }
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Medic Botkiller"
+        OriginalItemName "Silver Botkiller Medi Gun Mk.I"
+		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
+    }
 
-    // CustomWeapon  {
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Sniper Botkiller"
+        OriginalItemName "Silver Botkiller Sniper Rifle Mk.I"
+		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
+    }
 
-    //     Name "Heavy Botkiller"
-    //     OriginalItemName "Silver Botkiller Minigun Mk.1"
-    //     "custom item model" ""
-    // }
-
-    // CustomWeapon  {
-
-    //     Name "Engi Botkiller"
-    //     OriginalItemName "Silver Botkiller Wrench Mk.I"
-    //     "custom item model" ""
-    // }
-
-    // CustomWeapon  {
-
-    //     Name "Medic Botkiller"
-    //     OriginalItemName "Silver Botkiller Medigun Mk.I"
-    //     "custom item model" ""
-    // }
-
-    // CustomWeapon  {
-
-    //     Name "Sniper Botkiller"
-    //     OriginalItemName "Silver Botkiller Sniper Rifle Mk.I"
-    //     "custom item model" ""
-    // }
-
-    // CustomWeapon  {
-
-
-    //     Name "Spy Botkiller"
-    //     OriginalItemName "Silver Botkiller Knife Mk.I"
-    //     "custom item model" ""
-    // }
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Spy Botkiller"
+        OriginalItemName "Silver Botkiller Knife Mk.I"
+		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
+    }
 
     ExtraLoadoutItems [$SIGSEGV]
     {
-
-        Scout        
-        { 
-            Primary   "Scout Botkiller"  
+        Scout
+        {
+            Primary   "Scout Botkiller"
         }
-        // Soldier      { Primary   "Soldier Botkiller"}
-        // Pyro         { Primary   "Pyro Botkiller"   }
-        // Demoman      { Secondary "Demo Botkiller"   }
-        // Heavyweapons { Primary   "Heavy Botkiller"  }
-        // Engineer     { Melee     "Engi Botkiller"   }
-        // Medic        { Secondary "Medic Botkiller"  }
-        // Sniper       { Primary   "Sniper Botkiller" }
-        // Spy          { Melee     "Spy Botkiller"    }
+        Soldier
+        {
+            Primary   "Soldier Botkiller"
+        }
+        Pyro
+        {
+            Primary   "Pyro Botkiller"
+        }
+        Demoman
+        {
+            Secondary "Demo Botkiller"
+        }
+        Heavyweapons
+        {
+            Primary   "Heavy Botkiller"
+        }
+        Engineer
+        {
+            Melee     "Engi Botkiller"
+        }
+        Medic
+        {
+            Secondary "Medic Botkiller"
+        }
+        Sniper
+        {
+            Primary   "Sniper Botkiller"
+        }
+        Spy
+        {
+            Melee     "Spy Botkiller"
+        }
     }
 
     MissionUnloadOutput [$SIGSEGV]
     {
 
         Target "BigNet"
-        Action "RunScriptCode"
-        Param "
-
-            if ( `_Motherland_Botkillers` in ROOT )
-                return
-
-            ::_Motherland_Botkillers <- {
-
-                classes = [ ``, `scout`, `sniper`, `soldier`, `demo`, `heavy`, `medic`, `pyro`, `spy`, `engineer` ]
-
-                function Botkiller( p, w ) {
-
-                    if ( !w.GetAttribute( `selfmade description`, 0.0 ) )
-                        return
-
-                    local modelname = format(`models/player/items/mvm_loot/%s/fob_soviet_%s.mdl`, classes[p.GetPlayerClass()], w.GetClassname().slice( 10 ) )
-
-                    printl( modelname )
-
-                    EntFireByHandle( GetPropEntity( w, `m_hExtraWearable` ), `Kill`, null, -1, null, null )
-                    EntFireByHandle( GetPropEntity( w, `m_hExtraWearableViewModel` ), `Kill`, null, -1, null, null )
-
-
-                    local wearable = CreateByClassname( `tf_wearable` )
-                    wearable.SetModelSimple( modelname )
-                    SetPropBool( wearable, STRING_NETPROP_ATTACH, true )
-                    wearable.SetOwner( p )
-                    SetPropEntity( w, `m_hExtraWearable`, wearable )
-                    DispatchSpawn( wearable )
-
-                    local wearable_vm = CreateByClassname( `tf_wearable_vm` )
-                    wearable_vm.SetModelSimple( modelname )
-                    SetPropBool( wearable_vm, STRING_NETPROP_ATTACH, true )
-                    wearable_vm.SetOwner( p )
-                    SetPropEntity( w, `m_hExtraWearableViewModel`, wearable_vm )
-                    DispatchSpawn( wearable_vm )
-                    p.EquipWearableViewModel( wearable_vm )
-                    local scope = p.GetScriptScope() || ( p.ValidateScriptScope(), p.GetScriptScope() )
-
-                    if ( !(`wearables_to_kill` in scope) )
-                        scope.wearables_to_kill <- [ wearable_vm ]
-                    else
-                        scope.wearables_to_kill.append( wearable_vm )
-
-                    scope.wearables_to_kill.append( wearable )
-
-                    w.RemoveAttribute( `selfmade description` )
-
-                    p.AddEFlags( EFL_IS_BEING_LIFTED_BY_BARNACLE )
-                    SendGlobalGameEvent( `post_inventory_application`, { userid = userid_cache [ p ] } )
-                    p.RemoveEFlags( EFL_IS_BEING_LIFTED_BY_BARNACLE )
-
-                }
-
-                function OnGameEvent_post_inventory_application( params ) {
-
-                    local player = GetPlayerFromUserID( params.userid )
-                    
-                    if ( IsPlayerABot( player ) || player.IsEFlagSet( EFL_IS_BEING_LIFTED_BY_BARNACLE ) )
-                        return
-
-                    for ( local child = player.FirstMoveChild(); child; child = child.NextMovePeer() )
-                        if ( child instanceof CBaseCombatWeapon && child.GetAttribute( `selfmade description`, 0.0 ) )
-                            Botkiller( player, child )
-                }
-            }
-            __CollectGameEventCallbacks( _Motherland_Botkillers )
-        "
+        Action "RunScriptFile"
+        Param "botkiller"
     }
 }
