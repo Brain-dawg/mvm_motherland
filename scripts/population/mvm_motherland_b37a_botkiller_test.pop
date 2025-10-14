@@ -827,6 +827,7 @@ WaveSchedule {
 			Action RunScriptCode
 			Param "
 				IncludeScript( `brain/main`, getroottable() )
+				IncludeScript( `brain/botkiller`, getroottable() )
 				EntFire( `holograms_hatch_flank`, `Trigger` )
 				EntFire( `holograms_gate1_flank`, `Enable` )
 				DisableSecondBomb()

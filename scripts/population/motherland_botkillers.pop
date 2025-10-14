@@ -28,7 +28,7 @@ WaveSchedule
     CustomWeapon [$SIGSEGV]
     {
         Name "Pyro Botkiller"
-        OriginalItemName "Silver Botkiller Flamethrower Mk.I"
+        OriginalItemName "Silver Botkiller Flame Thrower Mk.I"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
@@ -49,7 +49,7 @@ WaveSchedule
     CustomWeapon [$SIGSEGV]
     {
         Name "Engineer Botkiller"
-        OriginalItemName "Silver Botkiller Wrench Mk.I"
+        OriginalItemName "Silver Botkiller Wrench Mk.II"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
@@ -112,13 +112,5 @@ WaveSchedule
         {
             Melee     "Spy Botkiller"
         }
-    }
-
-    MissionUnloadOutput [$SIGSEGV]
-    {
-
-        Target "BigNet"
-        Action "RunScriptFile"
-        Param "botkiller"
     }
 }
