@@ -6,7 +6,7 @@ foreach( _class in [ "NetProps", "Entities", "EntityOutputs", "NavMesh", "Convar
 		if ( !( k in ROOT ) && k != "IsValid" )
 			ROOT[k] <- ROOT[_class][k].bindenv( ROOT[_class] )
 
-local classes = [ "", "scout", "sniper", "soldier", "demo", "heavy", "medic", "pyro", "spy", "engineer" ]
+local classes = [ "", "scout", "sniper", "soldier", "demo", "medic", "heavy", "pyro", "spy", "engineer" ]
 
 local STRING_NETPROP_ITEMDEF 	  	    = "m_AttributeManager.m_Item.m_iItemDefinitionIndex"
 local STRING_NETPROP_INIT 	 	  	    = "m_AttributeManager.m_Item.m_bInitialized"
