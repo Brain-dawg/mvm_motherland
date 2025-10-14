@@ -55,14 +55,15 @@ local STRING_NETPROP_MDLINDEX_OVERRIDES = "m_nModelIndexOverrides"
         // if ( !w.GetAttribute( "selfmade description", 0.0 ) )
             // return
 
+        local fobname = w.GetAttribute( "selfmade description", 0.0 ) ? "soviet" : "star"
         local cls = p.GetPlayerClass()
-        local modelname = format("models/player/items/mvm_loot/%s/fob_soviet_%s.mdl", classes[cls], w.GetClassname().slice( 10 ) )
+        local modelname = format("models/player/items/mvm_loot/%s/fob_%s_%s.mdl", classes[cls], fobname, w.GetClassname().slice( 10 ) )
 
         if ( cls == TF_CLASS_SNIPER )
-            modelname = "models/player/items/mvm_loot/sniper/fob_soviet_sniper.mdl" // fob_soviet_sniperrifle -> fob_soviet_sniper
+            modelname = "models/player/items/mvm_loot/sniper/fob_"+fobname+"_sniper.mdl" // fob_soviet_sniperrifle -> fob_soviet_sniper
         
         else if ( cls == TF_CLASS_DEMOMAN )
-            modelname = "models/player/items/mvm_loot/demo/fob_soviet_sticky.mdl"
+            modelname = "models/player/items/mvm_loot/demo/fob_"+fobname+"_sticky.mdl"
         // local modelname = "models/player/items/mvm_loot/scout/fob_soviet_scattergun.mdl"
 
         printl( modelname )
@@ -130,7 +131,7 @@ local STRING_NETPROP_MDLINDEX_OVERRIDES = "m_nModelIndexOverrides"
             return
 
         for ( local child = player.FirstMoveChild(); child; child = child.NextMovePeer() )
-            if ( child instanceof CBaseCombatWeapon && child.GetAttribute( "selfmade description", 0 ) )
+            if ( child instanceof CBaseCombatWeapon && ( child.GetAttribute( "selfmade description", 0 ) || child.GetAttribute( "obsolete ammo penalty", 0.0 ) ) )
                 Botkiller( player, child )
     }
 }

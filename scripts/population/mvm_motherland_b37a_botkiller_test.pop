@@ -11,10 +11,20 @@ WaveSchedule {
     PrecacheModel "models/player/items/mvm_loot/pyro/fob_soviet_flamethrower.mdl"
     PrecacheModel "models/player/items/mvm_loot/demo/fob_soviet_sticky.mdl"
     PrecacheModel "models/player/items/mvm_loot/heavy/fob_soviet_minigun.mdl"
-    PrecacheModel "models/player/items/mvm_loot/engi/fob_soviet_wrench.mdl"
+    PrecacheModel "models/player/items/mvm_loot/engineer/fob_soviet_wrench.mdl"
     PrecacheModel "models/player/items/mvm_loot/medic/fob_soviet_medigun.mdl"
     PrecacheModel "models/player/items/mvm_loot/sniper/fob_soviet_sniper.mdl"
     PrecacheModel "models/player/items/mvm_loot/spy/fob_soviet_knife.mdl"
+
+    PrecacheModel "models/player/items/mvm_loot/scout/fob_star_scattergun.mdl"
+    PrecacheModel "models/player/items/mvm_loot/soldier/fob_star_rocketlauncher.mdl"
+    PrecacheModel "models/player/items/mvm_loot/pyro/fob_star_flamethrower.mdl"
+    PrecacheModel "models/player/items/mvm_loot/demo/fob_star_sticky.mdl"
+    PrecacheModel "models/player/items/mvm_loot/heavy/fob_star_minigun.mdl"
+    PrecacheModel "models/player/items/mvm_loot/engineer/fob_star_wrench.mdl"
+    PrecacheModel "models/player/items/mvm_loot/medic/fob_star_medigun.mdl"
+    PrecacheModel "models/player/items/mvm_loot/sniper/fob_star_sniper.mdl"
+    PrecacheModel "models/player/items/mvm_loot/spy/fob_star_knife.mdl"
 
 
 	StartingCurrency 1600

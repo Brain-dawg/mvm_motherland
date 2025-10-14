@@ -1,116 +1,205 @@
 WaveSchedule
 {
 
-    PrecacheModel "models/player/items/mvm_loot/scout/fob_soviet_scattergun.mdl"
-    PrecacheModel "models/player/items/mvm_loot/soldier/fob_soviet_rocketlauncher.mdl"
-    PrecacheModel "models/player/items/mvm_loot/pyro/fob_soviet_flamethrower.mdl"
-    PrecacheModel "models/player/items/mvm_loot/demo/fob_soviet_sticky.mdl"
-    PrecacheModel "models/player/items/mvm_loot/heavy/fob_soviet_minigun.mdl"
-    PrecacheModel "models/player/items/mvm_loot/engi/fob_soviet_wrench.mdl"
-    PrecacheModel "models/player/items/mvm_loot/medic/fob_soviet_medigun.mdl"
-    PrecacheModel "models/player/items/mvm_loot/sniper/fob_soviet_sniper.mdl"
-    PrecacheModel "models/player/items/mvm_loot/spy/fob_soviet_knife.mdl"
-
     CustomWeapon [$SIGSEGV]
     {
-        Name "Scout Botkiller"
+        Name "Scout Soviet Botkiller"
         OriginalItemName "Silver Botkiller Scattergun Mk.I"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
     CustomWeapon [$SIGSEGV]
     {
-        Name "Soldier Botkiller"
+        Name "Scout Star Botkiller"
+        OriginalItemName "Silver Botkiller Scattergun Mk.I"
+		"obsolete ammo penalty" 1.0 // dummy attribute to find for attaching botkiller
+    }
+
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Soldier Soviet Botkiller"
         OriginalItemName "Silver Botkiller Rocket Launcher Mk.I"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
     CustomWeapon [$SIGSEGV]
     {
-        Name "Pyro Botkiller"
+        Name "Soldier Star Botkiller"
+        OriginalItemName "Silver Botkiller Rocket Launcher Mk.I"
+		"obsolete ammo penalty" 1.0 // dummy attribute to find for attaching botkiller
+    }
+
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Pyro Soviet Botkiller"
         OriginalItemName "Silver Botkiller Flame Thrower Mk.I"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
     CustomWeapon [$SIGSEGV]
     {
-        Name "Demo Botkiller"
+        Name "Pyro Star Botkiller"
+        OriginalItemName "Silver Botkiller Flame Thrower Mk.I"
+		"obsolete ammo penalty" 1.0 // dummy attribute to find for attaching botkiller
+    }
+
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Demo Soviet Botkiller"
         OriginalItemName "Silver Botkiller Stickybomb Launcher Mk.I"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
     CustomWeapon [$SIGSEGV]
     {
-        Name "Heavy Botkiller"
+        Name "Demo Star Botkiller"
+        OriginalItemName "Silver Botkiller Stickybomb Launcher Mk.I"
+		"obsolete ammo penalty" 1.0 // dummy attribute to find for attaching botkiller
+    }
+
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Heavy Soviet Botkiller"
         OriginalItemName "Silver Botkiller Minigun Mk.I"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
     CustomWeapon [$SIGSEGV]
     {
-        Name "Engineer Botkiller"
+        Name "Heavy Star Botkiller"
+        OriginalItemName "Silver Botkiller Minigun Mk.I"
+		"obsolete ammo penalty" 1.0 // dummy attribute to find for attaching botkiller
+    }
+
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Engineer Soviet Botkiller"
         OriginalItemName "Silver Botkiller Wrench Mk.I"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
     CustomWeapon [$SIGSEGV]
     {
-        Name "Medic Botkiller"
+        Name "Engineer Star Botkiller"
+        OriginalItemName "Silver Botkiller Wrench Mk.I"
+		"obsolete ammo penalty" 1.0 // dummy attribute to find for attaching botkiller
+    }
+
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Medic Soviet Botkiller"
         OriginalItemName "Silver Botkiller Medi Gun Mk.I"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
     CustomWeapon [$SIGSEGV]
     {
-        Name "Sniper Botkiller"
+        Name "Medic Star Botkiller"
+        OriginalItemName "Silver Botkiller Medi Gun Mk.I"
+		"obsolete ammo penalty" 1.0 // dummy attribute to find for attaching botkiller
+    }
+
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Sniper Soviet Botkiller"
         OriginalItemName "Silver Botkiller Sniper Rifle Mk.I"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
     }
 
     CustomWeapon [$SIGSEGV]
     {
-        Name "Spy Botkiller"
+        Name "Sniper Star Botkiller"
+        OriginalItemName "Silver Botkiller Sniper Rifle Mk.I"
+		"obsolete ammo penalty" 1.0 // dummy attribute to find for attaching botkiller
+    }
+
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Spy Soviet Botkiller"
         OriginalItemName "Silver Botkiller Knife Mk.I"
 		"selfmade description" 1.0 // dummy attribute to find for attaching botkiller
+    }
+
+    CustomWeapon [$SIGSEGV]
+    {
+        Name "Spy Star Botkiller"
+        OriginalItemName "Silver Botkiller Knife Mk.I"
+		"obsolete ammo penalty" 1.0 // dummy attribute to find for attaching botkiller
     }
 
     ExtraLoadoutItems [$SIGSEGV]
     {
         Scout
         {
-            Primary   "Scout Botkiller"
+            Primary   "Scout Soviet Botkiller"
+        }
+        Scout
+        {
+            Primary   "Scout Star Botkiller"
         }
         Soldier
         {
-            Primary   "Soldier Botkiller"
+            Primary   "Soldier Soviet Botkiller"
+        }
+        Soldier
+        {
+            Primary   "Soldier Star Botkiller"
         }
         Pyro
         {
-            Primary   "Pyro Botkiller"
+            Primary   "Pyro Soviet Botkiller"
+        }
+        Pyro
+        {
+            Primary   "Pyro Star Botkiller"
         }
         Demoman
         {
-            Secondary "Demo Botkiller"
+            Secondary "Demo Soviet Botkiller"
+        }
+        Demoman
+        {
+            Secondary "Demo Star Botkiller"
         }
         Heavyweapons
         {
-            Primary   "Heavy Botkiller"
+            Primary   "Heavy Soviet Botkiller"
+        }
+        Heavyweapons
+        {
+            Primary   "Heavy Star Botkiller"
         }
         Engineer
         {
-            Melee     "Engineer Botkiller"
+            Melee     "Engineer Soviet Botkiller"
+        }
+        Engineer
+        {
+            Melee     "Engineer Star Botkiller"
         }
         Medic
         {
-            Secondary "Medic Botkiller"
+            Secondary "Medic Soviet Botkiller"
+        }
+        Medic
+        {
+            Secondary "Medic Star Botkiller"
         }
         Sniper
         {
-            Primary   "Sniper Botkiller"
+            Primary   "Sniper Soviet Botkiller"
+        }
+        Sniper
+        {
+            Primary   "Sniper Star Botkiller"
         }
         Spy
         {
-            Melee     "Spy Botkiller"
+            Melee     "Spy Soviet Botkiller"
+        }
+        Spy
+        {
+            Melee     "Spy Star Botkiller"
         }
     }
 }
