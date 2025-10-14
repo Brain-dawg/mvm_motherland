@@ -56,7 +56,7 @@ local STRING_NETPROP_MDLINDEX_OVERRIDES = "m_nModelIndexOverrides"
             // return
 
         local modelname = format("models/player/items/mvm_loot/%s/fob_soviet_%s.mdl", classes[p.GetPlayerClass()], w.GetClassname().slice( 10 ) )
-        local modelname = "models/player/items/mvm_loot/scout/fob_soviet_scattergun.mdl"
+        // local modelname = "models/player/items/mvm_loot/scout/fob_soviet_scattergun.mdl"
 
         printl( modelname )
 
