@@ -91,6 +91,7 @@ local STRING_NETPROP_MDLINDEX_OVERRIDES = "m_nModelIndexOverrides"
         wearable_vm.SetModelSimple( modelname )
         SetPropBool( wearable_vm, STRING_NETPROP_ATTACH, true )
         SetPropEntity( w, "m_hExtraWearableViewModel", wearable_vm )
+        SetPropEntity( wearable_vm, "m_hWeaponAssociatedWith", w )
         DispatchSpawn( wearable_vm )
         p.EquipWearableViewModel( wearable_vm )
 
