@@ -85,6 +85,11 @@ local STRING_NETPROP_MDLINDEX_OVERRIDES = "m_nModelIndexOverrides"
         wearable.GetScriptScope().BotkillerThink <- BotkillerThink
         AddThinkToEnt( wearable, "BotkillerThink" )
 
+        // above doesn't show, fake it with an ornament
+        // local wearable2 = CreateByClassname( "prop_dynamic_ornament" )
+        // wearable2.SetModelSimple( modelname )
+        // DispatchSpawn( wearable2 )
+        // wearable2.AcceptInput( "SetAttached", "!activator", w, w )
 
         local wearable_vm = CreateByClassname( "tf_wearable_vm" )
 
@@ -102,26 +107,44 @@ local STRING_NETPROP_MDLINDEX_OVERRIDES = "m_nModelIndexOverrides"
 
         local scope = p.GetScriptScope() || (p.ValidateScriptScope(), p.GetScriptScope())
 
-        if ( !("wearables_to_kill" in scope) )
+        if ( !( "wearables_to_kill" in scope ) )
             scope.wearables_to_kill <- [ wearable ]
         else
             scope.wearables_to_kill.append( wearable )
 
+        // scope.wearables_to_kill.append( wearable2 )
         scope.wearables_to_kill.append( wearable_vm )
+    }
 
+    function Canteen( p ) {
+
+        for ( local child = p.FirstMoveChild(); child; child = child.NextMovePeer() )
+            if ( child.GetClassname() == "tf_powerup_bottle" ) {
+                child.SetModelSimple( "models/props_junk/garbage_glassbottle003a.mdl" )
+            }
     }
 
     function OnGameEvent_player_say( params ) {
 
         local player = GetPlayerFromUserID( params.userid )
         
-        if ( params.text != ".botkiller" || IsPlayerABot( player ) )
-            return
+        switch ( params.text ) {
 
-        local wep = player.GetActiveWeapon()
+            case ".botkiller":
 
-        if ( wep )
-            Botkiller( player, wep )
+                local wep = player.GetActiveWeapon()
+
+                if ( wep )
+                    Botkiller( player, wep )
+
+            break
+
+            case ".canteen":
+
+
+
+            break
+        }
     }
 
     function OnGameEvent_post_inventory_application( params ) {
