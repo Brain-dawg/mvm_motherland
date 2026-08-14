@@ -49,7 +49,7 @@ function _MotherlandMapLogic::_OnDestroy() {
     EmitSoundEx({ sound_name = "ambient/alarms/combine_bank_alarm_loop4.wav", flags = SND_STOP channel = CHAN_STATIC })
 
     local gateb
-    while ( gateb = FindByName( gateb, "gate2_door" ) ) break
+    while ( gateb = FindByName( gateb, "pointB_door" ) ) break
 
     if ( gateb && gateb.GetScriptScope() ) {
 
@@ -64,7 +64,7 @@ function _MotherlandMapLogic::_OnDestroy() {
     delete ::__MotherlandMapLogic_FirstLoad
 }
 
-local altbomb = FindByName( null, "gate2_bomb2" )
+local altbomb = FindByName( null, "flag_bomb_flank" )
 altbomb_scope <- _MotherlandUtils.GetEntScope( altbomb )
 
 altbomb_scope.InputEnable  <- function() { FakeBomb(); return true }

@@ -132,8 +132,8 @@ _MotherlandMain.GameRules    <- FindByClassname( null, "tf_gamerules" )
 _MotherlandMain.PopInterface <- FindByClassname( null, "point_populator_interface" )
 _MotherlandMain.popname      <- GetPropString( _MotherlandMain.ObjRes, "m_iszMvMPopfileName" ).slice( 19, -4 )
 _MotherlandMain.mapname      <- GetMapName()
-_MotherlandMain.GateBDoor    <- FindByName( null, "gate2_door" )
-_MotherlandMain.GateADoor    <- FindByName( null, "gate1_main_door" )
+_MotherlandMain.GateBDoor    <- FindByName( null, "pointB_door" )
+_MotherlandMain.GateADoor    <- FindByName( null, "pointA_spawn_door" )
 _MotherlandMain.TrainSpawnTrigger <- FindByClassnameNearest( "trigger_multiple", FindByName( null, "spawnbot_traintank" ).GetCenter(), 128 )
 
 // clean name for the workshop version

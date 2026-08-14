@@ -5,6 +5,7 @@
 WaveSchedule {
 
 	PrecacheGeneric "materials/hud/leaderboard_class_engineer_frontier_justice_nys_crit.vmt" [$SIGSEGV]
+	PrecacheGeneric "materials/hud/leaderboard_class_engineer_frontier_justice_nys_crit.vtf" [$SIGSEGV]
 
 	StartingCurrency 1600
 	RespawnWaveTime 5
@@ -1058,16 +1059,16 @@ WaveSchedule {
 
 								ItemName "TF_WEAPON_MINIGUN"
 								"single wep holster time increased" 0.01
-								"spunup_damage_resistance" 0.6
+								"spunup_damage_resistance" 0.7
 							}
 
 							ItemAttributes {
 
 								ItemName "The Robo-Sandvich"
 								"force weapon switch" 1
-								"lunchbox healing decreased" 20
+								"lunchbox healing decreased" 18
 								"gesture speed increase" 1.2
-								"item_meter_charge_rate" 14
+								"item_meter_charge_rate" 18
 							}
 
 							CharacterAttributes {
@@ -1259,6 +1260,7 @@ WaveSchedule {
 			SpawnCount 1
 			TotalCurrency 100
 			WaitBetweenSpawns 2
+			WaitBeforeStarting 25
 			Support Limited
 			RandomSpawn 1
 
@@ -1304,8 +1306,8 @@ WaveSchedule {
 					Item "The Dragon's Fury"
 					Name "Giant Dragon's Fury Pyro"
 				}
-				TFBot { Template T_TFBot_Giant_Medic_Regen Attributes IgnoreEnemies Tag bot_giant }
-				TFBot { Template T_TFBot_Giant_Medic_Regen Attributes IgnoreEnemies Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic_Regen CharacterAttributes { "mod weapon blocks healing" 1 } Attributes IgnoreEnemies Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic_Regen CharacterAttributes { "mod weapon blocks healing" 1 } Attributes IgnoreEnemies Tag bot_giant }
 			}
 		}
 
@@ -1337,7 +1339,7 @@ WaveSchedule {
 					Item "The Dragon's Fury"
 					Name "Giant Dragon's Fury Pyro"
 				}
-				TFBot { Template T_TFBot_Giant_Medic_Regen Attributes IgnoreEnemies Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic_Regen CharacterAttributes { "mod weapon blocks healing" 1 } Attributes IgnoreEnemies Tag bot_giant }
 			}
 		}
 
@@ -2097,8 +2099,8 @@ WaveSchedule {
 			Squad {
 
 				TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag bot_giant Attributes AlwaysCrit }
-				TFBot { Template T_TFBot_Giant_Medic Tag bot_giant }
-				TFBot { Template T_TFBot_Giant_Medic Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic CharacterAttributes { "mod weapon blocks healing" 1 } Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic CharacterAttributes { "mod weapon blocks healing" 1 } Tag bot_giant }
 			}
 		}
 	}
@@ -2571,8 +2573,8 @@ WaveSchedule {
 					Tag nav_flank
 				}
 
-				TFBot { Template T_TFBot_Giant_Medic_Kritz }
-				TFBot { Template T_TFBot_Giant_Medic_Kritz }
+				TFBot { Template T_TFBot_Giant_Medic_Kritz CharacterAttributes { "mod weapon blocks healing" 1 } }
+				TFBot { Template T_TFBot_Giant_Medic_Kritz CharacterAttributes { "mod weapon blocks healing" 1 } }
 			}
 		}
 
