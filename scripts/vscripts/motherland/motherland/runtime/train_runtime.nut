@@ -1,0 +1,16 @@
+ExpandClass(MotherlandBotMotherlandTrain)
+
+PrecacheParticle("mvm_tank_destroy")
+PrecacheParticle("explosionTrail_seeds_mvm")
+PrecacheParticle("fluidSmokeExpl_ring_mvm")
+
+/*PrecacheSound(TRAIN_SFX_DISTANT_WAVE_START)
+PrecacheSound(TRAIN_SFX_WHEEL_SQUEEL)
+PrecacheSound(TRAIN_SFX_SPAWN_HORN)
+PrecacheSound(TRAIN_SFX_LOOP)
+PrecacheSound(TRAIN_SFX_SLOW_TRAIN)
+PrecacheSound(TRAIN_SFX_RELOCATION)
+PrecacheSound(TRAIN_SFX_STEAM)
+PrecacheSound(TRAIN_SFX_STEAM2)
+PrecacheSound(TRAIN_SFX_TELEPORTER_READY)
+PrecacheSound(TRAIN_SFX_DOORS_OPEN)*/
