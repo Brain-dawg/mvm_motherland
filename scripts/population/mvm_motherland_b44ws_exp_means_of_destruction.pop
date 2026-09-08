@@ -24,12 +24,12 @@ WaveSchedule {
 			WaitBeforeStarting	0
 			Where spawnbot_base_upper
 			Where spawnbot_base_battlements
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate1_flank
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_upper
-			Where spawnbot_gate2_flank
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointA_flank
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_flank
+			Where spawnbot_pointB_flank
 			RandomSpawn 1
 
 			TFBot { Template T_TFBot_Motherland_Train }
@@ -37,27 +37,24 @@ WaveSchedule {
 
 		T_TFBot_Motherland_Train {
 
-			Name "Carrier Train"
-			Class Scout
-			Health 20000
-			ClassIcon crossguard_lite
-			Attributes IgnoreFlag
-			Attributes IgnoreEnemies
-			Attributes UseBossHealthBar
-			Attributes MiniBoss
-			MaxVisionRange 1
-			Tag bot_traintank_hackbot
-			Scale 0.001
+            Name "Carrier Train"
+            Class Engineer
+            Health 20000
+            ClassIcon crossguard_lite
+            Attributes IgnoreFlag
+            Attributes IgnoreEnemies
+            Attributes UseBossHealthBar
+            Attributes MiniBoss
+            MaxVisionRange 1
+            Tag bot_motherland_train
 
-			CharacterAttributes {
-
-				"move speed penalty" 0.0001 
-				"no_jump" 1
-				"no_duck" 1
-				"cancel falling damage" 1
-				"damage force reduction" 0.001
-				"airblast vulnerability multiplier" 0.001
-			}
+            CharacterAttributes
+            {
+                "move speed penalty" 0.0001
+                "no_jump" 1
+                "no_duck" 1
+                "cancel falling damage" 1
+            }
 		}
 
 		// look/wiggle around less
@@ -75,6 +72,7 @@ WaveSchedule {
 			Item "The Pain Train" // different taunt
 			Item "EOTL_demopants"
 			ClassIcon sentry_buster
+			Tag bot_giant
 
 			ItemAttributes {
 
@@ -91,10 +89,10 @@ WaveSchedule {
 
 		T_TFBot_Scout_Fan_NoPush {
 
-			Class Scout 
-			Item "The Force-A-Nature" 
-			Skill Expert 
-			ClassIcon scout_fan 
+			Class Scout
+			Item "The Force-A-Nature"
+			Skill Expert
+			ClassIcon scout_fan
 		}
 
 		T_TFBot_Pyro_NoAirblast {
@@ -159,7 +157,7 @@ WaveSchedule {
 			Item "Hazard Handler"
 			Item "Delldozer"
 		}
-		
+
 		T_TFBot_Heavyweapons_Deflector {
 
 			Class Heavyweapons
@@ -169,7 +167,7 @@ WaveSchedule {
 			Item "The U-clank-a"
 			Item "Deflector"
 			MaxVisionRange 1200
-			ItemAttributes 
+			ItemAttributes
 			{
 				ItemName "Deflector"
 				"attack projectiles" 1
@@ -441,7 +439,7 @@ WaveSchedule {
 				"override footstep sound set" 2
 			}
 		}
-		
+
 		T_TFBot_Giant_Medic_Kritz {
 
 			Class Medic
@@ -559,7 +557,7 @@ WaveSchedule {
 					}
 				}
 
-				GateBCapped {
+				PointBCaptured {
 
 					Skill Expert
 					Attributes AlwaysCrit
@@ -589,10 +587,10 @@ WaveSchedule {
 
 		Where spawnbot_base_upper
 		Where spawnbot_base_battlements
-		Where spawnbot_gate1_upper
-		// Where spawnbot_gate1_upper
-		Where spawnbot_gate2_upper
-		Where spawnbot_gate2_flank
+		Where spawnbot_pointA_upper
+		// Where spawnbot_pointA_upper
+		Where spawnbot_pointB_flank
+		Where spawnbot_pointB_flank
 		BeginAtWave 1
 		RunForThisManyWaves 6
 		CooldownTime 30
@@ -608,9 +606,9 @@ WaveSchedule {
 		InitialCooldown 30
 		Where spawnbot_base_upper
 		Where spawnbot_base_battlements
-		Where spawnbot_gate1_upper
-		// Where spawnbot_gate1_upper
-		Where spawnbot_gate2_upper
+		Where spawnbot_pointA_upper
+		// Where spawnbot_pointA_upper
+		Where spawnbot_pointB_flank
 		BeginAtWave 1
 		RunForThisManyWaves 1
 		CooldownTime 40
@@ -631,9 +629,9 @@ WaveSchedule {
 
 		Where spawnbot_base_upper
 		Where spawnbot_base_battlements
-		Where spawnbot_gate1_upper
-		// Where spawnbot_gate1_upper
-		Where spawnbot_gate2_upper
+		Where spawnbot_pointA_upper
+		// Where spawnbot_pointA_upper
+		Where spawnbot_pointB_flank
 		BeginAtWave 1
 		RunForThisManyWaves 1
 		CooldownTime 25
@@ -658,9 +656,9 @@ WaveSchedule {
 		InitialCooldown 30
 		Where spawnbot_base_upper
 		Where spawnbot_base_battlements
-		Where spawnbot_gate1_upper
-		// Where spawnbot_gate1_upper
-		Where spawnbot_gate2_upper
+		Where spawnbot_pointA_upper
+		// Where spawnbot_pointA_upper
+		Where spawnbot_pointB_flank
 		BeginAtWave 2
 		RunForThisManyWaves 1
 		CooldownTime 25
@@ -687,8 +685,8 @@ WaveSchedule {
 		Objective Engineer
 
 		Where spawnbot_base_battlements
-		Where spawnbot_gate1_battlements
-		Where spawnbot_gate2_flank
+		Where spawnbot_pointA_battlements
+		Where spawnbot_pointB_flank
 		BeginAtWave 2
 		RunForThisManyWaves 1
 		CooldownTime 10
@@ -704,9 +702,9 @@ WaveSchedule {
 	// 	InitialCooldown 120
 	// 	Where spawnbot_base_upper
 	// 	Where spawnbot_base_battlements
-	// 	Where spawnbot_gate1_upper
-	// 	// Where spawnbot_gate1_upper
-	// 	Where spawnbot_gate2_upper
+	// 	Where spawnbot_pointA_upper
+	// 	// Where spawnbot_pointA_upper
+	// 	Where spawnbot_pointB_flank
 	// 	BeginAtWave 2
 	// 	RunForThisManyWaves 1
 	// 	CooldownTime 20
@@ -760,9 +758,9 @@ WaveSchedule {
 		InitialCooldown 10
 		Where spawnbot_base_upper
 		Where spawnbot_base_battlements
-		Where spawnbot_gate1_upper
-		// Where spawnbot_gate1_upper
-		Where spawnbot_gate2_upper
+		Where spawnbot_pointA_upper
+		// Where spawnbot_pointA_upper
+		Where spawnbot_pointB_flank
 		BeginAtWave 4
 		RunForThisManyWaves 1
 		CooldownTime 30
@@ -778,8 +776,8 @@ WaveSchedule {
 		InitialCooldown 10
 		Where spawnbot_base_battlements
 		Where spawnbot_base_upper
-		Where spawnbot_gate1_battlements
-		Where spawnbot_gate2_upper
+		Where spawnbot_pointA_battlements
+		Where spawnbot_pointB_flank
 		BeginAtWave 4
 		RunForThisManyWaves 1
 		CooldownTime 20
@@ -796,8 +794,8 @@ WaveSchedule {
 		// InitialCooldown 10
 		Where spawnbot_base_battlements
 		Where spawnbot_base_upper
-		Where spawnbot_gate1_battlements
-		Where spawnbot_gate2_upper
+		Where spawnbot_pointA_battlements
+		Where spawnbot_pointB_flank
 		BeginAtWave 6
 		RunForThisManyWaves 1
 		CooldownTime 25
@@ -813,13 +811,11 @@ WaveSchedule {
 
 		InitWaveOutput {
 
-			Target logic_script_lizardmvm
+			Target logic_script_motherland
 			Action RunScriptCode
 			Param "
-				IncludeScript( `brain/main`, getroottable() )
-				EntFire( `holograms_hatch_flank`, `Trigger` )
-				EntFire( `holograms_gate1_flank`, `Enable` )
-				DisableSecondBomb()
+				IncludeScript( `brain_motherland/main`, getroottable() )
+				DisableNavPrefersTiedToSpawn()
 			"
 		}
 
@@ -836,11 +832,11 @@ WaveSchedule {
 			Where spawnbot_base_main
 			Where spawnbot_base_closet
 			Where spawnbot_base_upper
-			Where spawnbot_base_battlements
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate1_main
-			// Where spawnbot_gate1_upper
-			Where spawnbot_gate2_upper
+			// Where spawnbot_base_battlements
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointA_main
+			// Where spawnbot_pointA_upper
+			Where spawnbot_pointB_flank
 			TotalCount 1
 			MaxActive 1
 			SpawnCount 1
@@ -868,10 +864,10 @@ WaveSchedule {
 			Where spawnbot_base_main
 			Where spawnbot_base_closet
 			Where spawnbot_base_upper
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate1_main
-			Where spawnbot_gate2_upper
-			TotalCount 69 // nice
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointA_main
+			Where spawnbot_pointB_flank
+			TotalCount 79
 			MaxActive 9
 			SpawnCount 3
 			TotalCurrency 150
@@ -896,11 +892,12 @@ WaveSchedule {
 
 			Name "wave1a"
 			Where spawnbot_base_battlements
-			Where spawnbot_base_battlements_c
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate1_main
-			Where spawnbot_gate2_upper
-			Where spawnbot_gate2_main
+			Where spawnbot_base_upper
+			Where spawnbot_base_main
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointA_main
+			Where spawnbot_pointB_flank
+			Where spawnbot_pointB_main
 			TotalCount 30
 			MaxActive 5
 			SpawnCount 5
@@ -912,7 +909,6 @@ WaveSchedule {
 
 				Template T_TFBot_Scout_Melee
 				ClassIcon scout_bat
-				Tag nav_flank
 				Tag motherland_revertgatebot
 				Attributes Aggressive
 				Item "The Delinquent's Down Vest"
@@ -926,10 +922,10 @@ WaveSchedule {
 			Name "wave1b"
 			Where spawnbot_base_jetpack1
 			Where spawnbot_base_jetpack2
-			Where spawnbot_gate1_jetpack1
-			Where spawnbot_gate1_jetpack2
-			Where spawnbot_gate2_jetpack1
-			Where spawnbot_gate2_jetpack2
+			Where spawnbot_pointA_jetpack1
+			Where spawnbot_pointA_jetpack2
+			Where spawnbot_pointB_jetpack1
+			Where spawnbot_pointB_jetpack2
 			TotalCount 6
 			MaxActive 3
 			SpawnCount 3
@@ -943,11 +939,9 @@ WaveSchedule {
 
 					Template T_TFBot_Giant_Soldier_Spammer
 					Tag bot_giant
-					Tag jetpack_spawn
-					Tag motherland_alwaysglow
 				}
-				TFBot { Template T_TFBot_Medic Tag jetpack_spawn }
-				TFBot { Template T_TFBot_Medic Tag jetpack_spawn }
+				TFBot { Template T_TFBot_Medic  }
+				TFBot { Template T_TFBot_Medic  }
 			}
 		}
 
@@ -955,11 +949,11 @@ WaveSchedule {
 
 			Name "wave1b1"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 3
 			MaxActive 1
 			SpawnCount 1
@@ -977,8 +971,8 @@ WaveSchedule {
 					Skill Normal
 					Tag bot_giant
 				}
-				TFBot { Template T_TFBot_Medic Tag jetpack_spawn }
-				TFBot { Template T_TFBot_Medic Tag jetpack_spawn }
+				TFBot { Template T_TFBot_Medic  }
+				TFBot { Template T_TFBot_Medic  }
 			}
 		}
 
@@ -987,10 +981,10 @@ WaveSchedule {
 			Name "wave1b2"
 			Where spawnbot_base_jetpack1
 			Where spawnbot_base_jetpack2
-			Where spawnbot_gate1_jetpack1
-			Where spawnbot_gate1_jetpack2
-			Where spawnbot_gate2_jetpack1
-			Where spawnbot_gate2_jetpack2
+			Where spawnbot_pointA_jetpack1
+			Where spawnbot_pointA_jetpack2
+			Where spawnbot_pointB_jetpack1
+			Where spawnbot_pointB_jetpack2
 			TotalCount 1
 			MaxActive 1
 			SpawnCount 1
@@ -1002,8 +996,6 @@ WaveSchedule {
 				Template T_TFBot_Soldier_BurstFire
 				Skill Normal
 				Tag bot_giant
-				Tag jetpack_spawn
-				Tag motherland_alwaysglow
 			}
 		}
 
@@ -1011,11 +1003,11 @@ WaveSchedule {
 
 			Name "wave1c"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 4
 			MaxActive 4
 			SpawnCount 4
@@ -1027,9 +1019,9 @@ WaveSchedule {
 
 			FirstSpawnOutput {
 
-				Target logic_script_lizardmvm
-				Action RunScriptCode
-				Param "SetBSpawns( true )"
+				Target logic_script_motherland
+				Action CallScriptFunction
+				Param EnableSpawnSet2
 			}
 
 			Squad {
@@ -1066,9 +1058,9 @@ WaveSchedule {
 
 								ItemName "The Robo-Sandvich"
 								"force weapon switch" 1
-								"lunchbox healing decreased" 18
+								"lunchbox healing decreased" 20
 								"gesture speed increase" 1.2
-								"item_meter_charge_rate" 18
+								"item_meter_charge_rate" 14
 							}
 
 							CharacterAttributes {
@@ -1077,10 +1069,9 @@ WaveSchedule {
 								"airblast vulnerability multiplier" 0
 								"airblast vertical vulnerability multiplier" 0
 								"move speed penalty" 0.5
-								"cannot pick up intelligence" 1
 							}
 						}
-						GateACapped {
+						PointACaptured {
 
 							Item "The Robo-Sandvich"
 							Item "The Sandvich Safe"
@@ -1112,10 +1103,9 @@ WaveSchedule {
 								"airblast vulnerability multiplier" 0
 								"airblast vertical vulnerability multiplier" 0
 								"move speed penalty" 0.5
-								"cannot pick up intelligence" 1
 							}
 						}
-						GateBCapped {
+						PointBCaptured {
 
 							Item "The Robo-Sandvich"
 							Item "The Sandvich Safe"
@@ -1147,7 +1137,6 @@ WaveSchedule {
 								"airblast vulnerability multiplier" 0
 								"airblast vertical vulnerability multiplier" 0
 								"move speed penalty" 0.5
-								"cannot pick up intelligence" 1
 							}
 						}
 						RevertGateBotsBehavior {
@@ -1182,7 +1171,6 @@ WaveSchedule {
 								"airblast vulnerability multiplier" 0
 								"airblast vertical vulnerability multiplier" 0
 								"move speed penalty" 0.5
-								"cannot pick up intelligence" 1
 							}
 						}
 					}
@@ -1201,14 +1189,15 @@ WaveSchedule {
 			Name "wave1c"
 			Where spawnbot_base_main
 			Where spawnbot_base_upper
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_upper
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_flank
 			TotalCount 9999
 			Support Limited
-			WaitBetweenSpawns 8
-			MaxActive 3
+			WaitBetweenSpawns 2
+			MaxActive 4
+			SpawnCount 1
 			WaitForAllDead "wave1b2"
 			RandomSpawn 1
 
@@ -1227,12 +1216,10 @@ WaveSchedule {
 
 		InitWaveOutput {
 
-			Target BigNet
+			Target logic_script_motherland
 			Action RunScriptCode
 			Param "
-				IncludeScript( `brain/main`, getroottable() )
-				EntFire( `holograms_hatch_flank`, `Trigger` )
-				EntFire( `holograms_gate1_flank`, `Enable` )
+				IncludeScript( `brain_motherland/main`, getroottable() )
 			"
 		}
 
@@ -1242,25 +1229,23 @@ WaveSchedule {
 			Action RunScriptCode
 			Param "
 				RemoveWaveIcon( `soldier_mangler_v2`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-				EntFire(`logic_script_lizardmvm`, `CallScriptFunction`, `DisableSecondBomb`)
 			"
 		}
 
 		WaveSpawn {
 
 			Name "wave2a"
-			Where spawnbot_base_battlements
+			// Where spawnbot_base_battlements
 			Where spawnbot_base_upper
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 5
 			MaxActive 3
 			SpawnCount 1
-			TotalCurrency 100
+			TotalCurrency 50
 			WaitBetweenSpawns 2
-			WaitBeforeStarting 25
 			Support Limited
 			RandomSpawn 1
 
@@ -1277,23 +1262,23 @@ WaveSchedule {
 
 			Name "wave2a"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 3
 			MaxActive 3
 			SpawnCount 3
 			WaitBeforeStarting 3
-			TotalCurrency 50
+			TotalCurrency 150
 			RandomSpawn 1
 
 			FirstSpawnOutput {
 
-				Target logic_script_lizardmvm
-				Action RunScriptCode
-				Param "SetBSpawns( true )"
+				Target logic_script_motherland
+				Action CallScriptFunction
+				Param EnableSpawnSet2
 			}
 
 			Squad {
@@ -1306,8 +1291,8 @@ WaveSchedule {
 					Item "The Dragon's Fury"
 					Name "Giant Dragon's Fury Pyro"
 				}
-				TFBot { Template T_TFBot_Giant_Medic_Regen CharacterAttributes { "mod weapon blocks healing" 1 } Attributes IgnoreEnemies Tag bot_giant }
-				TFBot { Template T_TFBot_Giant_Medic_Regen CharacterAttributes { "mod weapon blocks healing" 1 } Attributes IgnoreEnemies Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic_Regen Attributes IgnoreEnemies Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic_Regen Attributes IgnoreEnemies Tag bot_giant }
 			}
 		}
 
@@ -1315,11 +1300,11 @@ WaveSchedule {
 
 			Name "wave2b"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 2
 			MaxActive 2
 			SpawnCount 2
@@ -1339,26 +1324,26 @@ WaveSchedule {
 					Item "The Dragon's Fury"
 					Name "Giant Dragon's Fury Pyro"
 				}
-				TFBot { Template T_TFBot_Giant_Medic_Regen CharacterAttributes { "mod weapon blocks healing" 1 } Attributes IgnoreEnemies Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic_Regen Attributes IgnoreEnemies Tag bot_giant }
 			}
 		}
 
 		WaveSpawn {
 
 			Name "wave2c"
-			Where spawnbot_base_closet_b
-			Where spawnbot_base_upper_b
-			Where spawnbot_base_battlements_b
-			Where spawnbot_gate1_upper_b
-			Where spawnbot_gate1_main_b
-			Where spawnbot_gate2_upper_b
-			Where spawnbot_gate2_main_b
+			Where spawnbot_base_closet2
+			Where spawnbot_base_upper2
+			// Where spawnbot_base_battlements2
+			Where spawnbot_pointA_upper2
+			Where spawnbot_pointA_main2
+			Where spawnbot_pointB_flank2
+			Where spawnbot_pointB_main2
 			WaitBeforeStarting 15
 			TotalCount 80
-			MaxActive 8
+			MaxActive 12
 			SpawnCount 2
 			TotalCurrency 100
-			WaitBetweenSpawns 2
+			WaitBetweenSpawns 1
 			Support Limited
 			RandomSpawn 1
 
@@ -1375,11 +1360,11 @@ WaveSchedule {
 
 			Name "wave2c1"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_upper
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_flank
+			Where spawnbot_pointB_main3
 			TotalCount 3
 			MaxActive 1
 			SpawnCount 1
@@ -1398,7 +1383,7 @@ WaveSchedule {
 				Item "Sun-on-a-Stick"
 				ClassIcon scout_sunstick_swordstone
 				Tag bot_giant
-				Tag nav_main
+
 				Tag motherland_revertgatebot
 				Attributes Aggressive
 			}
@@ -1409,10 +1394,10 @@ WaveSchedule {
 			Name "wave2c2"
 			Where spawnbot_base_jetpack1
 			Where spawnbot_base_jetpack2
-			Where spawnbot_gate1_jetpack1
-			Where spawnbot_gate1_jetpack2
-			Where spawnbot_gate2_jetpack1
-			Where spawnbot_gate2_jetpack2
+			Where spawnbot_pointA_jetpack1
+			Where spawnbot_pointA_jetpack2
+			Where spawnbot_pointB_jetpack1
+			Where spawnbot_pointB_jetpack2
 			TotalCount 10
 			MaxActive 5
 			SpawnCount 5
@@ -1428,19 +1413,19 @@ WaveSchedule {
 
 					Template T_TFBot_Heavyweapons_Heater
 					Tag bot_giant
-					Tag nav_main
-					Tag jetpack_spawn
-					Tag motherland_altfire
+
+
+					// Tag motherland_altfire
 					Tag motherland_alwaysglow
 					Tag motherland_revertgatebot
 					Attributes Aggressive
 					Item "The Bunsen Brave"
 					Item "Weight Room Warmer"
 				}
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 } Tag jetpack_spawn Tag motherland_revertgatebot Attributes Aggressive }
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 } Tag jetpack_spawn Tag motherland_revertgatebot Attributes Aggressive }
-				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies Tag jetpack_spawn }
-				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies Tag jetpack_spawn }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 }  Tag motherland_revertgatebot Attributes Aggressive }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 }  Tag motherland_revertgatebot Attributes Aggressive }
+				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies  }
+				TFBot { Template T_TFBot_Medic Attributes IgnoreEnemies  }
 			}
 
 			DoneOutput {
@@ -1448,9 +1433,9 @@ WaveSchedule {
 				Target __motherland_wavebar
 				Action RunScriptCode
 				Param "
-					_MotherlandUtils.ScriptEntFireSafe( `logic_script_lizardmvm`, `SetBSpawns( false )` )
 					RemoveWaveIcon( `pyro`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
 					RemoveWaveIcon( `pyro_flare`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
+					Motherland.EnableSpawnSet2()
 				"
 			}
 		}
@@ -1460,12 +1445,12 @@ WaveSchedule {
 			Name "tanksupport"
 			Where spawnbot_base_closet
 			Where spawnbot_base_upper
-			Where spawnbot_base_battlements
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate1_flank
-			// Where spawnbot_gate1_upper
-			Where spawnbot_gate2_upper
-			Where spawnbot_gate2_flank
+			// Where spawnbot_base_battlements
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointA_flank
+			// Where spawnbot_pointA_upper
+			Where spawnbot_pointB_flank
+			Where spawnbot_pointB_flank
 			Support Limited
 			TotalCount 9999
 			MaxActive 8
@@ -1514,7 +1499,7 @@ WaveSchedule {
 
 				Name Tank
 				Health 25000
-				StartingPathTrackNode "tank_path_0"
+				StartingPathTrackNode "tank_path_start"
 				OnBombDroppedOutput
 				{
 					Target boss_deploy_relay
@@ -1528,11 +1513,10 @@ WaveSchedule {
 
 		InitWaveOutput {
 
-			Target logic_script_lizardmvm
+			Target logic_script_motherland
 			Action RunScriptCode
 			Param "
-				IncludeScript( `brain/main`, getroottable() )
-				DisablePeacefulTrain()
+				IncludeScript( `brain_motherland/main`, getroottable() )
 			"
 		}
 
@@ -1544,7 +1528,6 @@ WaveSchedule {
 				RemoveWaveIcon( `heavy_shotgun`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
 				RemoveWaveIcon( `medic`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
 				RemoveWaveIcon( `medic_vac_trio_nys`, ICON_SUPPORT|ICON_SUPPORT_LIMITED )
-				EntFire( `logic_script_lizardmvm`, `CallScriptFunction`, `DisableSecondBomb` )
 			"
 		}
 
@@ -1552,34 +1535,34 @@ WaveSchedule {
 
 			Name "wave3_pretrain"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 1
 			MaxActive 1
 			SpawnCount 1
 			WaitBeforeStarting 2
-			TotalCurrency 50
+			TotalCurrency 100
 			StartWaveWarningSound "ambient/alarms/train_horn_distant1.wav"
 			RandomSpawn 1
 
-			TFBot { Template T_TFBot_Giant_Heavyweapons_Shotgun Tag bot_giant Tag nav_main }
+			TFBot { Template T_TFBot_Giant_Heavyweapons_Shotgun Tag bot_giant  }
 		}
 
 		WaveSpawn {
 
 			Name "wave3_pretrain"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
+			Where spawnbot_base_main3
 			Where spawnbot_base_closet
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
-			Where spawnbot_gate2_upper
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
+			Where spawnbot_pointB_flank
 			TotalCount 10
 			MaxActive 3
 			SpawnCount 1
@@ -1590,11 +1573,11 @@ WaveSchedule {
 
 			Squad {
 
-				TFBot { Template T_TFBot_Soldier_Extended_Concheror CharacterAttributes { "deploy time increased" 0.5 } Tag nav_main }
-				TFBot { Class Heavy Skill Normal Attributes AlwaysCrit Tag nav_main }
-				TFBot { Class Heavy Skill Normal Attributes AlwaysCrit Tag nav_main }
-				TFBot { Template T_TFBot_Medic_QuickUber Tag nav_main }
-				TFBot { Template T_TFBot_Medic_QuickUber Tag nav_main }
+				TFBot { Template T_TFBot_Soldier_Extended_Concheror CharacterAttributes { "deploy time increased" 0.5 }  }
+				TFBot { Class Heavy Skill Normal Attributes AlwaysCrit  }
+				TFBot { Class Heavy Skill Normal Attributes AlwaysCrit  }
+				TFBot { Template T_TFBot_Medic_QuickUber  }
+				TFBot { Template T_TFBot_Medic_QuickUber  }
 			}
 		}
 
@@ -1603,7 +1586,7 @@ WaveSchedule {
 			Template T_WaveSpawn_Motherland_Train
 			Name "wave3traintank"
 			WaitForAllDead "wave3_pretrain"
-			TFBot { Template T_TFBot_Motherland_Train }
+			TFBot { Template T_TFBot_Motherland_Train Health 27000 }
 
 			DoneOutput {
 
@@ -1617,10 +1600,10 @@ WaveSchedule {
 
 			Name "wave3traintank_support"
 			Where spawnbot_traintank
-			// Where spawnbot_traintank_c
+			// Where spawnbot_traintank3
 			TotalCount 9999
 			MaxActive 10
-			SpawnCount 1
+			SpawnCount 2
 			WaitBetweenSpawns 1
 			WaitBeforeStarting 1
 			WaitForAllSpawned "wave3traintank"
@@ -1635,7 +1618,6 @@ WaveSchedule {
 					ClassIcon heavy_shotgun
 					WeaponRestrictions SecondaryOnly
 					Skill Expert
-					Tag nav_main
 					// Tag traintank_spawn
 					Tag motherland_revertgatebot
 					Attributes Aggressive
@@ -1646,7 +1628,6 @@ WaveSchedule {
 					ClassIcon heavy_shotgun
 					WeaponRestrictions SecondaryOnly
 					Skill Expert
-					Tag nav_main
 					// Tag traintank_spawn
 					Tag motherland_revertgatebot
 					Attributes Aggressive
@@ -1657,7 +1638,6 @@ WaveSchedule {
 					ClassIcon heavy_shotgun
 					WeaponRestrictions SecondaryOnly
 					Skill Expert
-					Tag nav_main
 					// Tag traintank_spawn
 					Tag motherland_revertgatebot
 					Attributes Aggressive
@@ -1669,17 +1649,17 @@ WaveSchedule {
 
 			Name "wave3train1"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 3
 			MaxActive 2
 			SpawnCount 1
 			WaitBetweenSpawns 10
 			WaitBeforeStarting 8
-			TotalCurrency 100
+			TotalCurrency 200
 			WaitForAllSpawned "wave3traintank"
 			RandomSpawn 1
 
@@ -1690,36 +1670,36 @@ WaveSchedule {
 
 			Name "wave3train1"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
+			Where spawnbot_base_main3
 			Where spawnbot_base_closet
 			Where spawnbot_base_upper
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate1_flank
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_upper
-			Where spawnbot_gate2_flank
-			TotalCount 24
-			MaxActive 8
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointA_flank
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_flank
+			Where spawnbot_pointB_flank
+			TotalCount 30
+			MaxActive 10
 			SpawnCount 4
 			WaitBetweenSpawns 1
 			WaitBeforeStarting 6
-			TotalCurrency 50
+			TotalCurrency 150
 			WaitForAllSpawned "wave3traintank"
 			RandomSpawn 1
 
-			TFBot { Template T_TFBot_Demoman_Knight Tag nav_main }
+			TFBot { Template T_TFBot_Demoman_Knight  }
 		}
 
 		WaveSpawn {
 
 			Name "wave3medicsupport"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 30
 			MaxActive 6
 			SpawnCount 2
@@ -1740,10 +1720,10 @@ WaveSchedule {
 			Where spawnbot_base_main
 			Where spawnbot_base_closet
 			Where spawnbot_base_upper
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_upper
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_flank
 			TotalCount 30
 			MaxActive 8
 			SpawnCount 2
@@ -1758,16 +1738,16 @@ WaveSchedule {
 
 			Name "wave3train2"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 9
 			MaxActive 3
 			SpawnCount 1
 			WaitBetweenSpawns 1
-			TotalCurrency 50
+			TotalCurrency 100
 			WaitForAllDead "wave3train1"
 			RandomSpawn 1
 
@@ -1777,7 +1757,7 @@ WaveSchedule {
 				Item "Siberian Sweater"
 				Item "Officer's Ushanka"
 				Tag bot_giant
-				Tag nav_main
+
 				Tag motherland_revertgatebot
 				Attributes AlwaysCrit
 				Attributes Aggressive
@@ -1788,20 +1768,20 @@ WaveSchedule {
 
 			Name "wave3train2"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 9
 			MaxActive 3
 			SpawnCount 3
 			WaitBetweenSpawns 10
-			TotalCurrency 50
+			TotalCurrency 100
 			WaitForAllDead "wave3train1"
 			RandomSpawn 1
 			Squad {
-				TFBot { Template T_TFBot_Giant_Soldier_Spammer_Reload Tag bot_giant Tag nav_main }
+				TFBot { Template T_TFBot_Giant_Soldier_Spammer_Reload Tag bot_giant  }
 				TFBot { Template T_TFBot_Medic_Kritz }
 				TFBot { Template T_TFBot_Medic_Kritz }
 			}
@@ -1812,11 +1792,12 @@ WaveSchedule {
 
 		InitWaveOutput {
 
-			Target BigNet
+			Target logic_script_motherland
 			Action RunScriptCode
 			Param "
-				IncludeScript( `brain/main`, getroottable() )
-				EntFire( `holograms_hatch_flank`, `Trigger` )
+				IncludeScript( `brain_motherland/main`, getroottable() )
+				EnableFlankBomb()
+				EnableSpawnSet3()
 			"
 		}
 
@@ -1824,11 +1805,11 @@ WaveSchedule {
 
 			Name "wave4a"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 8
 			MaxActive 2
 			SpawnCount 1
@@ -1845,11 +1826,11 @@ WaveSchedule {
 
 			RandomChoice {
 
-				TFBot { Template T_TFBot_Giant_Heavyweapons Tag motherland_altfire Tag bot_giant }
-				TFBot { Template T_TFBot_Giant_Heavyweapons_Natascha Tag motherland_altfire Tag bot_giant }
-				TFBot { Template T_TFBot_Giant_Heavyweapons_BrassBeast Tag motherland_altfire Tag bot_giant }
-				TFBot { Template T_TFBot_Giant_Heavyweapons_Deflector Tag motherland_altfire Tag bot_giant }
-				TFBot { Template T_TFBot_Heavyweapons_Heater Tag motherland_altfire Tag bot_giant Item "The Bunsen Brave" }
+				TFBot { Template T_TFBot_Giant_Heavyweapons Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Heavyweapons_Natascha Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Heavyweapons_BrassBeast Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Heavyweapons_Deflector Tag bot_giant }
+				TFBot { Template T_TFBot_Heavyweapons_Heater Tag bot_giant Item "The Bunsen Brave" }
 			}
 		}
 
@@ -1864,7 +1845,7 @@ WaveSchedule {
 
 				Name "tankboss"
 				Health 10000
-				StartingPathTrackNode tank_path_0
+				StartingPathTrackNode "tank_path_start"
 				Speed 90
 
 				OnBombDroppedOutput {
@@ -1875,7 +1856,7 @@ WaveSchedule {
 
 				// OnKilledOutput {
 
-				// 	Target BigNet
+				// 	Target logic_script_motherland
 				// 	Action RunScriptCode
 				// 	Param "EntFire( RandomInt( 0, 3 ) == 3 ? `switch_tank_path_short` : `switch_tank_path_long`, `Trigger` )"
 				// }
@@ -1888,14 +1869,15 @@ WaveSchedule {
 			Where spawnbot_base_main
 			Where spawnbot_base_closet
 			Where spawnbot_base_upper
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_upper
-			MaxActive 4
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_flank
+			TotalCount 9999
+			MaxActive 2
 			SpawnCount 1
 			WaitBetweenSpawns 10
-			Support 1
+			Support Limited
 			RandomSpawn 1
 			RandomChoice {
 
@@ -1907,14 +1889,14 @@ WaveSchedule {
 		WaveSpawn {
 			Name "wave4support"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
-			MaxActive 4
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
+			MaxActive 8
 			SpawnCount 2
-			WaitBetweenSpawns 4
+			WaitBetweenSpawns 3
 			Support 1
 			RandomSpawn 1
 
@@ -1933,12 +1915,11 @@ WaveSchedule {
 
 		InitWaveOutput {
 
-			Target logic_script_lizardmvm
+			Target logic_script_motherland
 			Action RunScriptCode
 			Param "
-				IncludeScript( `brain/main`, getroottable() )
-				EntFire( `holograms_hatch_flank`, `Trigger` )
-				DisablePeacefulTrain()
+				IncludeScript( `brain_motherland/main`, getroottable() )
+				EnableFlankBomb()
 			"
 		}
 
@@ -1949,7 +1930,7 @@ WaveSchedule {
 			TotalCurrency 400
 			RandomSpawn 1
 
-			TFBot { Template T_TFBot_Motherland_Train Health 30000 }
+			TFBot { Template T_TFBot_Motherland_Train Health 37000 }
 
 			DoneOutput {
 
@@ -1964,7 +1945,7 @@ WaveSchedule {
 
 			Name "wave5traintank_support"
 			Where spawnbot_traintank
-			// Where spawnbot_traintank_c
+			// Where spawnbot_traintank3
 			TotalCount 9999
 			MaxActive 6
 			SpawnCount 2
@@ -1973,14 +1954,14 @@ WaveSchedule {
 			WaitForAllSpawned "wave5traintank"
 			Support Limited
 			RandomSpawn 1
-			TFBot { Template T_TFBot_Sniper_Huntsman Attributes AlwaysCrit Tag nav_main }
+			TFBot { Template T_TFBot_Sniper_Huntsman Attributes AlwaysCrit  }
 		}
 
 		WaveSpawn {
 
 			Name "w5tanktrain_support"
 			Where spawnbot_traintank
-			// Where spawnbot_traintank_c
+			// Where spawnbot_traintank3
 			TotalCount 8
 			MaxActive 4
 			SpawnCount 4
@@ -2006,25 +1987,25 @@ WaveSchedule {
 					Template T_TFBot_Giant_Boxing_Heavy
 					Attributes AlwaysCrit
 					Tag bot_giant
-					Tag nav_main
+
 					// Tag traintank_spawn
 				}
 				TFBot {
 					Template T_TFBot_Medic_Vacc_Bullet_Full
 					ClassIcon medic_vac_trio_nys
-					Tag nav_main
+
 					// Tag traintank_spawn
 				}
 				TFBot {
 					Template T_TFBot_Medic_Vacc_Blast_Full
 					ClassIcon medic_vac_trio_nys
-					Tag nav_main
+
 					// Tag traintank_spawn
 				}
 				TFBot {
 					Template T_TFBot_Medic_Vacc_Fire_Full
 					ClassIcon medic_vac_trio_nys
-					Tag nav_main
+
 					// Tag traintank_spawn
 				}
 			}
@@ -2034,11 +2015,11 @@ WaveSchedule {
 
 			Name "wave5a"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 
 			TotalCount 10
 			MaxActive 2
@@ -2050,8 +2031,8 @@ WaveSchedule {
 
 			Squad {
 
-				TFBot { Template T_TFBot_Giant_Scout_Fast Tag bot_giant Tag nav_main }
-				TFBot { Template T_TFBot_Giant_Scout_FAN Item "The Fed-Fightin' Fedora" Tag bot_giant Tag nav_main }
+				TFBot { Template T_TFBot_Giant_Scout_Fast Tag bot_giant  }
+				TFBot { Template T_TFBot_Giant_Scout_FAN Item "The Fed-Fightin' Fedora" Tag bot_giant  }
 			}
 		}
 
@@ -2060,14 +2041,12 @@ WaveSchedule {
 			Name "wave5b"
 			Where spawnbot_base_upper
 			Where spawnbot_base_battlements
-			Where spawnbot_gate1_upper
-			Where spawnbot_gate1_battlements
-			Where spawnbot_gate2_upper
-			Where spawnbot_gate2_battlements
-			TotalCount 30
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointA_battlements
+			Where spawnbot_pointB_flank
+			TotalCount 40
 			MaxActive 12
 			SpawnCount 2
-			WaitBetweenSpawns 1
 			TotalCurrency 100
 			WaitForAllSpawned "wave5a"
 			WaitBeforeStarting 5
@@ -2075,8 +2054,8 @@ WaveSchedule {
 
 			Squad {
 
-				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 } Tag nav_main }
-				TFBot { Class Demoman Skill Expert Tag nav_main }
+				TFBot { Template T_TFBot_Soldier_Extended_Buff_Banner CharacterAttributes { "deploy time increased" 0.5 }  }
+				TFBot { Class Demoman Skill Expert  }
 			}
 		}
 
@@ -2084,11 +2063,11 @@ WaveSchedule {
 
 			Name "wave5b"
 			Where spawnbot_base_main
-			Where spawnbot_base_main_c
-			Where spawnbot_gate1_main
-			Where spawnbot_gate1_main_c
-			Where spawnbot_gate2_main
-			Where spawnbot_gate2_main_c
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
 			TotalCount 6
 			MaxActive 3
 			SpawnCount 3
@@ -2099,8 +2078,8 @@ WaveSchedule {
 			Squad {
 
 				TFBot { Template T_TFBot_Giant_Soldier_SlowBarrage Tag bot_giant Attributes AlwaysCrit }
-				TFBot { Template T_TFBot_Giant_Medic CharacterAttributes { "mod weapon blocks healing" 1 } Tag bot_giant }
-				TFBot { Template T_TFBot_Giant_Medic CharacterAttributes { "mod weapon blocks healing" 1 } Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic Tag bot_giant }
+				TFBot { Template T_TFBot_Giant_Medic Tag bot_giant }
 			}
 		}
 	}
@@ -2109,18 +2088,17 @@ WaveSchedule {
 
 		InitWaveOutput {
 
-			Target logic_script_lizardmvm
+			Target logic_script_motherland
 			Action RunScriptCode
 			Param "
-				IncludeScript( `brain/main`, getroottable() )
-				EntFire( `holograms_hatch_flank`, `Trigger` )
-				SetBSpawns( true )
-				DisablePeacefulTrain()
+				IncludeScript( `brain_motherland/main`, getroottable() )
+				EnableFlankBomb()
+				EnableSpawnSet2()
 
-				::PrecacheSoundOriginal( `ambient/alarms/combine_bank_alarm_loop4.wav` )
+				PrecacheSound( `ambient/alarms/combine_bank_alarm_loop4.wav` )
 
 				// for (local i = 0; i < 3; i++)
-				SendGlobalGameEvent( `teamplay_broadcast_audio`, { sound = `ambient/alarms/train_horn_distant1.wav` additional_flags = 0x4 team = 255 })
+				//SendGlobalGameEvent( `teamplay_broadcast_audio`, { sound = `ambient/alarms/train_horn_distant1.wav` additional_flags = 0x4 team = 255 })
 			"
 		}
 
@@ -2137,12 +2115,12 @@ WaveSchedule {
 			Where spawnbot_base_jetpack1
 			Where spawnbot_base_jetpack2
 			Where spawnbot_base_jetpack3
-			Where spawnbot_gate1_jetpack1
-			Where spawnbot_gate1_jetpack2
-			Where spawnbot_gate1_jetpack3
-			Where spawnbot_gate2_jetpack1
-			Where spawnbot_gate2_jetpack2
-			Where spawnbot_gate2_jetpack3
+			Where spawnbot_pointA_jetpack1
+			Where spawnbot_pointA_jetpack2
+			Where spawnbot_pointA_jetpack3
+			Where spawnbot_pointB_jetpack1
+			Where spawnbot_pointB_jetpack2
+			Where spawnbot_pointB_jetpack3
 			TotalCount 1
 			MaxActive 1
 			SpawnCount 1
@@ -2164,13 +2142,13 @@ WaveSchedule {
 					]
 
 					EmitSoundEx({ sound_name = `vo/announcer_security_alert.mp3`, special_dsp = 57 })
-					ScriptEntFireSafe( `logic_script_lizardmvm`, `EmitSoundEx({sound_name = \`ambient/alarms/combine_bank_alarm_loop4.wav\` pitch = 80 channel = CHAN_STATIC })`, 1.0 )
-					ScriptEntFireSafe( `logic_script_lizardmvm`, `SetTrainStopNearHatch(); SetRobotSpawnGate(2)`, 2.0 )
-					ScriptEntFireSafe( `logic_script_lizardmvm`, `EmitSoundEx({sound_name = \`ambient/alarms/combine_bank_alarm_loop4.wav\` flags = SND_STOP channel = CHAN_STATIC })`, 10.0 )
+					ScriptEntFireSafe( `logic_script_motherland`, `EmitSoundEx({sound_name = \`ambient/alarms/combine_bank_alarm_loop4.wav\` pitch = 80 channel = CHAN_STATIC })`, 1.0 )
+					ScriptEntFireSafe( `logic_script_motherland`, `PutHatchUnderSiege()`, 2.0 )
+					ScriptEntFireSafe( `logic_script_motherland`, `EmitSoundEx({sound_name = \`ambient/alarms/combine_bank_alarm_loop4.wav\` flags = SND_STOP channel = CHAN_STATIC })`, 10.0 )
 					EntFire( `base_bothint_sniper`, `Disable` )
-					EntFire( `gate1_bothint_sniper`, `Disable` )
+					EntFire( `pointA_bothint_sniper`, `Disable` )
 
-					for ( local hint, i = 0; hint = FindByName( hint, `gate2_bothint_sniper`); i++ )
+					for ( local hint, i = 0; hint = FindByName( hint, `pointB_bothint_sniper`); i++ )
 						if ( i in hintspots )
 							(hint.SetOrigin(hintspots[i]), hint.AcceptInput( `Enable`, null, null, null ))
 						else
@@ -2188,8 +2166,9 @@ WaveSchedule {
 				Attributes MiniBoss
 				Attributes UseBossHealthBar
 				Attributes AlwaysFireWeapon
-				Tag jetpack_spawn
+
 				Tag bot_no_radio_jump
+                Tag bot_boss
 				Name "B.E.A.R Mk.1"
 				Item "the buffalo steak sandvich"
 				Item "Warrior's Spirit"
@@ -2231,6 +2210,7 @@ WaveSchedule {
 
 					"provide on active" 		 1
 					"spunup_damage_resistance" 	 0.15
+					"ring of fire while aiming"  1
 					"move speed penalty"		 0.35
 					// "shot penetrate all players" 1
 					"attack projectiles" 		 2
@@ -2245,12 +2225,12 @@ WaveSchedule {
 		// 	Where spawnbot_base_jetpack1
 		// 	Where spawnbot_base_jetpack2
 		// 	Where spawnbot_base_jetpack3
-		// 	Where spawnbot_gate1_jetpack1
-		// 	Where spawnbot_gate1_jetpack2
-		// 	Where spawnbot_gate1_jetpack3
-		// 	Where spawnbot_gate2_jetpack1
-		// 	Where spawnbot_gate2_jetpack2
-		// 	Where spawnbot_gate2_jetpack3
+		// 	Where spawnbot_pointA_jetpack1
+		// 	Where spawnbot_pointA_jetpack2
+		// 	Where spawnbot_pointA_jetpack3
+		// 	Where spawnbot_pointB_jetpack1
+		// 	Where spawnbot_pointB_jetpack2
+		// 	Where spawnbot_pointB_jetpack3
 		// 	TotalCount 30
 		// 	MaxActive 3
 		// 	SpawnCount 1
@@ -2262,9 +2242,9 @@ WaveSchedule {
 
 		// 	RandomChoice {
 
-		// 		TFBot { Template T_TFBot_Medic_Vacc_Bullet Tag jetpack_spawn ClassIcon medic_vac_trio_nys }
-		// 		TFBot { Template T_TFBot_Medic_Vacc_Blast  Tag jetpack_spawn ClassIcon medic_vac_trio_nys }
-		// 		TFBot { Template T_TFBot_Medic_Vacc_Fire   Tag jetpack_spawn ClassIcon medic_vac_trio_nys }
+		// 		TFBot { Template T_TFBot_Medic_Vacc_Bullet  ClassIcon medic_vac_trio_nys }
+		// 		TFBot { Template T_TFBot_Medic_Vacc_Blast   ClassIcon medic_vac_trio_nys }
+		// 		TFBot { Template T_TFBot_Medic_Vacc_Fire    ClassIcon medic_vac_trio_nys }
 		// 	}
 		// }
 
@@ -2371,7 +2351,7 @@ WaveSchedule {
 
 			Name "wave6c"
 			Where spawnbot_traintank
-			// Where spawnbot_traintank_c
+			// Where spawnbot_traintank3
 			TotalCount 40
 			MaxActive 8
 			SpawnCount 4
@@ -2389,7 +2369,7 @@ WaveSchedule {
 				Param "
 					// SetWaveIconFlags( `pyro`, ICON_NORMAL|ICON_ALWAYSCRIT, ICON_SUPPORT|ICON_SUPPORT_LIMITED|ICON_ALWAYSCRIT )
 					// SetWaveIcon( `pyro_giant`, ICON_NORMAL|ICON_ALWAYSCRIT, 10, true )
-					SetWaveIcon( `engineer_frontier_justice_nys_crit`, ICON_NORMAL, 30, true )
+					SetWaveIcon( `engineer_frontier_justice_nys_crit`, ICON_NORMAL|ICON_ALWAYSCRIT, 30, true )
 					// AddWaveIconCount( 10 )
 				"
 			}
@@ -2410,20 +2390,20 @@ WaveSchedule {
 				TFBot {
 
 					Template T_TFBot_Engineer_Battle
-					Tag "motherland_limitedsupport{ icon = `engineer_frontier_justice_nys_crit`, count = 30, flags = ICON_NORMAL }"
+					Tag "motherland_limitedsupport{ icon = `engineer_frontier_justice_nys_crit`, count = 30, flags = ICON_NORMAL|ICON_ALWAYSCRIT }"
 					Item "Upgradeable TF_WEAPON_SHOTGUN_PRIMARY"
-					
+
 				}
 				TFBot {
 
 					Template T_TFBot_Engineer_Battle
-					Tag "motherland_limitedsupport{ icon = `engineer_frontier_justice_nys_crit`, count = 30, flags = ICON_NORMAL }"
+					Tag "motherland_limitedsupport{ icon = `engineer_frontier_justice_nys_crit`, count = 30, flags = ICON_NORMAL|ICON_ALWAYSCRIT }"
 					Item "The Widowmaker"
 				}
 				TFBot {
 
 					Template T_TFBot_Engineer_Battle
-					Tag "motherland_limitedsupport{ icon = `engineer_frontier_justice_nys_crit`, count = 30, flags = ICON_NORMAL }"
+					Tag "motherland_limitedsupport{ icon = `engineer_frontier_justice_nys_crit`, count = 30, flags = ICON_NORMAL|ICON_ALWAYSCRIT }"
 				}
 			}
 		}
@@ -2432,7 +2412,7 @@ WaveSchedule {
 
 			Name "wave6c1"
 			Where spawnbot_traintank
-			// Where spawnbot_traintank_c
+			// Where spawnbot_traintank3
 			TotalCount 3
 			MaxActive 1
 			SpawnCount 1
@@ -2573,8 +2553,8 @@ WaveSchedule {
 					Tag nav_flank
 				}
 
-				TFBot { Template T_TFBot_Giant_Medic_Kritz CharacterAttributes { "mod weapon blocks healing" 1 } }
-				TFBot { Template T_TFBot_Giant_Medic_Kritz CharacterAttributes { "mod weapon blocks healing" 1 } }
+				TFBot { Template T_TFBot_Giant_Medic_Kritz }
+				TFBot { Template T_TFBot_Giant_Medic_Kritz }
 			}
 		}
 
@@ -2582,7 +2562,7 @@ WaveSchedule {
 
 			Name "wave6e"
 			Where spawnbot_traintank
-			// Where spawnbot_traintank_c
+			// Where spawnbot_traintank3
 			TotalCount 9999
 			MaxActive 8
 			SpawnCount 4

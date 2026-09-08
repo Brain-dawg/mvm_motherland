@@ -1,0 +1,99 @@
+#base robot_standard.pop
+#base robot_giant.pop
+#base robot_motherland.pop
+
+WaveSchedule {
+
+	StartingCurrency 500
+	RespawnWaveTime 5
+	CanBotsAttackWhileInSpawnRoom No
+	Advanced 1
+
+    Mission {
+
+		Objective DestroySentries
+
+		Where spawnbot_base_upper
+		Where spawnbot_base_battlements
+		Where spawnbot_pointA_upper
+		Where spawnbot_pointB_flank
+		BeginAtWave 1
+		RunForThisManyWaves 6
+		CooldownTime 30
+
+		TFBot { Template T_TFBot_Motherland_SentryBuster }
+	}
+
+    Wave {
+        InitWaveOutput {
+
+			Target logic_script_lizardmvm
+			Action RunScriptCode
+			Param "
+				IncludeScript( `brain/main`, getroottable() )
+				EntFire( `holograms_hatch_flank`, `Trigger` )
+				EntFire( `holograms_pointA_flank`, `Enable` )
+				DisableSecondBomb()
+			"
+		}
+
+        WaveSpawn {
+
+            Name "wave1a"
+			Where spawnbot_base_main
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
+            TotalCount 4
+            MaxActive 2
+            SpawnCount 2
+			Squad {
+
+				TFBot { Template T_TFBot_Giant_Heavyweapons Tag motherland_altfire }
+				TFBot { Template T_TFBot_Medic_BigHeal }
+				TFBot { Template T_TFBot_Medic_BigHeal }
+			}
+        }
+
+		WaveSpawn {
+
+			Name "wave1a1"
+			Where spawnbot_base_upper
+			Where spawnbot_base_battlements
+			Where spawnbot_base_closet
+			Where spawnbot_pointA_upper
+			Where spawnbot_pointA_flank
+			Where spawnbot_pointA_battlements
+			Where spawnbot_pointB_flank
+			Where spawnbot_pointB_battlements
+			TotalCount 18
+			MaxActive 4
+			SpawnCount 1
+			WaitBetweenSpawns 1
+			WaitBeforeStarting 10
+			TFBot { Template T_TFBot_Demo_Sticky }
+		}
+
+        WaveSpawn {
+
+            Name "wave1a2"
+			Where spawnbot_base_main
+			Where spawnbot_base_main3
+			Where spawnbot_pointA_main
+			Where spawnbot_pointA_main3
+			Where spawnbot_pointB_main
+			Where spawnbot_pointB_main3
+			WaitForAllDead "wave1a"
+            TotalCount 2
+            MaxActive 2
+            SpawnCount 2
+			Squad {
+
+				TFBot { Template T_TFBot_Giant_Heavyweapons Attributes AlwaysCrit Tag motherland_altfire }
+				TFBot { Template T_TFBot_Medic_QuickUber }
+			}
+        }
+    }
+}

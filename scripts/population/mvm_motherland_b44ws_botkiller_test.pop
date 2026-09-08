@@ -66,7 +66,7 @@ WaveSchedule {
 			Attributes UseBossHealthBar
 			Attributes MiniBoss
 			MaxVisionRange 1
-			Tag bot_traintank_hackbot
+			Tag motherland_train
 			Scale 0.001
 
 			CharacterAttributes {
@@ -1534,7 +1534,7 @@ WaveSchedule {
 
 				Name Tank
 				Health 25000
-				StartingPathTrackNode "tank_path_0"
+				StartingPathTrackNode "tank_path_start"
 				OnBombDroppedOutput
 				{
 					Target boss_deploy_relay
@@ -1884,7 +1884,7 @@ WaveSchedule {
 
 				Name "tankboss"
 				Health 10000
-				StartingPathTrackNode tank_path_0
+				StartingPathTrackNode tank_path_start
 				Speed 90
 
 				OnBombDroppedOutput {
@@ -2137,7 +2137,7 @@ WaveSchedule {
 				SetBSpawns( true )
 				DisablePeacefulTrain()
 
-				::PrecacheSoundOriginal( `ambient/alarms/combine_bank_alarm_loop4.wav` )
+				PrecacheSound( `ambient/alarms/combine_bank_alarm_loop4.wav` )
 
 				// for (local i = 0; i < 3; i++)
 				SendGlobalGameEvent( `teamplay_broadcast_audio`, { sound = `ambient/alarms/train_horn_distant1.wav` additional_flags = 0x4 team = 255 })

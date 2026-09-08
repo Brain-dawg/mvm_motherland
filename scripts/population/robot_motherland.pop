@@ -35,7 +35,7 @@ WaveSchedule {
 			Attributes UseBossHealthBar
 			Attributes MiniBoss
 			MaxVisionRange 1
-			Tag bot_traintank_hackbot
+			Tag motherland_train
 			Scale 0.001
 
 			CharacterAttributes {

@@ -1,0 +1,156 @@
+ROOT <- getroottable()
+
+local classes = [ "", "scout", "sniper", "soldier", "demo", "medic", "heavy", "pyro", "spy", "engineer" ]
+
+local STRING_NETPROP_ITEMDEF 	  	    = "m_AttributeManager.m_Item.m_iItemDefinitionIndex"
+local STRING_NETPROP_INIT 	 	  	    = "m_AttributeManager.m_Item.m_bInitialized"
+local STRING_NETPROP_ATTACH  	  	    = "m_bValidatedAttachedEntity"
+local STRING_NETPROP_PURGESTRINGS 	    = "m_bForcePurgeFixedupStrings"
+local STRING_NETPROP_MYWEAPONS    	    = "m_hMyWeapons"
+local STRING_NETPROP_AMMO		  	    = "m_iAmmo"
+local STRING_NETPROP_NAME		  	    = "m_iName"
+local STRING_NETPROP_MODELINDEX   	    = "m_nModelIndex"
+local STRING_NETPROP_POPNAME    		= "m_iszMvMPopfileName"
+local STRING_NETPROP_MDLINDEX_OVERRIDES = "m_nModelIndexOverrides"
+
+::_Motherland_Botkillers <- {
+
+    function BotkillerThink() {
+
+        if ( !wep || !wep.IsValid() )
+            return self.Kill(), 1
+
+        local player = wep.GetOwner()
+
+        if ( !player || !player.IsValid() )
+            return self.Kill(), 1
+
+        // disabledraw might be enough alone but whatever
+        else if ( player.GetActiveWeapon() != wep ) {
+
+            SetPropInt( self, "m_clrRender", 0 )
+            SetPropInt( self, "m_nRenderMode", 1 )
+            self.DisableDraw()
+        }
+
+        else if ( !GetPropInt( self, "m_clrRender" ) ) {
+
+            SetPropInt( self, "m_clrRender", -1 )
+            SetPropInt( self, "m_nRenderMode", 0 )
+            self.EnableDraw()
+        }
+        // printl( self + " : " + wep + " : " + wep.GetOwner() + " : " + GetPropInt( self, "m_clrRender" ) + " : " + GetPropInt( self, "m_nRenderMode" ) )
+
+        return -1
+    }
+
+    function Botkiller( p, w ) {
+
+        // if ( !w.GetAttribute( "selfmade description", 0.0 ) )
+            // return
+
+        local fobname = w.GetAttribute( "selfmade description", 0.0 ) ? "soviet" : "star"
+        local cls = p.GetPlayerClass()
+        local modelname = format("models/player/items/mvm_loot/%s/fob_%s_%s.mdl", classes[cls], fobname, w.GetClassname().slice( 10 ) )
+
+        if ( cls == TF_CLASS_SNIPER )
+            modelname = "models/player/items/mvm_loot/sniper/fob_"+fobname+"_sniper.mdl" // fob_soviet_sniperrifle -> fob_soviet_sniper
+
+        else if ( cls == TF_CLASS_DEMOMAN )
+            modelname = "models/player/items/mvm_loot/demo/fob_"+fobname+"_sticky.mdl"
+        // local modelname = "models/player/items/mvm_loot/scout/fob_soviet_scattergun.mdl"
+
+        printl( modelname )
+
+        w.SetOwner( p )
+
+        GetPropEntity( w, "m_hExtraWearable" ).Kill()
+        GetPropEntity( w, "m_hExtraWearableViewModel" ).Kill()
+
+        local wearable = CreateByClassname( "tf_wearable" )
+        wearable.SetModelSimple( modelname )
+        SetPropBool( wearable, STRING_NETPROP_ATTACH, true )
+        wearable.SetOwner( w )
+        DispatchSpawn( wearable )
+        SetPropEntity( w, "m_hExtraWearable", wearable )
+
+        wearable.ValidateScriptScope()
+        wearable.GetScriptScope().wep <- w
+        wearable.GetScriptScope().BotkillerThink <- BotkillerThink
+        AddThinkToEnt( wearable, "BotkillerThink" )
+
+        // above doesn't show, fake it with an ornament
+        // local wearable2 = CreateByClassname( "prop_dynamic_ornament" )
+        // wearable2.SetModelSimple( modelname )
+        // DispatchSpawn( wearable2 )
+        // wearable2.AcceptInput( "SetAttached", "!activator", w, w )
+
+        local wearable_vm = CreateByClassname( "tf_wearable_vm" )
+
+        wearable_vm.SetModelSimple( modelname )
+        SetPropBool( wearable_vm, STRING_NETPROP_ATTACH, true )
+        SetPropEntity( w, "m_hExtraWearableViewModel", wearable_vm )
+        SetPropEntity( wearable_vm, "m_hWeaponAssociatedWith", w )
+        DispatchSpawn( wearable_vm )
+        p.EquipWearableViewModel( wearable_vm )
+
+        wearable_vm.ValidateScriptScope()
+        wearable_vm.GetScriptScope().wep <- w
+        wearable_vm.GetScriptScope().BotkillerThink <- BotkillerThink
+        AddThinkToEnt( wearable_vm, "BotkillerThink" )
+
+        local scope = p.GetScriptScope() || (p.ValidateScriptScope(), p.GetScriptScope())
+
+        if ( !( "wearables_to_kill" in scope ) )
+            scope.wearables_to_kill <- [ wearable ]
+        else
+            scope.wearables_to_kill.append( wearable )
+
+        // scope.wearables_to_kill.append( wearable2 )
+        scope.wearables_to_kill.append( wearable_vm )
+    }
+
+    function Canteen( p ) {
+
+        for ( local child = p.FirstMoveChild(); child; child = child.NextMovePeer() )
+            if ( child.GetClassname() == "tf_powerup_bottle" ) {
+                child.SetModelSimple( "models/props_junk/garbage_glassbottle003a.mdl" )
+            }
+    }
+
+    function OnGameEvent_player_say( params ) {
+
+        local player = GetPlayerFromUserID( params.userid )
+
+        switch ( params.text ) {
+
+            case ".botkiller":
+
+                local wep = player.GetActiveWeapon()
+
+                if ( wep )
+                    Botkiller( player, wep )
+
+            break
+
+            case ".canteen":
+
+
+
+            break
+        }
+    }
+
+    function OnGameEvent_post_inventory_application( params ) {
+
+        local player = GetPlayerFromUserID( params.userid )
+
+        if ( IsPlayerABot( player ) || player.IsEFlagSet( 1048576 ) )
+            return
+
+        for ( local child = player.FirstMoveChild(); child; child = child.NextMovePeer() )
+            if ( child instanceof CBaseCombatWeapon && ( child.GetAttribute( "selfmade description", 0 ) || child.GetAttribute( "obsolete ammo penalty", 0.0 ) ) )
+                Botkiller( player, child )
+    }
+}
+__CollectGameEventCallbacks( _Motherland_Botkillers )
