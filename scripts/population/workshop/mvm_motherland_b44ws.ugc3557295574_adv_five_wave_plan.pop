@@ -1,0 +1,2155 @@
+#base robot_standard.pop
+#base robot_giant.pop
+#base robot_gatebot.pop
+
+WaveSchedule
+{
+    StartingCurrency 1200
+    RespawnWaveTime  6
+    CanBotsAttackWhileInSpawnRoom No
+    Advanced 1
+
+    Templates
+    {
+        Motherland_Train
+        {
+            Name "Carrier Train"
+            Class Engineer
+            Health 15000
+            ClassIcon crossguard_lite
+            Attributes IgnoreFlag
+            Attributes IgnoreEnemies
+            Attributes UseBossHealthBar
+            Attributes MiniBoss
+            MaxVisionRange 1
+            Tag bot_motherland_train
+
+            CharacterAttributes
+            {
+                "move speed penalty" 0.0001
+                "no_jump" 1
+                "no_duck" 1
+                "cancel falling damage" 1
+            }
+        }
+
+        Motherland_Heavy_Shotgun_Armored
+        {
+            Class Heavyweapons
+            Name "Mildly Large Shotgun Heavy"
+            ClassIcon heavy_shotgun_armored
+
+            Item "Road Rage"
+
+            Skill Normal
+            Health 800
+            WeaponRestrictions SecondaryOnly
+            MaxVisionRange 1200
+            Scale 1.4
+        }
+
+        Motherland_Giant_Medic_Shield
+        {
+            Template T_TFBot_Giant_Medic_Regen
+            Name "Giant Shield Medic"
+            ClassIcon medic_shield_lite_giant
+            Skill Hard
+            Attributes ProjectileShield
+            Attributes IgnoreEnemies
+            WeaponRestrictions SecondaryOnly
+
+            ItemAttributes
+            {
+                ItemName "The Quick-Fix"
+                "generate rage on heal" 1
+                "increase buff duration" 99
+                "ubercharge rate bonus" 0.01 // pretty much disables ubercharge
+            }
+        }
+
+        Motherland_Demo_Targe_Armored
+        {
+            Class Demoman
+            Name "Mildly Large Hybridknight"
+            ClassIcon demo_with_targe_armored
+
+            Item "Blast Defense"
+
+            Skill Normal
+            Health 650
+            WeaponRestrictions PrimaryOnly
+            Item "The Chargin' Targe"
+            Scale 1.4
+        }
+
+        Motherland_Pyro_Detonator
+        {
+            Class Pyro
+            Name "Detonator Pyro"
+            Skill Normal
+            ClassIcon pyro_flare
+            Item "The Detonator"
+            WeaponRestrictions SecondaryOnly
+        }
+
+        Motherland_Pyro_Phlog
+        {
+            Name "Phlog Pyro"
+            Class Pyro
+            Skill Normal
+            WeaponRestrictions PrimaryOnly
+            Item "The Phlogistinator"
+            Tag bot_phlog_pyro
+            ClassIcon pyro_phlog_lite
+        }
+
+        Motherland_Pyro_Phlog_Giant
+        {
+            Name "Giant Phlog Pyro"
+            Template T_TFBot_Giant_Pyro
+            Item "The Phlogistinator"
+            Attributes AlwaysFireWeapon
+            Tag bot_phlog_pyro
+            ClassIcon pyro_phlog_lite_giant
+            Skill Hard
+
+            CharacterAttributes
+            {
+                "gesture speed increase" 0.75
+            }
+        }
+
+        Motherland_Medic_Kritz
+        {
+            Class Medic
+            Name "Krit Medic"
+            ClassIcon medic_kritz_lite
+            Skill Expert
+            Item "The Kritzkrieg"
+            Attributes SpawnWithFullCharge
+
+            ItemAttributes
+            {
+                ItemName "The Kritzkrieg"
+                "ubercharge rate bonus" 100
+                "uber duration bonus" 9999
+            }
+
+            CharacterAttributes
+            {
+                "bot medic uber health threshold" 999
+            }
+        }
+
+        Motherland_Heavy_LaserEyes
+        {
+            Class Heavyweapons
+            Name "Giant Laser Eyes Heavy"
+            ClassIcon boss_spawner
+            Skill Hard
+            Health 9001
+            Scale 2.3
+            Item "The U-clank-a"
+            Item "TF_WEAPON_FISTS"
+
+            WeaponRestrictions MeleeOnly
+            Attributes MiniBoss
+
+            Tag bot_lasereyes
+            Tag bot_no_radio_jump
+
+            ItemAttributes
+            {
+                ItemName "TF_WEAPON_FISTS"
+                "no_attack" 1
+            }
+
+            CharacterAttributes
+            {
+                "move speed bonus"	0.3
+                "damage force reduction" 0.3
+                "airblast vulnerability multiplier" 0.3
+                "override footstep sound set" 2
+            }
+        }
+
+        Motherland_Chief_Heavy_Soviet_Bear
+        {
+            Class Heavyweapons
+            Name "Советский Медведь"
+            ClassIcon heavy_soviet_bear
+            Health 50000
+            Scale 2.49
+
+            Skill Hard
+            MaxVisionRange 1600
+
+            Item "The U-clank-a"
+            Item "Iron Curtain"
+            Item "Cossack Camo"
+
+            Attributes UseBossHealthBar
+            Attributes MiniBoss
+            WeaponRestrictions PrimaryOnly
+
+            Tag bot_lasereyes
+            Tag bot_boss
+            Tag nav_flank
+            Tag bot_very_big
+
+            ItemAttributes
+            {
+                ItemName "TF_WEAPON_MINIGUN"
+                "damage bonus" 2.0
+                "dmg bonus vs buildings" 3.0
+            }
+
+            CharacterAttributes
+            {
+                "move speed bonus"	0.5
+                "damage force reduction" 0.3
+                "airblast vulnerability multiplier" 0.4
+                "airblast vertical vulnerability multiplier" 0.1
+                "rage giving scale"	0.9
+                "override footstep sound set" 2
+            }
+        }
+
+        Motherland_Scout_Bonk_Or_Scattergun
+        {
+            Class Scout
+            ClassIcon scout_bonk
+
+            EventChangeAttributes
+            {
+                Default
+                {
+                    Skill Hard
+                    Item "Bonk! Atomic Punch"
+                    Item "Bonk Helm"
+                    WeaponRestrictions MeleeOnly
+                }
+                PointACaptured
+                {
+                    Skill Normal
+                }
+                PointBCaptured
+                {
+                    Skill Normal
+                }
+            }
+        }
+
+        Motherland_Soldier_DirectHit
+        {
+            Class Soldier
+            Item "The Direct Hit"
+            Skill Normal
+            ClassIcon soldier_directhit_lite
+        }
+    }
+
+    Mission
+    {
+        Objective Sniper
+
+        InitialCooldown 15
+        Where spawnbot_base_upper2
+        Where spawnbot_pointA_upper2
+        Where spawnbot_pointB_flank2
+        BeginAtWave 2
+        RunForThisManyWaves 1
+        CooldownTime 25
+        DesiredCount 1
+
+        TFBot
+        {
+            Class Sniper
+            Skill Normal
+            MaxVisionRange 4000
+
+            Item "The Cold Killer"
+            Item "Sydney Shearling"
+
+            Tag bot_mission
+        }
+    }
+
+    Mission
+    {
+        Objective Spy
+
+        InitialCooldown 12
+        Where spawnbot_base_main2
+        Where spawnbot_base_upper2
+        Where spawnbot_pointA_main2
+        Where spawnbot_pointA_flank2
+        Where spawnbot_pointB_main2
+        Where spawnbot_pointB_flank2
+        BeginAtWave 4
+        RunForThisManyWaves 1
+        CooldownTime 40
+        DesiredCount 3
+
+        TFBot
+        {
+            Class Spy
+            Skill Hard
+
+            Tag bot_mission
+        }
+    }
+
+    Mission
+    {
+        Objective DestroySentries
+
+        Where spawnbot_base_upper
+        Where spawnbot_pointA_battlements
+        Where spawnbot_pointB_flank
+
+        CooldownTime 30
+
+        TFBot
+        {
+            Template T_TFBot_SentryBuster
+
+            Tag bot_sentrybuster
+            Tag mission_sentry_buster
+            Tag bot_mission
+        }
+    }
+
+    Wave //Wave 1
+    {
+        WaitWhenDone 65
+        Checkpoint Yes
+
+        InitWaveOutput
+        {
+            Target logic_script_motherland
+            Action RunScriptCode
+            Param "
+                SetPropString(tf_objective_resource, `m_iszMvMPopfileName`, `(Adv) Five-wave plan`)
+                PutPointBUnderSiege(true)
+            "
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 100
+
+            TotalCount 32
+            MaxActive  8
+            SpawnCount 4
+
+            WaitBetweenSpawns 6
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Class Scout
+                ClassIcon scout_bat
+                Skill Normal
+                WeaponRestrictions MeleeOnly
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 100
+
+            TotalCount 32
+            MaxActive  4
+            SpawnCount 1
+
+            WaitBeforeStarting 10
+            WaitBetweenSpawns 3
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Class Scout
+                ClassIcon scout_bat
+                Skill Normal
+                WeaponRestrictions MeleeOnly
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W1S1_Heavies"
+            TotalCurrency 90
+
+            TotalCount 3
+            MaxActive  3
+            SpawnCount 3
+
+            WaitBeforeStarting 1
+
+            Where spawnbot_base_jetpack1
+            Where spawnbot_pointA_jetpack1
+            Where spawnbot_pointB_jetpack1
+
+            TFBot
+            {
+                Class Heavy
+                Skill Normal
+
+                Tag nav_main
+
+                ItemAttributes
+                {
+                    ItemName "TF_WEAPON_MINIGUN"
+                    "damage penalty" 0.75
+                }
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 10
+
+            TotalCount 4
+            MaxActive  1
+            SpawnCount 1
+
+            WaitBeforeStarting 1
+            WaitBetweenSpawns 5
+
+            Where spawnbot_base_closet
+            Where spawnbot_pointA_upper
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Class Soldier
+                Skill Normal
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 80
+
+            TotalCount 24
+            MaxActive  4
+            SpawnCount 1
+
+            WaitForAllDead "W1S1_Heavies"
+            WaitBeforeStarting 3
+            WaitBetweenSpawns 3
+
+            Where spawnbot_base_closet
+            Where spawnbot_pointA_upper
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Class Soldier
+                Skill Normal
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W1S3_ArmoredHeavies"
+            TotalCurrency 100
+
+            TotalCount 6
+            MaxActive  2
+            SpawnCount 2
+
+            WaitForAllDead "W1S1_Heavies"
+            WaitBeforeStarting 10
+            WaitBetweenSpawns 20
+
+            Where spawnbot_base_jetpack1
+            Where spawnbot_pointA_jetpack1
+            Where spawnbot_pointB_jetpack1
+
+            Squad
+            {
+                TFBot
+                {
+                    Template Motherland_Heavy_Shotgun_Armored
+
+                    Tag nav_main
+                }
+                TFBot { Template T_TFBot_Medic_QuickFix Tag nav_main }
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W1S2_GRU_Heavies"
+            TotalCurrency 130
+
+            TotalCount 10
+            MaxActive  6
+            SpawnCount 1
+
+            WaitForAllDead "W1S1_Heavies"
+            WaitBeforeStarting 20
+            WaitBetweenSpawns 6
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Class Heavy
+                Skill Normal
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 110
+
+            TotalCount 12
+            MaxActive  4
+            SpawnCount 2
+
+            WaitForAllSpawned "W1S2_GRU_Heavies"
+            WaitBeforeStarting 0
+            WaitBetweenSpawns 7
+
+            Where spawnbot_base_main
+            Where spawnbot_base_closet
+            Where spawnbot_pointA_main
+            Where spawnbot_pointA_upper
+            Where spawnbot_pointB_main
+
+
+            Squad
+            {
+                TFBot
+                {
+                    Template T_TFBot_Heavyweapons_Fist
+
+                    Tag nav_main
+                }
+                TFBot { Template T_TFBot_Medic_QuickFix }
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W1S4_GiantSoldier"
+            TotalCurrency 80
+
+            TotalCount 5
+            MaxActive  5
+            SpawnCount 5
+
+            WaitForAllSpawned "W1S3_ArmoredHeavies"
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            FirstSpawnOutput
+            {
+                Target logic_script_motherland
+                Action RunScriptCode
+                Param "
+                    OnNextTick(function()
+                    {
+                        foreach (bot in GetAlivePlayers(TF_TEAM_PVE_INVADERS))
+                        {
+                            if (bot.HasBotTag(`jetpack_hack`))
+                            {
+                                local jetpackSpawn = FindByName(null, `spawnbot_base_jetpack1`)
+                                bot.Teleport(true, jetpackSpawn.GetOrigin(), true, jetpackSpawn.GetAbsAngles(), true, Vector())
+                                break
+                            }
+                        }
+                    })
+                "
+            }
+
+            Squad
+            {
+                ShouldPreserveSquad 1
+
+                TFBot
+                {
+                    Template T_TFBot_Giant_Soldier
+
+                    Tag jetpack_hack
+                    Tag nav_main
+                }
+                TFBot { Template T_TFBot_Medic_BigHeal }
+                TFBot { Template T_TFBot_Medic_BigHeal }
+                TFBot { Template T_TFBot_Medic_BigHeal }
+                TFBot { Template T_TFBot_Medic_BigHeal }
+            }
+        }
+    }
+
+    Wave //Wave 2
+    {
+        WaitWhenDone 65
+        Checkpoint Yes
+
+        InitWaveOutput
+        {
+            Target logic_script_motherland
+            Action RunScriptCode
+            Param "
+                SetPropString(tf_objective_resource, `m_iszMvMPopfileName`, `(Adv) Five-wave plan`)
+                DisableNavPrefersTiedToSpawn()
+                PutPointAUnderSiege(true)
+                EnableSpawnSet2()
+                SetHolograms({
+                    base_main = true
+                })
+            "
+        }
+
+        WaveSpawn
+        {
+            Name "W2S1_Tank"
+            TotalCurrency 125
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            DoneOutput
+            {
+                Target logic_script_motherland
+                Action RunScriptCode
+                Param "DisableSpawnSet2()"
+            }
+
+            Tank
+            {
+                Name Tank
+                Health 16500
+                Speed 50
+                StartingPathTrackNode "tank_path_start"
+
+                OnBombDroppedOutput
+                {
+                    Target boss_deploy_relay
+                    Action Trigger
+                }
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W2S1_GiantSoldier"
+            TotalCurrency 45
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            WaitBeforeStarting 5
+
+            Where spawnbot_base_closet
+            Where spawnbot_pointA_closet
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Template T_TFBot_Giant_Soldier_Crit
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W2S1_Pyros"
+            TotalCurrency 60
+
+            TotalCount 20
+            MaxActive  10
+            SpawnCount 5
+
+            WaitBeforeStarting 9
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_closet
+            Where spawnbot_pointA_closet
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Class Pyro
+                Skill Normal
+                WeaponRestrictions PrimaryOnly
+
+                ItemAttributes
+                {
+                    ItemName "TF_WEAPON_FLAMETHROWER"
+                    "airblast disabled" 1
+                }
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 10
+            MaxActive  10
+            SpawnCount 5
+
+            WaitForAllDead "W2S1_Pyros"
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_closet
+            Where spawnbot_pointA_closet
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Class Pyro
+                Skill Normal
+                WeaponRestrictions PrimaryOnly
+
+                ItemAttributes
+                {
+                    ItemName "TF_WEAPON_FLAMETHROWER"
+                    "airblast disabled" 1
+                }
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            Support 1
+            MaxActive  7
+            SpawnCount 4
+
+            WaitBeforeStarting 16
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_closet
+            Where spawnbot_pointA_closet
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Class Scout
+                Skill Normal
+                ClassIcon scout_bat
+                WeaponRestrictions MeleeOnly
+
+                BehaviorModifiers Push
+                Attributes IgnoreFlag
+                Item "MvM GateBot Light Scout"
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            WaitBeforeStarting 40
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_battlements
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template T_TFBot_Giant_Scout_Fast
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 60
+
+            TotalCount 12
+            MaxActive  4
+            SpawnCount 1
+
+            WaitForAllDead "W2S1_Tank"
+            WaitBeforeStarting 7
+            WaitBetweenSpawns 5
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_upper
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Class Soldier
+                Skill Normal
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W2S2_GateSoldiers"
+            TotalCurrency 80
+
+            TotalCount 6
+            MaxActive  3
+            SpawnCount 3
+
+            WaitForAllDead "W2S1_GiantSoldier"
+            WaitBetweenSpawns 5
+
+            Where spawnbot_base_upper
+            Where spawnbot_base_jetpack2
+            Where spawnbot_pointA_battlements
+            Where spawnbot_pointA_jetpack3
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Class Soldier
+                Skill Normal
+
+                BehaviorModifiers Push
+                Attributes IgnoreFlag
+                Item "MvM GateBot Light Soldier"
+
+                Tag nav_upper
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W2S3_GiantSoldiers"
+            TotalCurrency 60
+
+            TotalCount 2
+            MaxActive  2
+            SpawnCount 1
+
+            WaitForAllDead "W2S2_GateSoldiers"
+            WaitBetweenSpawns 3
+
+            Where spawnbot_base_jetpack1
+            Where spawnbot_base_jetpack2
+            Where spawnbot_pointA_jetpack1
+            Where spawnbot_pointA_jetpack2
+            Where spawnbot_pointB_jetpack1
+            Where spawnbot_pointB_jetpack2
+
+            TFBot
+            {
+                Template T_TFBot_Giant_Soldier_Crit
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 8
+            MaxActive  3
+            SpawnCount 3
+
+            WaitForAllDead "W2S3_GiantSoldiers"
+            WaitBetweenSpawns 5
+
+            Where spawnbot_base_upper
+            Where spawnbot_pointA_battlements
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Class Soldier
+                Skill Normal
+
+                BehaviorModifiers Push
+                Attributes IgnoreFlag
+                Item "MvM GateBot Light Soldier"
+
+                Tag nav_upper
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 15
+            MaxActive  3
+            SpawnCount 3
+
+            WaitForAllDead "W2S1_Pyros"
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Class Demoman
+                Skill Normal
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 40
+
+            TotalCount 15
+            MaxActive  6
+            SpawnCount 1
+
+            WaitForAllDead "W2S1_Pyros"
+            WaitBetweenSpawns 5
+
+            Where spawnbot_base_main
+            Where spawnbot_base_jetpack1
+            Where spawnbot_pointA_main
+            Where spawnbot_pointA_jetpack1
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Class Demoman
+                Skill Normal
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 30
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            WaitForAllDead "W2S1_Tank"
+            WaitBeforeStarting 10
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_battlements
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template T_TFBot_Giant_Scout_Fast
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W2S3_GiantSoldier"
+            TotalCurrency 100
+
+            TotalCount 2
+            MaxActive  2
+            SpawnCount 2
+
+            WaitForAllDead "W2S1_Tank"
+
+            Where spawnbot_base_jetpack1
+            Where spawnbot_pointA_jetpack2
+            Where spawnbot_pointB_main
+
+            Squad
+            {
+                TFBot
+                {
+                    Template T_TFBot_Giant_Soldier_Spammer
+                    Tag bot_no_radio_jump
+
+                    Tag nav_main
+                }
+                TFBot
+                {
+                    Template Motherland_Giant_Medic_Shield
+                    Tag bot_no_radio_jump
+
+                    Tag nav_main
+                }
+            }
+        }
+    }
+
+    Wave //Wave 3
+    {
+        WaitWhenDone 65
+        Checkpoint Yes
+
+        InitWaveOutput
+        {
+            Target logic_script_motherland
+            Action RunScriptCode
+            Param "
+                SetPropString(tf_objective_resource, `m_iszMvMPopfileName`, `(Adv) Five-wave plan`)
+                SendBotsOnRoundAboutPath()
+            "
+        }
+
+        WaveSpawn
+        {
+            Name "W3S1_PhlogGiants"
+            TotalCurrency 75
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            Where spawnbot_base_closet
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template Motherland_Pyro_Phlog_Giant
+                Tag bot_no_radio_jump
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W3S1_PhlogGiants"
+            TotalCurrency 75
+
+            TotalCount 2
+            MaxActive  2
+            SpawnCount 2
+
+            Where spawnbot_base_closet
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            FirstSpawnOutput
+            {
+                Target logic_script_motherland
+                Action RunScriptCode
+                Param "
+                    OnNextTick(function()
+                    {
+                        foreach (bot in GetAlivePlayers(TF_TEAM_PVE_INVADERS))
+                        {
+                            if (bot.HasBotTag(`jetpack_hack`))
+                            {
+                                local jetpackSpawn = FindByName(null, `spawnbot_base_jetpack2`)
+                                bot.Teleport(true, jetpackSpawn.GetOrigin(), true, jetpackSpawn.GetAbsAngles(), true, Vector())
+                                break
+                            }
+                        }
+                    })
+
+                    RunWithDelay(10, function()
+                    {
+                        foreach (bot in GetAlivePlayers(TF_TEAM_PVE_INVADERS))
+                        {
+                            if (bot.HasBotTag(`taunt_on_leave`))
+                            {
+                                SetPropFloat(bot, `m_Shared.m_flRageMeter`, 100)
+                                bot.Taunt(TAUNT_BASE_WEAPON, 0)
+                                break
+                            }
+                        }
+                    })
+                "
+            }
+
+            Squad
+            {
+                TFBot
+                {
+                    Template Motherland_Pyro_Phlog_Giant
+                    Tag taunt_on_leave
+                    Tag bot_no_radio_jump
+                }
+                TFBot { Template T_TFBot_Giant_Medic_Regen Tag jetpack_hack }
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 30
+
+            TotalCount 8
+            MaxActive  4
+            SpawnCount 2
+
+            WaitBeforeStarting 1
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template T_TFGateBot_Soldier_Normal
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 40
+
+            TotalCount 8
+            MaxActive  4
+            SpawnCount 2
+
+            WaitBeforeStarting 1
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template T_TFGateBot_Scout_Normal
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 8
+            MaxActive  4
+            SpawnCount 2
+
+            WaitBeforeStarting 1
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_upper
+            Where spawnbot_base_jetpack3
+            Where spawnbot_pointA_upper
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Class Soldier
+                Skill Normal
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 8
+            MaxActive  4
+            SpawnCount 2
+
+            WaitBeforeStarting 1
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_upper
+            Where spawnbot_base_jetpack3
+            Where spawnbot_pointA_upper
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Class Scout
+                Skill Normal
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 8
+            MaxActive  4
+            SpawnCount 2
+
+            WaitBeforeStarting 20
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_battlements
+            Where spawnbot_pointA_flank
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Template T_TFGateBot_Soldier_Normal
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 8
+            MaxActive  4
+            SpawnCount 2
+
+            WaitBeforeStarting 20
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_battlements
+            Where spawnbot_pointA_flank
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Template T_TFGateBot_Scout_Normal
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W3S2_BonkScoutsLtd"
+            Support Limited
+
+            TotalCount 8
+            MaxActive  8
+            SpawnCount 1
+
+            WaitForAllDead "W3S1_PhlogGiants"
+            WaitBetweenSpawns 3
+
+            Where spawnbot_base_battlements
+            Where spawnbot_pointA_flank
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Template T_TFBot_Scout_Bonk
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W3S2_Train"
+            TotalCurrency 280
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            WaitForAllDead "W3S1_PhlogGiants"
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            DoneOutput
+            {
+                Target logic_script_motherland
+                Action RunScriptCode
+                Param "
+                    DisableSpawnSet3()
+                    EnableSpawnSet2()
+                "
+            }
+
+            TFBot
+            {
+                Template Motherland_Train
+            }
+        }
+
+        WaveSpawn
+        {
+            Support 1
+
+            MaxActive  4
+            SpawnCount 4
+
+            WaitForAllSpawned "W3S2_Train"
+
+            Where spawnbot_base_battlements3
+            Where spawnbot_pointA_flank3
+            Where spawnbot_pointB_flank3
+
+            TFBot
+            {
+                Template Motherland_Scout_Bonk_Or_Scattergun
+            }
+        }
+
+        WaveSpawn
+        {
+            Support 1
+
+            MaxActive  3
+            SpawnCount 1
+
+            WaitForAllSpawned "W3S2_BonkScoutsLtd"
+            WaitBetweenSpawns 3
+
+            Where spawnbot_base_battlements3
+            Where spawnbot_pointA_flank3
+            Where spawnbot_pointB_flank3
+
+            TFBot
+            {
+                Template Motherland_Scout_Bonk_Or_Scattergun
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W3S3_Pyros"
+            TotalCurrency 50
+
+            TotalCount 20
+            MaxActive  6
+            SpawnCount 3
+
+            WaitForAllSpawned "W3S2_Train"
+            WaitBetweenSpawns 8
+
+            Where spawnbot_train
+            Where spawnbot_base_battlements2
+            Where spawnbot_pointA_flank2
+            Where spawnbot_pointB_flank2
+
+            TFBot
+            {
+                Template Motherland_Pyro_Phlog
+
+                BehaviorModifiers Push
+                Attributes IgnoreFlag
+                Item "MvM GateBot Light Pyro"
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 7
+            MaxActive  2
+            SpawnCount 1
+
+            WaitForAllSpawned "W3S2_Train"
+            WaitBetweenSpawns 10
+
+            Where spawnbot_train
+            Where spawnbot_base_battlements2
+            Where spawnbot_pointA_flank2
+            Where spawnbot_pointB_flank2
+
+            TFBot
+            {
+                Template T_TFGateBot_Heavy_IronFist
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 6
+
+            Support 1
+            MaxActive 3
+            SpawnCount 1
+
+            WaitBeforeStarting 5
+            WaitBetweenSpawns 5
+
+            Where spawnbot_train
+            Where spawnbot_pointA_main2
+            Where spawnbot_pointB_main2
+
+            TFBot
+            {
+                Class Soldier
+                Skill Normal
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 6
+
+            Support 1
+            MaxActive 3
+            SpawnCount 1
+
+            WaitBeforeStarting 5
+            WaitBetweenSpawns 5
+
+            Where spawnbot_train
+            Where spawnbot_pointA_flank2
+            Where spawnbot_pointB_flank2
+
+            TFBot
+            {
+                Class Scout
+                Skill Normal
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 6
+
+            Support 1
+            MaxActive 6
+            SpawnCount 3
+
+            WaitForAllDead "W3S3_Pyros"
+            WaitBetweenSpawns 8
+
+            Where spawnbot_train
+            Where spawnbot_pointA_main2
+            Where spawnbot_pointB_main2
+
+            TFBot
+            {
+                Template Motherland_Pyro_Phlog
+
+                BehaviorModifiers Push
+                Attributes IgnoreFlag
+                Item "MvM GateBot Light Pyro"
+            }
+        }
+    }
+
+    Wave //Wave 4
+    {
+        WaitWhenDone 65
+        Checkpoint Yes
+
+        InitWaveOutput
+        {
+            Target logic_script_motherland
+            Action RunScriptCode
+            Param "
+                SetPropString(tf_objective_resource, `m_iszMvMPopfileName`, `(Adv) Five-wave plan`)
+            "
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 120
+
+            TotalCount 3
+            MaxActive 1
+            SpawnCount 1
+
+            WaitBeforeStarting 10
+            WaitBetweenSpawnsAfterDeath 30
+
+            Where spawnbot_base_main
+            Where spawnbot_base_jetpack1
+            Where spawnbot_base_main
+            Where spawnbot_base_main
+            Where spawnbot_base_main
+            Where spawnbot_pointA_battlements
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template T_TFBot_Giant_Scout_Baseball_Armored
+                Attributes AlwaysCrit
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 5
+            MaxActive 5
+            SpawnCount 5
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template T_TFGateBot_Scout_Normal
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 220
+
+            TotalCount 32
+            MaxActive 6
+            SpawnCount 1
+
+            WaitBetweenSpawns 4
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template T_TFGateBot_Scout_Normal
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W4S1_Soldiers"
+            TotalCurrency 40
+
+            TotalCount 10
+            MaxActive 6
+            SpawnCount 2
+
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template T_TFGateBot_Demo_Burst_Normal_Crit
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W4S1_Soldiers"
+            TotalCurrency 40
+
+            TotalCount 8
+            MaxActive 8
+            SpawnCount 4
+
+            WaitBeforeStarting 20
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template T_TFBot_Soldier_RocketShotgun
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 40
+
+            TotalCount 8
+            MaxActive 8
+            SpawnCount 4
+
+            WaitForAllSpawned "W4S1_Soldiers"
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template T_TFGateBot_Demo_Burst_Normal_Crit
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 40
+
+            TotalCount 10
+            MaxActive 6
+            SpawnCount 2
+
+            WaitForAllSpawned "W4S1_Soldiers"
+            WaitBeforeStarting 1
+            WaitBetweenSpawns 4
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template T_TFBot_Soldier_RocketShotgun
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W4S1_Shotguns1"
+            TotalCurrency 200
+
+            TotalCount 4
+            MaxActive 2
+            SpawnCount 2
+
+            WaitBeforeStarting 5
+            WaitBetweenSpawns 10
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            Squad
+            {
+                TFBot
+                {
+                    Template T_TFBot_Giant_Heavyweapons_Shotgun
+                }
+                TFBot
+                {
+                    Template Motherland_Medic_Kritz
+                }
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 50
+
+            TotalCount 4
+            MaxActive 2
+            SpawnCount 2
+
+            WaitForAllDead "W4S1_Shotguns1"
+            WaitBetweenSpawns 5
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            Squad
+            {
+                TFBot
+                {
+                    Template T_TFBot_Giant_Heavyweapons_Shotgun
+                }
+                TFBot
+                {
+                    Template Motherland_Medic_Kritz
+                }
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W4S1_MinigunHeavies1"
+            TotalCurrency 60
+
+            TotalCount 6
+            MaxActive  6
+            SpawnCount 6
+
+            WaitBeforeStarting 20
+
+            Where spawnbot_base_jetpack1
+            Where spawnbot_pointA_jetpack1
+            Where spawnbot_pointB_jetpack1
+
+            Squad
+            {
+                TFBot { Class Heavy Skill Normal }
+                TFBot { Class Heavy Skill Normal }
+                TFBot { Class Heavy Skill Normal }
+                TFBot { Template T_TFBot_Medic_QuickUber }
+                TFBot { Template T_TFBot_Medic_QuickUber }
+                TFBot { Template T_TFBot_Medic_QuickUber }
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 40
+
+            TotalCount 6
+            MaxActive  4
+            SpawnCount 2
+
+            WaitForAllSpawned "W4S1_MinigunHeavies1"
+
+            WaitBeforeStarting 20
+            WaitBetweenSpawns 15
+
+            Where spawnbot_base_jetpack1
+            Where spawnbot_base_jetpack2
+            Where spawnbot_pointA_jetpack1
+            Where spawnbot_pointA_jetpack2
+            Where spawnbot_pointB_main
+            Where spawnbot_pointB_flank
+
+            Squad
+            {
+                TFBot { Class Heavy Skill Normal }
+                TFBot { Class Heavy Skill Normal }
+                TFBot { Class Heavy Skill Normal }
+                TFBot { Template T_TFBot_Medic_QuickUber }
+                TFBot { Template T_TFBot_Medic_QuickUber }
+                TFBot { Template T_TFBot_Medic_QuickUber }
+            }
+        }
+    }
+
+    Wave //Wave 5
+    {
+        WaitWhenDone 65
+        Checkpoint Yes
+
+        InitWaveOutput
+        {
+            Target logic_script_motherland
+            Action RunScriptCode
+            Param "
+                SetPropString(tf_objective_resource, `m_iszMvMPopfileName`, `(Adv) Five-wave plan`)
+                EnableSpawnSet2()
+            "
+        }
+
+        WaveSpawn
+        {
+            Name "W5S1_LaserHeavies"
+            TotalCurrency 400
+
+            TotalCount 2
+            MaxActive 2
+            SpawnCount 1
+
+            Where spawnbot_base_jetpack1
+            Where spawnbot_base_jetpack3
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template Motherland_Heavy_LaserEyes
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W5W1_CritPyros"
+            TotalCurrency 60
+
+            TotalCount 6
+            MaxActive 6
+            SpawnCount 6
+
+            WaitBeforeStarting 5
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Class Pyro
+                Skill Normal
+                ClassIcon pyro_reflect
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W5W1_CritPyros"
+            TotalCurrency 60
+
+            TotalCount 6
+            MaxActive 6
+            SpawnCount 6
+
+            WaitBeforeStarting 5
+
+            Where spawnbot_base_battlements
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Class Pyro
+                Skill Normal
+                ClassIcon pyro_reflect
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W5W2_Soldiers"
+            TotalCurrency 100
+
+            TotalCount 24
+            MaxActive 6
+            SpawnCount 1
+
+            WaitBeforeStarting 4
+
+            Where spawnbot_base_main
+            Where spawnbot_base_battlements
+            Where spawnbot_pointA_upper
+            Where spawnbot_pointA_battlements
+            Where spawnbot_pointB_main
+            Where spawnbot_pointB_flank
+
+            TFBot
+            {
+                Template Motherland_Soldier_DirectHit
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W5W2_Soldiers"
+            TotalCurrency 100
+
+            TotalCount 24
+            MaxActive 8
+            SpawnCount 4
+
+            WaitForAllDead "W5W1_CritPyros"
+            WaitBetweenSpawns 15
+
+            RandomSpawn 1
+            Where spawnbot_train
+            Where spawnbot_train
+            Where spawnbot_train
+            Where spawnbot_train
+            Where spawnbot_train
+            Where spawnbot_base_main
+            Where spawnbot_base_battlements
+            Where spawnbot_pointA_upper
+            Where spawnbot_pointA_battlements
+            Where spawnbot_pointB_main
+            Where spawnbot_pointB_flank
+
+            Squad
+            {
+                TFBot
+                {
+                    Template Motherland_Soldier_DirectHit
+			        ClassIcon soldier_directhit_buff_lite
+			        Attributes SpawnWithFullCharge
+			        Item "The Buff Banner"
+			        CharacterAttributes
+			        {
+				        "increase buff duration"	9.0
+			        }
+                }
+                TFBot { Template Motherland_Soldier_DirectHit }
+                TFBot { Template Motherland_Soldier_DirectHit }
+                TFBot { Template Motherland_Soldier_DirectHit }
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 20
+
+            TotalCount 1
+            MaxActive 1
+            SpawnCount 1
+
+            WaitForAllDead "W5S1_LaserHeavies"
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Template Motherland_Heavy_Shotgun_Armored
+                Attributes AlwaysCrit
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W5S3_Amored_Heavies"
+            TotalCurrency 100
+
+            TotalCount 5
+            MaxActive 3
+            SpawnCount 1
+
+            WaitForAllDead "W5S1_LaserHeavies"
+            WaitBetweenSpawns 10
+
+            Where spawnbot_train
+            Where spawnbot_base_battlements2
+            Where spawnbot_pointA_main2
+            Where spawnbot_pointB_main2
+
+            TFBot
+            {
+                Template Motherland_Heavy_Shotgun_Armored
+                Attributes AlwaysCrit
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 60
+
+            TotalCount 3
+            MaxActive 3
+            SpawnCount 1
+
+            WaitForAllDead "W5S3_Amored_Heavies"
+            WaitBetweenSpawns 10
+
+            Where spawnbot_train
+            Where spawnbot_base_battlements2
+            Where spawnbot_pointA_main2
+            Where spawnbot_pointB_main2
+
+            TFBot
+            {
+                Template Motherland_Heavy_Shotgun_Armored
+                Attributes AlwaysCrit
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W5S2_Train"
+            TotalCurrency 400
+
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            WaitForAllDead "W5S1_LaserHeavies"
+            WaitBeforeStarting 10
+
+            Where spawnbot_base_main
+            Where spawnbot_pointA_main
+            Where spawnbot_pointB_main
+
+            FirstSpawnOutput
+            {
+                Target logic_script_motherland
+                Action RunScriptCode
+                Param "DisableSpawnSet2()"
+            }
+
+            DoneOutput
+            {
+                Target logic_script_motherland
+                Action RunScriptCode
+                Param "EnableSpawnSet2()"
+            }
+
+            TFBot
+            {
+                Template Motherland_Train
+                Health 17000
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 10
+
+            Support 1
+            TotalCount 10
+            MaxActive 6
+            SpawnCount 2
+
+            WaitForAllSpawned "W5S2_Train"
+            WaitBetweenSpawns 6
+
+            Where spawnbot_train
+            Where spawnbot_base_closet2
+            Where spawnbot_pointA_flank2
+            Where spawnbot_pointB_flank2
+
+            TFBot
+            {
+                Class Pyro
+                Skill Hard
+                ClassIcon pyro_reflect
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 4
+
+            Support 1
+            TotalCount 2
+            MaxActive  2
+            SpawnCount 2
+
+            WaitForAllSpawned "W5S2_Train"
+            WaitBeforeStarting 20
+            WaitBetweenSpawns 15
+
+            Where spawnbot_train
+            Where spawnbot_base_main2
+            Where spawnbot_pointA_main2
+            Where spawnbot_pointB_main2
+
+            TFBot
+            {
+                Class Heavyweapons
+                Skill Normal
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 4
+
+            Support 1
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
+
+            WaitForAllDead "W5W2_Soldiers"
+            WaitBetweenSpawns 20
+
+            Where spawnbot_train
+            Where spawnbot_base_main2
+            Where spawnbot_pointA_battlements2
+            Where spawnbot_pointB_main2
+
+            TFBot
+            {
+                Template Motherland_Soldier_DirectHit
+			    ClassIcon soldier_directhit_buff_lite
+			    Attributes SpawnWithFullCharge
+			    Item "The Buff Banner"
+			    CharacterAttributes
+			    {
+				    "increase buff duration"	9.0
+			    }
+            }
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 16
+
+            Support 1
+            TotalCount 8
+            MaxActive  4
+            SpawnCount 4
+
+            WaitForAllDead "W5S2_Train"
+            WaitBetweenSpawns 17
+
+            Where spawnbot_train
+            Where spawnbot_base_main2
+            Where spawnbot_pointA_battlements2
+            Where spawnbot_pointB_main2
+
+            Squad
+            {
+                TFBot
+                {
+                    Template Motherland_Soldier_DirectHit
+
+                    BehaviorModifiers Push
+                    Attributes IgnoreFlag
+                    Item "MvM GateBot Light Scout"
+                }
+                TFBot
+                {
+                    Template Motherland_Soldier_DirectHit
+                }
+            }
+        }
+
+        WaveSpawn
+        {
+            Name "W5S3_Train_And_Armored_Heavies"
+            WaitForAllDead "W5S2_Train"
+            WaitBeforeStarting 10
+        }
+
+        WaveSpawn
+        {
+            Name "W5S3_Train_And_Armored_Heavies"
+            WaitForAllSpawned "W5S3_Amored_Heavies"
+        }
+
+        WaveSpawn
+        {
+            TotalCurrency 200
+
+            TotalCount 1
+            MaxActive 1
+            SpawnCount 1
+
+            WaitForAllDead "W5S3_Train_And_Armored_Heavies"
+
+            Where spawnbot_base_jetpack3
+            Where spawnbot_pointA_jetpack2
+            Where spawnbot_pointB_main
+
+            FirstSpawnOutput
+            {
+                Target logic_script_motherland
+                Action RunScriptCode
+                Param "
+                    if (IsPointAUnderSiege())
+                        return
+
+                    RunWithDelay(0.1, function()
+                    {
+                        foreach (bot in GetAlivePlayers(TF_TEAM_PVE_INVADERS))
+                        {
+                            if (bot.HasBotTag(`bot_boss`))
+                            {
+                                local multiplier = IsPointBUnderSiege() ? 0.694 : 0.494
+                                bot.AddCustomAttribute(`hidden maxhealth non buffed`, bot.GetMaxHealth() * multiplier, -1)
+                                bot.SetMaxHealth(bot.GetMaxHealth() * multiplier)
+                                bot.SetHealth(bot.GetMaxHealth())
+                                break
+                            }
+                        }
+                    })
+                "
+            }
+
+            TFBot
+            {
+                Template Motherland_Chief_Heavy_Soviet_Bear
+            }
+        }
+    }
+}
