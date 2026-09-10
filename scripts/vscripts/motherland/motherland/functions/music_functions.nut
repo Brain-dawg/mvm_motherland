@@ -22,6 +22,12 @@ function SetWaveMusic(argument) //API function
         music_start = argument[0]
         music_end = argument[1]
     }
+
+    if (isListenedServer)
+    {
+        ListenedServerCachingBugFix(music_start, 12)
+        ListenedServerCachingBugFix(music_end, 13)
+    }
 }
 
 function SetWaveMusicStart(argument) //API function
@@ -36,6 +42,9 @@ function SetWaveMusicStart(argument) //API function
     }
     else
         music_start = argument[0]
+
+    if (isListenedServer)
+        ListenedServerCachingBugFix(music_start, 12)
 }
 
 function SetWaveMusicEnd(argument) //API function
@@ -50,6 +59,9 @@ function SetWaveMusicEnd(argument) //API function
     }
     else
         music_end = argument[1]
+
+    if (isListenedServer)
+        ListenedServerCachingBugFix(music_end, 13)
 }
 
 
@@ -61,18 +73,26 @@ function InitWaveMusic()
 {
     music_start = null
     music_end = null
+
+    if (isListenedServer)
+    {
+        ListenedServerCachingBugFix(CalcDefaultWaveMusic()[0], 14)
+        ListenedServerCachingBugFix(CalcDefaultWaveMusic()[1], 15)
+    }
 }
 
 function PlayWaveStartMusic()
 {
-    TempPrint("PlayWaveStartMusic")
-    EmitSoundEx({
-        sound_name = music_start ? music_start : CalcDefaultWaveMusic()[0]
-        filter_type = RECIPIENT_FILTER_GLOBAL
-        volume = 1
-        sound_level = 0
-        channel = CHAN_AUTO
-    })
+    local sound_name = music_start ? music_start : CalcDefaultWaveMusic()[0]
+
+    for (local i = 0; i < 2; i++)
+        EmitSoundEx({
+            sound_name = sound_name
+            filter_type = RECIPIENT_FILTER_GLOBAL
+            volume = i ? 1 : 0.5
+            sound_level = 0
+            channel = CHAN_AUTO
+        })
 
     if (IsTrainWave())
     {
@@ -86,16 +106,32 @@ function PlayWaveStartMusic()
     }
 }
 
+function InterruptWaveStartMusic()
+{
+    local sound_name = music_start ? music_start : CalcDefaultWaveMusic()[0]
+
+    for (local i = 0; i < 2; i++)
+        EmitSoundEx({
+            sound_name = sound_name
+            filter_type = RECIPIENT_FILTER_GLOBAL
+            flags = SND_STOP | SND_CHANGE_VOL
+            volume = 0
+            channel = CHAN_AUTO
+        })
+}
+
 function PlayWaveEndMusic()
 {
-    TempPrint("PlayWaveEndMusic")
-    EmitSoundEx({
-        sound_name = music_end ? music_end : CalcDefaultWaveMusic()[1]
-        filter_type = RECIPIENT_FILTER_GLOBAL
-        volume = 1
-        sound_level = 0
-        channel = CHAN_AUTO
-    })
+    local sound_name = music_end ? music_end : CalcDefaultWaveMusic()[1]
+
+    for (local i = 0; i < 2; i++)
+        EmitSoundEx({
+            sound_name = sound_name
+            filter_type = RECIPIENT_FILTER_GLOBAL
+            volume = i ? 1 : 0.5
+            sound_level = 0
+            channel = CHAN_AUTO
+        })
 }
 
 function CalcDefaultWaveMusic()
@@ -113,4 +149,22 @@ function CalcDefaultWaveMusic()
         return MUSIC_ALIASES.FIRST
     else
         return MUSIC_ALIASES.MID
+}
+
+function ListenedServerCachingBugFix(music, channel)
+{
+    EmitSoundEx({
+        sound_name = music
+        volume = 0.01
+        pitch = 20
+        filter_type = RECIPIENT_FILTER_GLOBAL
+        channel = channel
+    })
+
+    RunWithDelay(5, EmitSoundEx, {
+        sound_name = music
+        flags = SND_STOP
+        filter_type = RECIPIENT_FILTER_GLOBAL
+        channel = channel
+    }, worldspawn)
 }

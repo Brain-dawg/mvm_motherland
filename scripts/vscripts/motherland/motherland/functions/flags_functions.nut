@@ -131,7 +131,6 @@ function OnRadioCapture() //activator, caller
 //and thus we shouldn't enable the Radio flag or reset the BombMain
 function SwitchToRadioFlag()
 {
-    TempPrint("SwitchToRadioFlag "+inBossMode)
     if (inBossMode)
         return
 
@@ -144,11 +143,14 @@ function SwitchToRadioFlag()
     EntFire(FLAGS_BOMB_FLANK_ENTNAME, "ForceResetSilent")
 }
 
+function ReEnableOneTimeHatchAlerts()
+{
+    EntFire("func_flagdetectionzone", "Enable")
+}
+
 //If the Boss Mode is enabled, we may still need to disable the Radio flag maybe enable the BombFlank
 function SwitchToBombFlags()
 {
-    TempPrint("SwitchToBombFlags "+inBossMode)
-
     EntFire(FLAGS_RADIO_ENTNAME, "Disable")
     EntFire(FLAGS_BOMB_MAIN_ENTNAME, "Enable")
 

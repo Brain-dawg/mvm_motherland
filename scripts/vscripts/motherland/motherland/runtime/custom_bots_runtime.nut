@@ -1,5 +1,6 @@
 OnGameEvent("player_spawn_post", CheckMotherlandBotsTags)
 OnGameEvent("player_spawn_post", ConvertGatebotToNormalIfHatchUnderSiege)
+OnGameEvent("player_spawn_next", FixVaccinatorMedicBackpack)
 
 MOTHERLAND_BOT_TAGS["bot_boss"] <- MotherlandBotBombBoss
 MOTHERLAND_BOT_TAGS["cant_spawn_with_bomb"] <- ForceResetIfOwner

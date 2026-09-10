@@ -532,23 +532,8 @@ WaveSchedule
             Action RunScriptCode
             Param "
                 IncludeScript( `brain_motherland/main` )
-                PutHatchUnderSiege()
-                SendGlobalGameEvent( `show_annotation`, {
-                   worldposX = -5307
-                   worldposY = 1301
-                   worldposZ = 212
-                   id = 2543
-                   text = `Bots will spawn from Gate B!`
-                   lifetime = -1
-                   play_sound = `ui/scored.wav`
-                })
+                PutHatchUnderSiege(true)
             "
-        }
-        StartWaveOutput {
-
-            Target logic_script_motherland
-            Action RunScriptCode
-            Param "SendGlobalGameEvent(`hide_annotation`, {id = 2543})"
         }
 
         // Subwave description here
@@ -563,11 +548,11 @@ WaveSchedule
             Where spawnbot_pointA_upper
             Where spawnbot_pointB_main3
             Where spawnbot_pointB_main
-            TotalCount 75
-            MaxActive 8 // How many bots from this WaveSpawn can be spawned at once.
+            TotalCount 150
+            MaxActive 12 // How many bots from this WaveSpawn can be spawned at once.
             SpawnCount 2 // The amount to spawn each time the game spawns in the bots.
             WaitBeforeStarting 5 // The amount of time to wait before spawning in these bots.
-            WaitBetweenSpawns 2 // The amount of time in between spawning the bots.
+            WaitBetweenSpawns 1 // The amount of time in between spawning the bots.
             TotalCurrency 100 // The TOTAL amount of money the bots from this WaveSpawn will drop.
             Support Limited
 
@@ -610,25 +595,10 @@ WaveSchedule
             Action RunScriptCode
             Param "
                 IncludeScript( `brain_motherland/main` )
-                PutBUnderSiege()
-                SendGlobalGameEvent( `show_annotation`, {
-                   worldposX = -8359
-                   worldposY = 239
-                   worldposZ = 436
-                   id = 2543
-                   text = `Bots will now spawn from Gate A!`
-                   lifetime = -1
-                   play_sound = `ui/scored.wav`
-                })
+                PutBUnderSiege(true)
                 ShowHolograms()
             "
             Delay 0.2
-        }
-        StartWaveOutput {
-
-            Target logic_script_motherland
-            Action RunScriptCode
-            Param "SendGlobalGameEvent(`hide_annotation`, {id = 2543})"
         }
 
         WaveSpawn {
@@ -643,7 +613,7 @@ WaveSchedule
             Tank {
 
                 Name "tankboss"
-                Health 15000
+                Health 17500
 				StartingPathTrackNode tank_path_start
 
                 OnBombDroppedOutput {
@@ -715,11 +685,11 @@ WaveSchedule
             Where spawnbot_pointB_flank3
             Where spawnbot_pointB_flank
             Support Limited
-            TotalCount 75
-            MaxActive 6
+            TotalCount 100
+            MaxActive 10
             SpawnCount 1
             WaitForAllDead "wave2a1"
-            WaitBetweenSpawns 2
+            WaitBetweenSpawns 1
             TotalCurrency 100
 
             TFBot { Template T_TFBot_Sniper_Huntsman Skill Easy Tag nav_main }
@@ -801,25 +771,9 @@ WaveSchedule
             Action RunScriptCode
             Param "
                 IncludeScript( `brain_motherland/main` )
-                SendGlobalGameEvent( `show_annotation`, {
-                   worldposX = -8536
-                   worldposY = -3348
-                   worldposZ = 340
-                   id = 2543
-                   text = `Bots will spawn at the front!`
-                   lifetime = -1
-                   play_sound = `ui/scored.wav`
-                })
                 ShowHolograms()
             "
             Delay 0.2
-        }
-
-        StartWaveOutput {
-
-            Target logic_script_motherland
-            Action RunScriptCode
-            Param "SendGlobalGameEvent(`hide_annotation`, {id = 2543})"
         }
         WaveSpawn {
 
@@ -954,10 +908,10 @@ WaveSchedule
             Where spawnbot_pointA_upper
             Where spawnbot_pointB_main
             Where spawnbot_pointB_flank
-            TotalCount 50
-            MaxActive 8
+            TotalCount 85
+            MaxActive 10
             SpawnCount 2
-            WaitBetweenSpawns 2
+            WaitBetweenSpawns 1
             WaitBeforeStarting 10
             TotalCurrency 100
             RandomSpawn 1
@@ -1103,7 +1057,7 @@ WaveSchedule
             TotalCount 1
             MaxActive 1
             SpawnCount 1
-            WaitBeforeStarting 5
+            WaitBeforeStarting 10
             TotalCurrency 200
 
             Tank {

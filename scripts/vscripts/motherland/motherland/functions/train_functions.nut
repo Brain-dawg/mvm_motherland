@@ -52,6 +52,7 @@ class MotherlandBotMotherlandTrain extends MotherlandBotTemplate
     speed = TRAIN_MAX_SPEED
     prevDistance = 9999
     stateTimer = 0
+    isDying = false
 
     function OnConstruct() //Interface Implementation
     {
@@ -142,6 +143,7 @@ class MotherlandBotMotherlandTrain extends MotherlandBotTemplate
             visibilityBitfield = 0
             follow_entindex = bossEnt.entindex()
             play_sound = "ui/hint.wav"
+            show_distance = true
         })
     }
 
@@ -183,14 +185,16 @@ class MotherlandBotMotherlandTrain extends MotherlandBotTemplate
 
         DisableTrainSpawnSet()
 
-        bossEnt.AcceptInput("Kill", "", null, null)
+        if (IsValidEntity(bossEnt))
+            bossEnt.AcceptInput("Kill", "", null, null)
+
         EntFire(TRAIN_NAVBLOCKER_ENTNAME, "UnBlockNav")
         EntFire(TRAIN_TRACKTRAIN_ENTNAME, "Kill")
 
         foreach(index, entry in TRAIN_GATES)
             StopGateWarning(index, entry)
 
-        ::MoveTrainForward <-  function() {}
+        ::MoveTrainForward <- function() {}
     }
 
     function Think()
@@ -471,7 +475,7 @@ class MotherlandBotMotherlandTrain extends MotherlandBotTemplate
         if (params.const_entity != bossEnt)
             return
 
-        if (!IsValidPlayer(params.attacker))
+        if (!IsValidPlayer(params.attacker) || isDying)
         {
             params.early_out = true
             return
@@ -486,12 +490,18 @@ class MotherlandBotMotherlandTrain extends MotherlandBotTemplate
             params.damage *= 0.25
         else if (weaponClassName == "tf_weapon_raygun")
             params.damage = 2
+        else if (params.damage_type & DMG_BURN) //Experimental: fire damage resistance for the train
+            params.damage *= 0.6
 
         local hpLeft = params.const_entity.GetHealth() - 50000
-        bot.SetHealth(hpLeft)
 
-        if (hpLeft <= 0)
+        if (hpLeft <= 2)
+        {
+            bot.SetHealth(10)
             OnTrainTankDeath(params)
+        }
+        else
+            bot.SetHealth(hpLeft)
     }
 
     function OnTrainTankDeath(params)
@@ -508,12 +518,21 @@ class MotherlandBotMotherlandTrain extends MotherlandBotTemplate
             9999,
             TF_DMG_CUSTOM_TELEFRAG)
 
+        if (!handOverControlOverPopulatorToPopFile)
+            EntFire(POINT_POPULATOR_INTERFACE_ENTNAME, "ChangeBotAttributes", "TrainDestroyed")
+
+        if (isDying)
+        {
+            PrintWarning("Same train died multiple times in a row")
+            return
+        }
+
         EmitSoundEx({
             sound_name = "MVM.TankExplodes"
             filter_type = RECIPIENT_FILTER_GLOBAL
             origin = center
             volume = 1
-            soundlevel = 150
+            soundlevel = 125
             flags = 1
             channel = 0
         })
@@ -536,7 +555,6 @@ class MotherlandBotMotherlandTrain extends MotherlandBotTemplate
 
         EntFire("tf_gamerules", "PlayVO", "Announcer.MVM_General_Destruction")
 
-        if (!handOverControlOverPopulatorToPopFile)
-            EntFire(POINT_POPULATOR_INTERFACE_ENTNAME, "ChangeBotAttributes", "TrainDestroyed")
+        isDying = true
     }
 }

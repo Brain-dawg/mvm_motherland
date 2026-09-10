@@ -1,3 +1,4 @@
+isListenedServer <- !IsDedicatedServer()
 
 MUSIC_01_COMRADES_VS_MACHINES <- "mvm/motherland_b44a/01_comrades_vs_machines.mp3"
 MUSIC_02_WAVE_ONE_START <- "mvm/motherland_b44a/02_wave_one_start.mp3"
@@ -23,6 +24,7 @@ MUSIC_ALIASES <- {
     "1": [MUSIC_02_WAVE_ONE_START, MUSIC_03_WAVE_ONE_END]
     WAVE_1 = [MUSIC_02_WAVE_ONE_START, MUSIC_03_WAVE_ONE_END]
     FIRST = [MUSIC_02_WAVE_ONE_START, MUSIC_03_WAVE_ONE_END]
+    START = [MUSIC_02_WAVE_ONE_START, MUSIC_03_WAVE_ONE_END]
     mvm_start_wave = [MUSIC_02_WAVE_ONE_START, MUSIC_03_WAVE_ONE_END]
     mvm_end_wave = [MUSIC_02_WAVE_ONE_START, MUSIC_03_WAVE_ONE_END]
 

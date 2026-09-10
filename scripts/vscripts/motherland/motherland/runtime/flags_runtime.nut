@@ -3,6 +3,7 @@ AddTimer(0.1, PreventBossesFromJumpingIntoRadioCaps)
 
 OnGameEvent("mvm_wave_init", SwitchToRadioFlag)
 OnGameEvent("mvm_wave_init", DisableFlankBomb)
+OnGameEvent("mvm_wave_init", ReEnableOneTimeHatchAlerts)
 
 PrecacheModel(FLAG_RADIO_MODEL)
 PrecacheParticle("Motherland_floor_radio_flag_top_parent")

@@ -6,6 +6,7 @@ set1Enabled <- true
 set2Enabled <- false
 set3Enabled <- false
 trainSetEnabled <- false
+yardSetEnabled <- false
 isUsingRoundAbout <- false
 
 function RecalculateSpawns()
@@ -21,6 +22,9 @@ function RecalculateSpawns()
         local realName = GetPropString(tankSpawnNode, "m_altName")
         tankSpawnNode.KeyValueFromString("targetname", realName)
     }
+
+    if (yardSetEnabled)
+        EntFire(SPAWNS_YARD_ENTNAME_WILDCARD, "Enable")
 
     if (IsPointAUnderSiege())
     {
@@ -144,6 +148,12 @@ function EnableTrainSpawnSet(state = true)
     RecalculateSpawns()
 }
 
+function EnableYardSpawnSet(state = true)
+{
+    yardSetEnabled = state
+    RecalculateSpawns()
+}
+
 function DisableSpawnSet(index, state = true) //API function
 {
     if (index == 1)
@@ -180,6 +190,12 @@ function DisableTrainSpawnSet()
     RecalculateSpawns()
 }
 
+function DisableYardSpawnSet()
+{
+    yardSetEnabled = false
+    RecalculateSpawns()
+}
+
 function IsRoundAboutActive()
 {
     return isUsingRoundAbout
@@ -209,14 +225,10 @@ function InitSpawns()
     SendBotsOnRoundAboutPath(false)
     RecalculateSpawns()
     EnableNavPrefersTiedToSpawn()
-
-    EntFire(RED_SPAWNS_SETUP_ENTNAME, "Enable")
-    EntFire(RED_SPAWNS_COMBAT_ENTNAME, "Disable")
 }
 
 function EnableDefendersCombatSpawns()
 {
-    TempPrint("EnableDefendersCombatSpawns")
     EntFire(RED_SPAWNS_SETUP_ENTNAME, "Disable")
     EntFire(RED_SPAWNS_COMBAT_ENTNAME, "Enable")
 }
@@ -254,6 +266,8 @@ function ApplySpawnTagWithChance(tag, chance) //activator, caller
 //========================================================
 // Train Passengers
 //========================================================
+
+nextTimeCanPlayTeleportSound <- 0
 
 function CacheTrainTeleportDestinations()
 {
@@ -345,12 +359,19 @@ function ConvertToTrainPassenger(bot) //Called from I/O
         EntFireByHandle(particle, "Kill", "", 3, null, null)
     }
 
-    EmitSoundEx({
-        sound_name = TRAINBOT_TELEPORT_SOUND
-        entity = bot
-        sound_level = 150
-        channel = CHAN_AUTO
-    })
+    local time = Time()
+    if (nextTimeCanPlayTeleportSound <= time)
+    {
+        nextTimeCanPlayTeleportSound = time + 0.5
+
+        EmitSoundEx({
+            sound_name = TRAINBOT_TELEPORT_SOUND
+            entity = bot
+            volume = 1
+            sound_level = 150
+            channel = CHAN_AUTO
+        })
+    }
 }
 
 function AnyPlayersNearby(origin, radius, team)

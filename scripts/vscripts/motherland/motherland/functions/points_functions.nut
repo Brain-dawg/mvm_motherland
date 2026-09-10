@@ -64,7 +64,7 @@ function PutPointAUnderSiege(showAnnotation = false)
 
     if (showAnnotation)
     {
-        SendGlobalGameEvent("show_annotation", {
+        RunWithDelay(5, SendGlobalGameEvent, "show_annotation", {
             worldposX = -8536
             worldposY = -3348
             worldposZ = 340
@@ -129,7 +129,7 @@ function PutPointBUnderSiege(showAnnotation = false)
 
     if (showAnnotation)
     {
-        SendGlobalGameEvent("show_annotation", {
+        RunWithDelay(5, SendGlobalGameEvent, "show_annotation", {
             worldposX = -8359
             worldposY = 239
             worldposZ = 436
@@ -189,7 +189,7 @@ function PutHatchUnderSiege(showAnnotation = false)
 
     if (showAnnotation)
     {
-        SendGlobalGameEvent("show_annotation", {
+        RunWithDelay(5, SendGlobalGameEvent, "show_annotation", {
             worldposX = -5307
             worldposY = 1301
             worldposZ = 212

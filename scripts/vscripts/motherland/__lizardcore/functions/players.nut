@@ -97,7 +97,7 @@ function Players_OnDisconnectEvent(player, params)
         teams = [0, player.GetTeam()]
     else
     {
-        SoftAssert(false, format("Player had no GetTeam method in Disconnect Event: %s `%s`", player, TableToString(params)))
+        PrintWarning("Player had no GetTeam method in Disconnect Event: %s `%s`", player, TableToString(params))
         teams = [0, 1, 2, 3]
     }
 
@@ -125,7 +125,7 @@ function GetClients()
     local filtered = client_cache.filter(@(index, player) player && player.IsValid() && player.IsPlayer())
     if (!AreArraysEqual(client_cache, filtered))
     {
-        SoftAssert(true, format("GetClients has invalid clients! %s", TableToString(client_cache)))
+        PrintWarning(format("GetClients has invalid clients! %s", TableToString(client_cache)))
         try
         {
             local str = ""
@@ -145,7 +145,7 @@ function GetPlayers(team = 0)
     local filtered = result.filter(@(index, player) player && player.IsValid() && player.IsPlayer() && player.GetTeam() >= 2)
     if (!AreArraysEqual(result, filtered))
     {
-        SoftAssert(false, format("GetPlayers(%d) has invalid clients! %s", team, TableToString(result)))
+        PrintWarning(format("GetPlayers(%d) has invalid clients! %s", team, TableToString(result)))
         try
         {
             local str = ""
@@ -165,7 +165,7 @@ function GetAlivePlayers(team = 0)
     local filtered = result.filter(@(index, player) player && player.IsValid() && player.IsPlayer() && player.GetTeam() >= 2 && player.IsAlive())
     if (!AreArraysEqual(result, filtered))
     {
-        SoftAssert(false, format("GetAlivePlayers(%d) has invalid clients! %s", team, TableToString(result)))
+        PrintWarning(format("GetAlivePlayers(%d) has invalid clients! %s", team, TableToString(result)))
         try
         {
             local str = ""

@@ -4,7 +4,14 @@ PrecacheParticle("mvm_tank_destroy")
 PrecacheParticle("explosionTrail_seeds_mvm")
 PrecacheParticle("fluidSmokeExpl_ring_mvm")
 
-/*PrecacheSound(TRAIN_SFX_DISTANT_WAVE_START)
+OnChatCommand("panic2", function(player, args)
+{
+    foreach(bot in GetPlayers(TF_TEAM_PVE_INVADERS))
+        if (!bot.HasBotTag("bot_motherland_train"))
+            bot.TakeDamageEx(bot, bot, null, Vector(), Vector(), 99999, TF_DMG_CUSTOM_TELEFRAG)
+})
+
+PrecacheSound(TRAIN_SFX_DISTANT_WAVE_START)
 PrecacheSound(TRAIN_SFX_WHEEL_SQUEEL)
 PrecacheSound(TRAIN_SFX_SPAWN_HORN)
 PrecacheSound(TRAIN_SFX_LOOP)
@@ -13,4 +20,4 @@ PrecacheSound(TRAIN_SFX_RELOCATION)
 PrecacheSound(TRAIN_SFX_STEAM)
 PrecacheSound(TRAIN_SFX_STEAM2)
 PrecacheSound(TRAIN_SFX_TELEPORTER_READY)
-PrecacheSound(TRAIN_SFX_DOORS_OPEN)*/
+PrecacheSound(TRAIN_SFX_DOORS_OPEN)

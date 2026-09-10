@@ -2,7 +2,7 @@ MOTHERLAND_BOT_TAGS <- {}
 
 BOT_FREE_SPACE_HEIGHT <- 85
 
-JETPACK_LANDING_HEIGHT <- 350
+JETPACK_LANDING_HEIGHT <- 200
 
 JETPACK_LOOPING_SFX <- "Weapon_RocketPack.BoostersLoop"
 JETPACK_LANDING_SFX <- "Weapon_RocketPack.BoostersShutdown"
@@ -45,3 +45,5 @@ GATEBOT_HAT_MODELS <- {
 }
 
 ENGINEER_TRAIN_CAP_INDEX <- PrecacheModel("models/motherland/bot_engineer_train_hat.mdl")
+
+const VACCINATOR_ITEM_ID = 998;

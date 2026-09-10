@@ -654,9 +654,12 @@ _EventWrapper( "player_spawn", "TagsPlayerSpawn", function( params ) {
 
     AddThinkToEnt( bot, "BotThinks" )
 
-    if ( bot.HasBotTag( "motherland_jetpack" ) && bot.IsMiniBoss() )
-        bot.AddBotTag( "motherland_alwaysglow" )
+    _MotherlandUtils.ScriptEntFireSafe( bot, @"
 
-    _MotherlandUtils.ScriptEntFireSafe( bot, "_MotherlandTags.EvaluateTags( self )", 0.1 )
+        if ( self.HasBotTag( `motherland_jetpack` ) && self.IsMiniBoss() )
+            self.AddBotTag( `motherland_alwaysglow` )
+    ", 0.1, null, null )
+
+    _MotherlandUtils.ScriptEntFireSafe( bot, "_MotherlandTags.EvaluateTags( self )", 0.1, null, null )
 
 }, EVENT_WRAPPER_TAGS )

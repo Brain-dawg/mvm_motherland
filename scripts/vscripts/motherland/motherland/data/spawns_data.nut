@@ -101,6 +101,8 @@ SPAWNS_POINTB_SET3_ENTNAMES <- [
     "spawnbot_pointB_jetpack33"
 ]
 
+SPAWNS_YARD_ENTNAME_WILDCARD <- "spawnbot_yard_*"
+
 
 SPAWNS_TRAIN_ENTNAME_WILDCARD <- "spawnbot_train*"
 SPAWNS_BASE_TRAIN_ENTNAME <- "spawnbot_base_train"

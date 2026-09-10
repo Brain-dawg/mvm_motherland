@@ -48,50 +48,6 @@ WaveSchedule
             Scale 1.4
         }
 
-        Motherland_Giant_Medic_Shield
-        {
-            Template T_TFBot_Giant_Medic_Regen
-            Name "Giant Shield Medic"
-            ClassIcon medic_shield_lite_giant
-            Skill Hard
-            Attributes ProjectileShield
-            Attributes IgnoreEnemies
-            WeaponRestrictions SecondaryOnly
-
-            ItemAttributes
-            {
-                ItemName "The Quick-Fix"
-                "generate rage on heal" 1
-                "increase buff duration" 99
-                "ubercharge rate bonus" 0.01 // pretty much disables ubercharge
-            }
-        }
-
-        Motherland_Demo_Targe_Armored
-        {
-            Class Demoman
-            Name "Mildly Large Hybridknight"
-            ClassIcon demo_with_targe_armored
-
-            Item "Blast Defense"
-
-            Skill Normal
-            Health 650
-            WeaponRestrictions PrimaryOnly
-            Item "The Chargin' Targe"
-            Scale 1.4
-        }
-
-        Motherland_Pyro_Detonator
-        {
-            Class Pyro
-            Name "Detonator Pyro"
-            Skill Normal
-            ClassIcon pyro_flare
-            Item "The Detonator"
-            WeaponRestrictions SecondaryOnly
-        }
-
         Motherland_Pyro_Phlog
         {
             Name "Phlog Pyro"
@@ -146,7 +102,7 @@ WaveSchedule
             Class Heavyweapons
             Name "Giant Laser Eyes Heavy"
             ClassIcon boss_spawner
-            Skill Hard
+            Skill Expert
             Health 9001
             Scale 2.3
             Item "The U-clank-a"
@@ -337,7 +293,7 @@ WaveSchedule
 
         WaveSpawn
         {
-            TotalCurrency 100
+            Support Limited
 
             TotalCount 32
             MaxActive  8
@@ -362,9 +318,8 @@ WaveSchedule
 
         WaveSpawn
         {
-            TotalCurrency 100
+            Support 1
 
-            TotalCount 32
             MaxActive  4
             SpawnCount 1
 
@@ -389,7 +344,7 @@ WaveSchedule
         WaveSpawn
         {
             Name "W1S1_Heavies"
-            TotalCurrency 90
+            TotalCurrency 120
 
             TotalCount 3
             MaxActive  3
@@ -418,7 +373,7 @@ WaveSchedule
 
         WaveSpawn
         {
-            TotalCurrency 10
+            TotalCurrency 20
 
             TotalCount 4
             MaxActive  1
@@ -442,9 +397,10 @@ WaveSchedule
 
         WaveSpawn
         {
-            TotalCurrency 80
+            Name "W1S2_SoldierTrickle"
+            TotalCurrency 180
 
-            TotalCount 24
+            TotalCount 18
             MaxActive  4
             SpawnCount 1
 
@@ -467,8 +423,31 @@ WaveSchedule
 
         WaveSpawn
         {
+            Support 1
+            MaxActive  4
+            SpawnCount 1
+
+            WaitForAllSpawned "W1S2_SoldierTrickle"
+            WaitBeforeStarting 6
+            WaitBetweenSpawns 3
+
+            Where spawnbot_base_closet
+            Where spawnbot_pointA_upper
+            Where spawnbot_pointB_main
+
+            TFBot
+            {
+                Class Soldier
+                Skill Normal
+
+                Tag nav_main
+            }
+        }
+
+        WaveSpawn
+        {
             Name "W1S3_ArmoredHeavies"
-            TotalCurrency 100
+            TotalCurrency 180
 
             TotalCount 6
             MaxActive  2
@@ -497,7 +476,7 @@ WaveSchedule
         WaveSpawn
         {
             Name "W1S2_GRU_Heavies"
-            TotalCurrency 130
+            TotalCurrency 140
 
             TotalCount 10
             MaxActive  6
@@ -522,7 +501,7 @@ WaveSchedule
 
         WaveSpawn
         {
-            TotalCurrency 110
+            TotalCurrency 160
 
             TotalCount 12
             MaxActive  4
@@ -554,7 +533,7 @@ WaveSchedule
         WaveSpawn
         {
             Name "W1S4_GiantSoldier"
-            TotalCurrency 80
+            TotalCurrency 100
 
             TotalCount 5
             MaxActive  5
@@ -674,6 +653,7 @@ WaveSchedule
             TFBot
             {
                 Template T_TFBot_Giant_Soldier_Crit
+                Tag bot_no_radio_jump
 
                 Tag nav_main
             }
@@ -700,10 +680,11 @@ WaveSchedule
                 Class Pyro
                 Skill Normal
                 WeaponRestrictions PrimaryOnly
+                Item "The Nostromo Napalmer"
 
                 ItemAttributes
                 {
-                    ItemName "TF_WEAPON_FLAMETHROWER"
+                    ItemName "The Nostromo Napalmer"
                     "airblast disabled" 1
                 }
 
@@ -731,10 +712,11 @@ WaveSchedule
                 Class Pyro
                 Skill Normal
                 WeaponRestrictions PrimaryOnly
+                Item "The Nostromo Napalmer"
 
                 ItemAttributes
                 {
-                    ItemName "TF_WEAPON_FLAMETHROWER"
+                    ItemName "The Nostromo Napalmer"
                     "airblast disabled" 1
                 }
 
@@ -853,8 +835,8 @@ WaveSchedule
             Name "W2S3_GiantSoldiers"
             TotalCurrency 60
 
-            TotalCount 2
-            MaxActive  2
+            TotalCount 1
+            MaxActive  1
             SpawnCount 1
 
             WaitForAllDead "W2S2_GateSoldiers"
@@ -870,6 +852,8 @@ WaveSchedule
             TFBot
             {
                 Template T_TFBot_Giant_Soldier_Crit
+
+                Tag bot_no_radio_jump
             }
         }
 
@@ -979,9 +963,9 @@ WaveSchedule
             Name "W2S3_GiantSoldier"
             TotalCurrency 100
 
-            TotalCount 2
-            MaxActive  2
-            SpawnCount 2
+            TotalCount 1
+            MaxActive  1
+            SpawnCount 1
 
             WaitForAllDead "W2S1_Tank"
 
@@ -989,22 +973,12 @@ WaveSchedule
             Where spawnbot_pointA_jetpack2
             Where spawnbot_pointB_main
 
-            Squad
+            TFBot
             {
-                TFBot
-                {
-                    Template T_TFBot_Giant_Soldier_Spammer
-                    Tag bot_no_radio_jump
+                Template T_TFBot_Giant_Soldier_Extended_Concheror
+                Tag bot_no_radio_jump
 
-                    Tag nav_main
-                }
-                TFBot
-                {
-                    Template Motherland_Giant_Medic_Shield
-                    Tag bot_no_radio_jump
-
-                    Tag nav_main
-                }
+                Tag nav_main
             }
         }
     }

@@ -578,7 +578,9 @@ class MotherlandBotLaserEyes extends MotherlandBotTemplate
 
     function OnConstruct() //Interface Implementation
     {
+        incrementsUntilNextState = RandomInt(3, 10)
         damage = safeget(LASER_EYES_DAMAGE_PER_DIFFICULTY, bot.GetDifficulty(), 5)
+        damage *= bot.GetCustomAttribute("damage bonus", 1.0)
         currentLaserForward = bot.EyeAngles().Forward()
 
         AddTimer(0.1, Think)
@@ -607,9 +609,6 @@ class MotherlandBotLaserEyes extends MotherlandBotTemplate
     {
         if (bot.InCond(TF_COND_INVULNERABLE_HIDE_UNLESS_DAMAGED))
             return
-
-        //TempPrint("\nstate = "+state)
-        //TempPrint("incrementsUntilNextState = "+incrementsUntilNextState)
 
         if (incrementsUntilNextState-- <= 0)
         {
@@ -887,4 +886,17 @@ function DestroyInfSupport()
     foreach(bot in GetPlayers(TF_TEAM_PVE_INVADERS))
         if (bot.HasBotTag("inf_support"))
             bot.TakeDamageEx(bot, bot, null, Vector(), Vector(), 9999, TF_DMG_CUSTOM_TELEFRAG)
+}
+
+function FixVaccinatorMedicBackpack(bot, params)
+{
+    for (local child = bot.FirstMoveChild(); child != null; child = child.NextMovePeer())
+    {
+        SetPropBool(child, "m_bForcePurgeFixedupStrings", true)
+        if (GetPropInt(child, "m_AttributeManager.m_Item.m_iItemDefinitionIndex" ) == VACCINATOR_ITEM_ID)
+        {
+            KillIfValid(GetPropEntity(child, "m_hExtraWearable"))
+            return
+        }
+    }
 }
