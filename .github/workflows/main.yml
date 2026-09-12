@@ -46,22 +46,22 @@ jobs:
           rsync -a --chmod=777 --mkpath -e "ssh -o StrictHostKeyChecking=no" ./scripts/population/* pterodactyl@storage.potato.tf:/mnt/archival/testing_uploads_current/scripts/population/
           curl https://testing.potato.tf/forceupdate.php?serverkey=23049785
   
-  release:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  # release:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: GitHub Release (Means of Destruction)
-        uses: softprops/action-gh-release@v2
-        if: github.event_name != 'pull_request'
-        with:
-          # token: ${{ secrets.GITHUB_TOKEN }}
-          draft: true
-          files: |
-            ./scripts/vscripts/brain_motherland/*
-            ./scripts/population/*exp_means_of_destruction.pop
-            ./materials/hud/*
+  #     - name: GitHub Release (Means of Destruction)
+  #       uses: softprops/action-gh-release@v2
+  #       if: github.event_name != 'pull_request'
+  #       with:
+  #         # token: ${{ secrets.GITHUB_TOKEN }}
+  #         draft: true
+  #         files: |
+  #           ./scripts/vscripts/brain_motherland/*
+  #           ./scripts/population/*exp_means_of_destruction.pop
+  #           ./materials/hud/*
 
   workshop:
     # The type of runner that the job will run on
