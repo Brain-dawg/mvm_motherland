@@ -179,12 +179,15 @@ class MotherlandBotJetpack extends MotherlandBotTemplate
     function Think()
     {
         local myPos = bot.GetOrigin()
-        local newVelocity = Vector(0, 0, bot.GetAbsVelocity().z)
+        local velZ = bot.GetAbsVelocity().z
+        if (velZ < -JETPACK_TERMINAL_VELOCITY)
+            velZ = -JETPACK_TERMINAL_VELOCITY
+        local newVelocity = Vector(0, 0, velZ)
 
         local fraction = TraceLine(myPos, myPos - landingHeightVec, bot)
         if (fraction < 0.92) //Getting close to the ground
         {
-            newVelocity.z *= 0.87
+            newVelocity.z *= JETPACK_SLOWDOWN_MULTIPLIER
             if (!landingInitiated)
             {
                 landingInitiated = true
@@ -197,13 +200,13 @@ class MotherlandBotJetpack extends MotherlandBotTemplate
 
     function InitiateLanding(myPos, fraction)
     {
-        RunWithDelay(3, FinishJetpackSpawnSequence)
+        RunWithDelay(2.5, FinishJetpackSpawnSequence)
 
         local isMiniBoss = bot.IsMiniBoss()
 
         EntFireByHandle(SpawnEntityFromTable("info_particle_system", {
             effect_name = isMiniBoss ? JETPACK_LANDING_GIANT_VFX : JETPACK_LANDING_VFX,
-            origin = myPos - Vector(0, 0, JETPACK_LANDING_HEIGHT * fraction),
+            origin = myPos - Vector(0, 0, landingHeightVec.z * fraction),
             start_active = 1
         }), "Kill", "", 3, null, null)
 

@@ -60,12 +60,13 @@ function DisplayWorkshopBugError()
 
 function MissionsChatCommand(player, args)
 {
-    ClientPrint(player, HUD_PRINTTALK, "5 available missions for tf_mvm_popfile:")
+    ClientPrint(player, HUD_PRINTTALK, "6 available missions for tf_mvm_popfile:")
     ClientPrint(player, HUD_PRINTTALK, " mvm_motherland_b45ws_adv_tundra_flux")
     ClientPrint(player, HUD_PRINTTALK, " mvm_motherland_b45ws_adv_five_wave_plan")
     ClientPrint(player, HUD_PRINTTALK, " mvm_motherland_b45ws_exp_means_of_destruction")
     ClientPrint(player, HUD_PRINTTALK, " mvm_motherland_b45ws_int_carbureted_clash")
     ClientPrint(player, HUD_PRINTTALK, " mvm_motherland_b45ws_adv_gray_scare_wip")
+    ClientPrint(player, HUD_PRINTTALK, " mvm_motherland_b45ws_int_russian_riot (new mission!)")
     ClientPrint(player, HUD_PRINTTALK, "You can also call a vote with `callvote ChangeMission popfilename` command")
     ClientPrint(player, HUD_PRINTTALK, "If nothing happens, type `mp_restartgame 1` twice after selecting a mission.")
 }
